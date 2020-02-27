@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:foreground="?android:attr/selectableItemBackground"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:clickable="true"
+        android:id="@+id/AAA"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardBackgroundColor="#d5efd4"
+        card_view:cardElevation="6dp"
+        card_view:cardMaxElevation="1dp"
+        android:layout_margin="8dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/AA"
+                android:layout_width="120dp"
+                android:layout_height="79dp"
+                android:fitsSystemWindows="true"
+                android:src="@drawable/location" />
+
+            <TextView
+                android:id="@+id/na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:text="Tv installation"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

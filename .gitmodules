@@ -1,0 +1,3 @@
+[submodule "Yene-Service"]
+	path = Yene-Service
+	url = https://github.com/hanibalgirmay/Yene-Service.git

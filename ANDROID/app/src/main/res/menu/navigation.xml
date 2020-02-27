@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HomeActivity">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/menu_appointments"
+        android:icon="@drawable/ic_event_note_24px"
+        android:title="Appointment" />
+    <item
+        android:id="@+id/action_notification"
+        android:title="Notification"
+        android:icon="@drawable/ic_notifications_black_24dp"/>
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search_24px"
+        android:title="Search" />
+
+    <item
+        android:id="@+id/menu_navigation_profile"
+        android:icon="@drawable/ic_person_white_24dp"
+        android:title="Profile" />
+
+</menu>

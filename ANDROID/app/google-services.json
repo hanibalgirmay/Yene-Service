@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "885935246711",
+    "firebase_url": "https://yene-service.firebaseio.com",
+    "project_id": "yene-service",
+    "storage_bucket": "yene-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885935246711:android:dd6b995ec571068cca6572",
+        "android_client_info": {
+          "package_name": "com.example.yeneservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885935246711-of63glssq4u7ndut2ot92q1p82v6ec28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yeneservice",
+            "certificate_hash": "9b94afda6d3800122067385b3c125a10f7557ab4"
+          }
+        },
+        {
+          "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR1cj7_E87SDj9weVra0Dgpajob5szuI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
