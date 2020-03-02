@@ -20,10 +20,8 @@
         android:clipChildren="true"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="false"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
         android:outlineSpotShadowColor="@color/white"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         tools:targetApi="p">
 
         <LinearLayout

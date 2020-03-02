@@ -23,6 +23,8 @@ import com.example.yeneservice.PagesFragment.HomeFragment;
 import com.example.yeneservice.PagesFragment.SearchFragment;
 import com.example.yeneservice.Users.PhoneAuthenticateActivity;
 import com.example.yeneservice.Users.RegisterInformationActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,8 +38,22 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbarid);
         setSupportActionBar(toolbar);
+
+//        AppBarLayout appBarLayout = (AppBarLayout)findViewById(R.id.appbar);
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+//                    // Collapsed (make button visible and fab invisible)
+//                } else if (verticalOffset == 0) {
+//                    // Expanded (make fab visible and toolbar button invisible)
+//                } else {
+//                    // Somewhere in between
+//                }
+//            }
+//        });
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        android:elevation="8dp"
+        android:dividerHeight="0.0px"
+        android:clipToPadding="false"
+        android:clipChildren="true"
+        app:cardElevation="10dp"
+        app:cardPreventCornerOverlap="false"
+        android:outlineSpotShadowColor="@color/white"
+        android:layout_marginTop="15dp"
+        tools:targetApi="p">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/businessman_profile_cartoon_removebg"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/descr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="The quick, brown fox jumps over a lazy dog"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Painting"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="9dp"
+                        android:layout_height="30dp"
+                        android:padding="0dp"
+                        android:textColor="@color/white"
+                        android:text="Pay"
+                        android:background="@drawable/pay_bg"/>
+                    <Button
+                        android:id="@+id/review"
+                        android:layout_width="130dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="Review Job"
+                        android:textAllCaps="false"
+                        android:textColor="#149325"
+                        android:background="@drawable/search_bg"
+                        android:layout_marginStart="15dp"
+                        tools:ignore="ButtonStyle" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
