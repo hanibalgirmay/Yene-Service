@@ -16,10 +16,13 @@
         android:allowBackup="true"
         android:icon="@drawable/location"
         android:label="@string/app_name"
+        tools:replace="android:icon"
         android:roundIcon="@drawable/location"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Users.ProfileRegisterActivity"></activity>
+        <activity android:name=".PagesFragment.ServiceListProvidersActivity"></activity>
+        <activity android:name=".ServiceProviderProfileActivity" />
+        <activity android:name=".Users.ProfileRegisterActivity" />
         <activity android:name=".Extra.MessageActivity" />
         <activity android:name=".Extra.AppointedUsersActivity" />
         <activity android:name=".Users.ShareServiceProviderProfileActivity" />

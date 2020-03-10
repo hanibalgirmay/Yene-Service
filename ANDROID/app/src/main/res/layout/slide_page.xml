@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/linearlayout"
-    android:background="@color/dot_dark_screen3"
+    android:background="@color/white"
     android:gravity="center">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:src="@drawable/cleaners_with_cleaning_products_housekeeping_service"
+        android:src="@drawable/undraw_services_5tv9"
         android:id="@+id/slide_img"/>
 
     <TextView
@@ -19,7 +19,7 @@
         android:textSize="30sp"
         android:text="Easy Services"
         android:fontFamily="sans-serif-condensed-medium"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:id="@+id/slide_title"/>
 
@@ -28,12 +28,11 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textSize="18sp"
-        android:text="Easy way to appoint service provider anytime"
+        android:text="Easy way to appoint service provider
+        anytime way to appoint service provider anytime"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textStyle="normal"
         android:id="@+id/slide_desc"/>
-
-
 
 </LinearLayout>

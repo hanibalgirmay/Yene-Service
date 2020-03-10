@@ -69,7 +69,7 @@ public class RegisterInformationActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        btnSignIn = (Button) findViewById(R.id.sign_in_button);
+//        btnSignIn = (Button) findViewById(R.id.sign_in_button);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -77,7 +77,7 @@ public class RegisterInformationActivity extends AppCompatActivity {
         inputLastName = (EditText) findViewById(R.id.lastname);
         inputPhone = (EditText) findViewById(R.id.city);
         setupImage = findViewById(R.id.setup_image);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+//        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 //        btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
         btnSignUp.setEnabled(false);
 //        user_id = "oaG2kJa0S2cmQ4PMktRWYT7okQf1";
@@ -209,4 +209,6 @@ public class RegisterInformationActivity extends AppCompatActivity {
         }
     }
 
+    public void openLoginPage(View view) {
+    }
 }

@@ -13,7 +13,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yeneservice.Models.Service;
+import com.example.yeneservice.PagesFragment.ServiceListProvidersActivity;
 import com.example.yeneservice.R;
+import com.example.yeneservice.ServiceProviderProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -47,12 +49,12 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
             @Override
             public void onClick(View v) {
 
-//                Intent intent = new Intent(context, ProviderListActivity.class);
+                Intent intent = new Intent(context, ServiceListProvidersActivity.class);
                 // passing data to the book activity
-//                intent.putExtra("name",mData.get(position).getTitle());
-//                intent.putExtra("image",mData.get(position).getImg());
+                intent.putExtra("name",mData.get(position).getTitle());
+                intent.putExtra("image",mData.get(position).getImg());
                 // start the activity
-//                context.startActivity(intent);
+                context.startActivity(intent);
 
             }
         });

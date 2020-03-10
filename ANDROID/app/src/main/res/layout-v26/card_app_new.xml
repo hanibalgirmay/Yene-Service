@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#E4E3E3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/CardView.Light"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/businessman_profile_cartoon_removebg"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="H,16:9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/view"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:elevation="12dp"
+                app:cardCornerRadius="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                android:layout_marginLeft="12dp">
+
+                <ImageView
+                    android:id="@+id/circleImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/businessman_profile_cartoon_removebg"
+                    android:scaleType="centerCrop"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Victoria Smith"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view"
+                app:layout_constraintBottom_toTopOf="@+id/desc"
+                android:layout_marginLeft="12dp" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Work"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#8A000000"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                android:layout_marginLeft="12dp" />
+
+            <Button
+                android:id="@+id/arrowBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/ic_keyboard_arrow_down_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view"
+                android:layout_marginRight="12dp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/expandableView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="12dp"
+                android:visibility="gone"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@+id/desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/phoneIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_phone_black_24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="12dp" />
+
+                <TextView
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="(999) 345 32 45"
+                    android:layout_marginStart="32dp"
+                    android:textColor="#000"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintTop_toTopOf="@+id/phoneIcon"
+                    app:layout_constraintStart_toEndOf="@id/phoneIcon"
+                    app:layout_constraintBottom_toTopOf="@+id/phoneDesc"
+                    android:layout_marginLeft="32dp" />
+
+                <TextView
+                    android:id="@+id/phoneDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile"
+                    android:layout_marginStart="32dp"
+                    android:textColor="#8A000000"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintTop_toBottomOf="@+id/phoneNumber"
+                    app:layout_constraintStart_toEndOf="@id/phoneIcon"
+                    app:layout_constraintBottom_toBottomOf="@+id/phoneIcon"
+                    android:layout_marginLeft="32dp" />
+
+                <ImageView
+                    android:id="@+id/mailIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_mail_black_24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/phoneIcon"
+                    android:layout_marginLeft="12dp" />
+
+                <TextView
+                    android:id="@+id/mailNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="workemail@gmail.com"
+                    android:layout_marginStart="32dp"
+                    android:textColor="#000"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintTop_toTopOf="@+id/mailIcon"
+                    app:layout_constraintStart_toEndOf="@id/mailIcon"
+                    app:layout_constraintBottom_toTopOf="@+id/mailDesc"
+                    android:layout_marginLeft="32dp" />
+
+                <TextView
+                    android:id="@+id/mailDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Work"
+                    android:layout_marginStart="32dp"
+                    android:textColor="#8A000000"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintTop_toBottomOf="@+id/mailNumber"
+                    app:layout_constraintStart_toEndOf="@id/mailIcon"
+                    app:layout_constraintBottom_toBottomOf="@+id/mailIcon"
+                    android:layout_marginLeft="32dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

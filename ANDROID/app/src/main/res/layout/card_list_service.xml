@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_v"
+        android:layout_width="match_parent"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_height="80dp"
+        android:clickable="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="13dp">
+
+        <RelativeLayout
+            android:id="@+id/name_pro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/businessman_profile_cartoon_removebg"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                app:civ_border_color="#05df29"
+                app:civ_border_width="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/img_on"
+                android:visibility="gone"
+                android:src="@drawable/businessman_profile_cartoon_removebg"
+                android:layout_marginStart="20dp" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                app:civ_border_color="#bfbfbf"
+                app:civ_border_width="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/img_off"
+                android:visibility="gone"
+                android:src="@drawable/businessman_profile_cartoon_removebg"
+                android:layout_marginStart="20dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/profile_img"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Full Name"
+                    android:layout_marginTop="25dp"/>
+
+                <TextView
+                    android:id="@+id/area_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Electrcian"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <RatingBar-->
+<!--                    android:id="@+id/rating"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:numStars="5"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginRight="20dp"-->
+<!--                    android:layout_gravity="right"-->
+<!--                    android:stepSize="0.1"-->
+<!--                    android:isIndicator="true"-->
+<!--                    style="?android:attr/ratingBarStyleSmall"-->
+<!--                    android:layout_marginEnd="20dp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="4/5"-->
+<!--                    android:layout_marginRight="22dp"-->
+<!--                    android:gravity="right"/>-->
+<!--            </LinearLayout>-->
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

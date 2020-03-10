@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/linearlayout"
-    android:background="@color/dot_dark_screen3"
+    android:background="@color/white"
     android:gravity="center">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:src="@drawable/location"
+        android:src="@drawable/undraw_mobile_messages_u848"
         android:id="@+id/slide_img"/>
 
     <TextView
@@ -18,7 +18,7 @@
         android:padding="16dp"
         android:textSize="30sp"
         android:text="Simple and eligant"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:id="@+id/slide_title"/>
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textSize="18sp"
-        android:text="Easy way to appoint service provider anytime"
+        android:text="Easy way to appoint service provider anytime service provider"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textStyle="normal"

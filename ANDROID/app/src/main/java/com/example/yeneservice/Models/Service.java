@@ -3,9 +3,9 @@ package com.example.yeneservice.Models;
 public class Service {
 
     private String title;
-    private int img;
+    private String img;
 
-    public Service(String title_name, int img_holder) {
+    public Service(String title_name, String img_holder) {
         title = title_name;
         img = img_holder;
     }
@@ -18,11 +18,11 @@ public class Service {
         this.title = title;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 }

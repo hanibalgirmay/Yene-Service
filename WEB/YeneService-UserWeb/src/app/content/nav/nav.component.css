@@ -1,0 +1,9 @@
+.home .bg-light .navbar {
+    background-color: transparent !important;
+    border-bottom: none;
+}
+
+.navbar-light .navbar-brand,
+.navbar-light .navbar-nav, .nav-link {
+    color: white;
+}

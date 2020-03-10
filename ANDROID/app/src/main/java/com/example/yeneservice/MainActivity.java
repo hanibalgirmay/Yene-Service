@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         layouts = new int[]{
                 R.layout.slide_page,
                 R.layout.slide_page2,
-                R.layout.slide_page3,};
+                R.layout.slide_page3,
+                R.layout.slide_page4,};
         // adding bottom dots
         addBottomDots(0);
         // making notification bar transparent
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(35);
+            dots[i].setTextSize(40);
             dots[i].setTextColor(colorsInactive[currentPage]);
             dotsLayout.addView(dots[i]);
         }

@@ -36,105 +36,110 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:background="#fff"
-            android:gravity="center"
-            android:id="@+id/il">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="10dp"-->
+<!--            android:background="#fff"-->
+<!--            android:gravity="center"-->
+<!--            android:id="@+id/il">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                >-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Some of Best Services"
-                    android:textStyle="bold"
-                    android:textFontWeight="200"
-                    android:textSize="20sp"/>
-
-<!--                <com.facebook.shimmer.ShimmerFrameLayout-->
-<!--                    android:id="@+id/shimmer_view_hor"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    shimmer:duration="800">-->
-
-<!--                    &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;-->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="horizontal">-->
-
-<!--                        <include layout="@layout/home_circle_placeholder" />-->
-
-<!--                        <include layout="@layout/home_circle_placeholder" />-->
-
-<!--                        <include layout="@layout/home_circle_placeholder" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                </com.facebook.shimmer.ShimmerFrameLayout>-->
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/horizontal_hm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="28sp"
-                android:text="Our Provided Services"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-<!--                <com.facebook.shimmer.ShimmerFrameLayout-->
-<!--                    android:id="@+id/shimmer_view_container"-->
+<!--                <TextView-->
 <!--                    android:layout_width="wrap_content"-->
 <!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:orientation="vertical"-->
-<!--                    shimmer:duration="800">-->
+<!--                    android:text="Some of Best Services"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textFontWeight="200"-->
+<!--                    android:textSize="20sp"/>-->
 
-<!--                    &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;-->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="vertical">-->
+<!--&lt;!&ndash;                <com.facebook.shimmer.ShimmerFrameLayout&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/shimmer_view_hor"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:orientation="horizontal"&ndash;&gt;-->
+<!--&lt;!&ndash;                    shimmer:duration="800">&ndash;&gt;-->
 
-<!--                        <include layout="@layout/home_placeholder_item" />-->
+<!--&lt;!&ndash;                    &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <LinearLayout&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:orientation="horizontal">&ndash;&gt;-->
 
-<!--                        <include layout="@layout/home_placeholder_item" />-->
+<!--&lt;!&ndash;                        <include layout="@layout/home_circle_placeholder" />&ndash;&gt;-->
 
-<!--                        <include layout="@layout/home_placeholder_item" />-->
+<!--&lt;!&ndash;                        <include layout="@layout/home_circle_placeholder" />&ndash;&gt;-->
 
-<!--                    </LinearLayout>-->
+<!--&lt;!&ndash;                        <include layout="@layout/home_circle_placeholder" />&ndash;&gt;-->
 
-<!--                </com.facebook.shimmer.ShimmerFrameLayout>-->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/vertical_vm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+<!--&lt;!&ndash;                    </LinearLayout>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;-->
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/horizontal_hm"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--            </LinearLayout>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="left"-->
+<!--                android:layout_marginTop="14dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:textSize="28sp"-->
+<!--                android:text="Our Provided Services"/>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="vertical">-->
+
+<!--&lt;!&ndash;                <com.facebook.shimmer.ShimmerFrameLayout&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/shimmer_view_container"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:orientation="vertical"&ndash;&gt;-->
+<!--&lt;!&ndash;                    shimmer:duration="800">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    &lt;!&ndash; Adding 3 rows of placeholders &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <LinearLayout&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:orientation="vertical">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        <include layout="@layout/home_placeholder_item" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        <include layout="@layout/home_placeholder_item" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        <include layout="@layout/home_placeholder_item" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    </LinearLayout>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                </com.facebook.shimmer.ShimmerFrameLayout>&ndash;&gt;-->
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/vertical_vm"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--            </LinearLayout>-->
 
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
+        <include layout="@layout/card_app_new" />
+<!--        <include layout="@layout/card_app_new" />-->
+<!--        <include layout="@layout/card_app_new" />-->
+<!--        <include layout="@layout/card_app_new" />-->
+<!--        <include layout="@layout/card_app_new" />-->
     </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

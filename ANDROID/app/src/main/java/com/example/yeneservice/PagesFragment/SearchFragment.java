@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,16 @@ import com.example.yeneservice.Adapters.HomeHorizontalServicesAdapter;
 import com.example.yeneservice.Adapters.HomeServiceAdapter;
 import com.example.yeneservice.Models.Service;
 import com.example.yeneservice.R;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,12 +72,34 @@ public class SearchFragment extends Fragment {
         horizontalServicesAdapter = new HomeHorizontalServicesAdapter(getContext(), lstHor);
         rv.setAdapter(horizontalServicesAdapter);
 
-        lstHor.add(new Service("one",R.drawable.businessman_profile_cartoon_removebg));
-        lstHor.add(new Service("two",R.drawable.businessman_profile_cartoon_removebg));
-        lstHor.add(new Service("three",R.drawable.businessman_profile_cartoon_removebg));
-        lstHor.add(new Service("one",R.drawable.businessman_profile_cartoon_removebg));
-        lstHor.add(new Service("six",R.drawable.businessman_profile_cartoon_removebg));
-        lstHor.add(new Service("five",R.drawable.businessman_profile_cartoon_removebg));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Services_List").limit(6).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(e != null){
+                    Log.d(TAG,"Error: "+ e.getMessage());
+                }
+                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    if(doc.getType() == DocumentChange.Type.ADDED){
+                        String firstename = doc.getDocument().getString("name");
+                        String img = doc.getDocument().getString("image");
+
+                        Log.d(TAG,"file name: "+ firstename);
+                        lstHor.add(new Service(firstename,img));
+                        horizontalServicesAdapter.notifyDataSetChanged();
+                        // stop animating Shimmer and hide the layout
+//                        hShimmerViewContainer.stopShimmerAnimation();
+//                        hShimmerViewContainer.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+//        lstHor.add(new Service("one",R.drawable.businessman_profile_cartoon_removebg));
+//        lstHor.add(new Service("two",R.drawable.businessman_profile_cartoon_removebg));
+//        lstHor.add(new Service("three",R.drawable.businessman_profile_cartoon_removebg));
+//        lstHor.add(new Service("one",R.drawable.businessman_profile_cartoon_removebg));
+//        lstHor.add(new Service("six",R.drawable.businessman_profile_cartoon_removebg));
+//        lstHor.add(new Service("five",R.drawable.businessman_profile_cartoon_removebg));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(mLayoutManager);
@@ -81,17 +111,40 @@ public class SearchFragment extends Fragment {
         vm.setHasFixedSize(true);
         lstBook = new ArrayList<>();
 
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
-        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+        FirebaseFirestore data = FirebaseFirestore.getInstance();
+        data.collection("Services_List").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(e != null){
+                    Log.d(TAG,"Error: "+ e.getMessage());
+                }
+                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    if(doc.getType() == DocumentChange.Type.ADDED){
+                        String firstename = doc.getDocument().getString("name");
+                        String img = doc.getDocument().getString("image");
+
+                        Log.d(TAG,"file name: "+ firstename);
+
+                        lstBook.add(new Service(firstename,img));
+                        serviceAdapter.notifyDataSetChanged();
+                        // stop animating Shimmer and hide the layout
+//                        mShimmerViewContainer.stopShimmerAnimation();
+//                        mShimmerViewContainer.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
+//        lstBook.add(new Service("title",R.drawable.businessman_profile_cartoon_removebg));
         serviceAdapter = new HomeServiceAdapter(getActivity(),lstBook);
         vm.setLayoutManager(new GridLayoutManager(getActivity(),3));
         vm.setAdapter(serviceAdapter);

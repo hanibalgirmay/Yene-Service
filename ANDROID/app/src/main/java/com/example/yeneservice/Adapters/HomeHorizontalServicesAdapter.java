@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yeneservice.Models.Service;
+import com.example.yeneservice.PagesFragment.ServiceListProvidersActivity;
 import com.example.yeneservice.R;
 import com.squareup.picasso.Picasso;
 
@@ -45,12 +46,12 @@ public class HomeHorizontalServicesAdapter extends RecyclerView.Adapter<HomeHori
             @Override
             public void onClick(View v) {
 
-//                Intent intent = new Intent(mContext, ProviderListActivity.class);
+                Intent intent = new Intent(mContext, ServiceListProvidersActivity.class);
 //                // passing data to the book activity
-//                intent.putExtra("name",mData.get(position).getTitle());
-//                intent.putExtra("image",mData.get(position).getImg());
+                intent.putExtra("name",mData.get(position).getTitle());
+                intent.putExtra("image",mData.get(position).getImg());
 //                // start the activity
-//                mContext.startActivity(intent);
+                mContext.startActivity(intent);
 
             }
         });

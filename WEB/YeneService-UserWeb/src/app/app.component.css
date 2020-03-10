@@ -1,0 +1,113 @@
+.home {
+    height: 100vh;
+    background-color: mediumblue;
+    position: relative;
+    overflow: hidden;
+}
+
+.home .bg-light {
+    background-color: transparent !important;
+    border-bottom: none;
+}
+
+.navbar-light .navbar-brand,
+.navbar-light .navbar-nav, .nav-link {
+    color: white;
+}
+
+.content {
+    color: white;
+}
+.content h6 {
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.content h1 {
+    font-size: 40px;
+}
+
+.content a{
+    display: inline-block;
+    width: 250px;
+    height: 60px;
+    border: 1px solid #ffffff80;
+    text-decoration: none;
+    line-height: 58px;
+    text-align: center;
+    color: #ffff;
+    font-weight: 500;
+    letter-spacing: .5px;
+    margin-top: 70px;
+    transition: all ease .4s;
+}
+.content a:hover {
+    color: #2b2bb0;
+    background-color: #fff;
+}
+.content-text {
+    padding-top: 140px;
+}
+.content-img {
+    padding-top: 60px;
+}
+.home::before {
+    content: '';
+    position: absolute;
+    background: url('../assets/wave-img.png') no-repeat;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    background-size: cover;
+    width: 100%;
+    height: 57px;
+    opacity: 0.2;
+    animation: waveone 10s linear infinite;
+}
+
+@keyframes waveone {
+    0%{
+        background-position: 1366px;
+    }
+    100% {
+        background-position: 0;
+    }
+}
+
+.home::after{
+    content: '';
+    position: absolute;
+    background: url('../assets/wave-img.png') no-repeat;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    background-size: cover;
+    width: 100%;
+    height: 57px;
+    opacity: 0.2;
+    animation: wavetwo 10s linear infinite;
+}
+
+.wave {
+    content: '';
+    position: absolute;
+    background: url('../assets/wave-img.png') no-repeat;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    background-size: cover;
+    width: 100%;
+    height: 57px;
+    animation: wavetwo 12s linear infinite;
+}
+
+@keyframes wavetwo {
+    0%{
+        background-position: 0;
+    }
+    100% {
+        background-position: 1366px;
+    }
+}
+
