@@ -9,7 +9,7 @@
         android:id="@+id/horId"
         android:clickable="true"
         android:layout_width="100dp"
-        app:cardCornerRadius="50dp"
+        app:cardCornerRadius="10dp"
         android:layout_height="100dp"
         android:layout_margin="10dp"
         >
@@ -20,9 +20,9 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/img_placeholder"
-                android:layout_width="60dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="0dp"

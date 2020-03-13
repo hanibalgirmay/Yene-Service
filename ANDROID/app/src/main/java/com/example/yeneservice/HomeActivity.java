@@ -133,11 +133,15 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(HomeActivity.this, MessageActivity.class));
+            startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
             return true;
         }
         if (id == R.id.action_msg) {
-            startActivity(new Intent(HomeActivity.this, AppointedUsersActivity.class));
+            startActivity(new Intent(HomeActivity.this, ServiceProviderProfileActivity.class));
+            return true;
+        }
+        if(id == R.id.action_map){
+            startActivity(new Intent(HomeActivity.this, MapsActivity.class));
             return true;
         }
         if(id == R.id.action_notification){
@@ -162,8 +166,8 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_about){
-//            startActivity(new Intent(HomeActivity.this, AboutActivity.class));
-            Toast.makeText(this, "this is about button menu", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(HomeActivity.this, MyProfileActivity.class));
+            Toast.makeText(this, "this is profile button menu", Toast.LENGTH_SHORT).show();
             return true;
         }
         else if(id == R.id.action_logout){

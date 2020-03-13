@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.ramotion.foldingcell:folding-cell:1.2.3'
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //QR code
     implementation 'com.google.android.gms:play-services-vision:19.0.0'

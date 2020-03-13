@@ -1,10 +1,12 @@
 package com.example.yeneservice.Models;
 
+import java.util.Comparator;
+
 public class AppointementModel  {
 
 //    private String DocId;
     private String name;
-    private String image;
+    private int image;
     private String userId;
     private String serviceProviderId;
     private String description;
@@ -14,8 +16,8 @@ public class AppointementModel  {
 //    private String pay;
 
     public AppointementModel(){}
-
-    public AppointementModel(String name, String image, String userId, String serviceProviderId, String description, String date, String time, String DocId) {
+//String userId,String serviceProviderId
+    public AppointementModel(String name, int image , String description, String date, String time, String DocId) {
         this.name = name;
         this.image = image;
         this.userId = userId;
@@ -42,11 +44,11 @@ public class AppointementModel  {
         this.name = name;
     }
 
-    public String getImage() {
+    public int getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(int image) {
         this.image = image;
     }
 
@@ -97,4 +99,18 @@ public class AppointementModel  {
     public void setTime(String time) {
         this.time = time;
     }
+
+    public static final Comparator<AppointementModel> BY_DATE_ASCENDINGS = new Comparator<AppointementModel>() {
+        @Override
+        public int compare(AppointementModel o1, AppointementModel o2) {
+            return o1.getDate().compareTo(o2.getDate());
+        }
+    };
+
+    public static final Comparator<AppointementModel> BY_DATE_DESCENDINGS = new Comparator<AppointementModel>() {
+        @Override
+        public int compare(AppointementModel o1, AppointementModel o2) {
+            return o2.getDate().compareTo(o1.getDate());
+        }
+    };
 }
