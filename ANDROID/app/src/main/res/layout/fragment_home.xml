@@ -113,6 +113,11 @@
 
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
+            android:background="?attr/colorPrimary"
+            app:tabInlineLabel="true"
+            android:verticalScrollbarPosition="defaultPosition"
+            android:saveEnabled="true"
+            app:tabTextColor="@android:color/white"
             android:layout_height="wrap_content"
             android:id="@+id/tablayout"/>
     </androidx.viewpager.widget.ViewPager>

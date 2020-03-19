@@ -15,10 +15,10 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="13dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/name_pro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -26,8 +26,8 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/businessman_profile_cartoon_removebg"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"/>
+                android:layout_gravity="center"
+                android:layout_marginStart="15dp"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="15dp"
@@ -40,6 +40,7 @@
                 android:visibility="gone"
                 android:src="@drawable/businessman_profile_cartoon_removebg"
                 android:layout_marginStart="20dp" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -76,17 +77,20 @@
                     android:text="Electrcian"
                     android:textSize="10sp"/>
             </LinearLayout>
-            <ImageView
-                android:layout_width="20dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:layout_toRightOf="@+id/lin"
-                android:background="@drawable/cicrcle"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="180dp"
                 android:layout_toEndOf="@+id/lin"
+                android:background="@drawable/cicrcle"
+                android:text="12"
+                android:gravity="end"
+                android:paddingStart="5dp"
+                android:paddingEnd="6dp"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="30dp"
                 android:contentDescription="number message"
                 android:layout_marginStart="180dp"/>
 
-        </RelativeLayout>
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

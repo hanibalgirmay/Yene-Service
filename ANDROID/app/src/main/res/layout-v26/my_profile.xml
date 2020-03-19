@@ -112,7 +112,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <include layout="@layout/item_divider"/>
+<!--                <include layout="@layout/item_divider"/>-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"

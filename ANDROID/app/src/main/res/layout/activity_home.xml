@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:background="@drawable/home_bg"
+        android:background="@color/colorPrimary"
         android:layout_height="220dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -115,6 +115,7 @@
         android:layout_margin="20dp"
         android:background="@drawable/cicrcle"
         android:fadingEdge="vertical"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
         android:foreground="?attr/selectableItemBackground"
         android:hapticFeedbackEnabled="true"
         android:scrollbarSize="18dp"

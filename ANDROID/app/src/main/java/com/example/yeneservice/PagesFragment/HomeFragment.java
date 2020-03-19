@@ -1,6 +1,5 @@
 package com.example.yeneservice.PagesFragment;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -54,8 +53,8 @@ public class HomeFragment extends Fragment {
         viewPager = viewroot.findViewById(R.id.viewpagerId);
 
 //        tabLayout.getTabAt(0).
-        SearchFragment frag1 = new SearchFragment();
-        AppointementFragment frag2 = new AppointementFragment();
+        HouseFragment frag1 = new HouseFragment();
+        TransportationFragment frag2 = new TransportationFragment();
         CarFragment frag3 = new CarFragment();
 
         Bundle bundle1,bundle2;

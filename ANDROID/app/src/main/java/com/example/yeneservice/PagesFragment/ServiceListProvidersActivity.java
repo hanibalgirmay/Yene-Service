@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
         db.collection("Service_Providers").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
                 if(e != null){
                     Log.d(TAG,"Error: "+ e.getMessage());
                 }
@@ -77,26 +79,26 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                     if(doc.getType() == DocumentChange.Type.ADDED){
 //                        String id = doc.;
                         final String id = doc.getDocument().getString("userID");
-                        final String firstename = doc.getDocument().getString("firstName");
-                        final String lastname = doc.getDocument().getString("lastName");
-                        final String work = doc.getDocument().getString("working area");
+//                        final String firstename = doc.getDocument().getString("firstName");
+                        final String cty = doc.getDocument().getString("city");
+                        final String work = doc.getDocument().getString("working_area");
                         final String add = doc.getDocument().getString("address");
-                        final String me = doc.getDocument().getString("about me");
+                        final String me = doc.getDocument().getString("about_me");
+                        final GeoPoint l = doc.getDocument().getGeoPoint("location");
+//                        final Double g = doc.getDocument().getDouble("longitude");
 
                         if(tte.equals(work)){
-                            Log.d(TAG,"file name: "+ firstename);
+                            Log.d(TAG,"file name: "+ cty);
                             db.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     String image = documentSnapshot.getString("image");
-                                    lstBook.add(new ServicesProvider(id,firstename,lastname,image,add,work,me));
+                                    String firstename = documentSnapshot.getString("firstName");
+                                    String lastename = documentSnapshot.getString("lastName");
+                                    lstBook.add(new ServicesProvider(id,firstename,lastename,image,add,work,me,l));
                                     serviceProviderAdapter.notifyDataSetChanged();
                                 }
                             });
-
-                            // stop animating Shimmer and hide the layout
-//                            mShimmerViewContainer.stopShimmerAnimation();
-//                            mShimmerViewContainer.setVisibility(View.GONE);
                         } else {
                             new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
                                     .setTitleText("We are really sorry?")
@@ -115,19 +117,18 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                     }
 
                 }
-
-                new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("We are really sorry?")
-                        .setContentText("Something is wrong!")
-                        .setConfirmText("Ok!")
-                        .showCancelButton(true)
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                sDialog.dismissWithAnimation();
-                            }
-                        })
-                        .show();
+//                new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
+//                        .setTitleText("We are really sorry?")
+//                        .setContentText("Something is wrong!")
+//                        .setConfirmText("Ok!")
+//                        .showCancelButton(true)
+//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
+//                            }
+//                        })
+//                        .show();
             }
         });
     }

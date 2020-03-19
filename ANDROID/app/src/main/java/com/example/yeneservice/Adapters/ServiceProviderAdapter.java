@@ -54,10 +54,13 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
                 Intent intent = new Intent(mContext, ServiceProviderProfileActivity.class);
                 intent.putExtra("userID",mData.get(position).getUserID());
                 intent.putExtra("firstName",mData.get(position).getFirstName());
-                intent.putExtra("lastName",mData.get(position).getMiddleName());
+                intent.putExtra("lastname",mData.get(position).getLastName());
                 intent.putExtra("address",mData.get(position).getAddress());
-                intent.putExtra("working area",mData.get(position).getWorking_area());
-                intent.putExtra("about me",mData.get(position).getAbout());
+                intent.putExtra("working_area",mData.get(position).getWorking_area());
+                intent.putExtra("about_me",mData.get(position).getAbout());
+                intent.putExtra("long",mData.get(position).getLongt().getLongitude());
+                intent.putExtra("lat",mData.get(position).getLongt().getLatitude());
+                intent.putExtra("img",mData.get(position).getProfile_img());
                 intent.putExtra("fragmentRev",mData.get(position).getUserID());
                 // start the activity
                 mContext.startActivity(intent);

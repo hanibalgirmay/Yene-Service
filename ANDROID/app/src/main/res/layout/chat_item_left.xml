@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messagelayout"
     android:layout_width="300dp"
     android:padding="8dp"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_images"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/businessman_profile_cartoon_removebg"/>
-    
+
     <TextView
         android:id="@+id/show_message"
         android:layout_width="wrap_content"
@@ -21,8 +22,39 @@
         android:textColor="@color/white"
         android:padding="8dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/profile_images"
         android:layout_marginLeft="5dp" />
+    <TextView
+        android:id="@+id/text_message_time"
+        android:text="11:40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:layout_toRightOf="@+id/show_message"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@+id/show_message"
+        android:layout_marginStart="4dp" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/show_message"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp" />
+
+    <TextView
+        android:id="@+id/txt_seen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_message"
+        android:layout_toRightOf="@+id/profile_images"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:text="seen"/>
 
 </RelativeLayout>

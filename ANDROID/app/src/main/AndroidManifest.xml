@@ -47,7 +47,8 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".MyProfileActivity" />
-        <activity android:name=".PagesFragment.ServiceListProvidersActivity" />
+        <activity android:name=".PagesFragment.ServiceListProvidersActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"/>
         <activity android:name=".ServiceProviderProfileActivity" />
         <activity android:name=".Users.ProfileRegisterActivity" />
         <activity android:name=".Extra.MessageActivity" />

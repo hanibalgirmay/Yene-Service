@@ -9,7 +9,6 @@
         android:clickable="true"
         android:id="@+id/AAA"
         card_view:cardCornerRadius="5dp"
-        card_view:cardBackgroundColor="#d5efd4"
         card_view:cardElevation="6dp"
         card_view:cardMaxElevation="1dp"
         android:layout_margin="8dp"

@@ -3,7 +3,7 @@ package com.example.yeneservice.Models;
 public class AppointemntUserModel {
     private String id,service_provider_id, firstName,lastName,email;
     private String expriance, phone_number, status;
-    private int profile_img;
+    private String profile_img;
 
     public AppointemntUserModel(){}
 
@@ -14,7 +14,7 @@ public class AppointemntUserModel {
 //        this.phone_number = phone_number;
 //        this.profile_img = profile_img;
 //    }
-    public AppointemntUserModel(String serviceProviderId, String firstName, String phone_number, int profile_img, String status, boolean b) {
+    public AppointemntUserModel(String serviceProviderId, String firstName, String phone_number, String profile_img, String status, boolean b) {
         this.service_provider_id = serviceProviderId;
         this.firstName = firstName;
         this.phone_number = phone_number;
@@ -78,11 +78,11 @@ public class AppointemntUserModel {
         this.phone_number = phone_number;
     }
 
-    public int getProfile_img() {
+    public String getProfile_img() {
         return profile_img;
     }
 
-    public void setProfile_img(int profile_img) {
+    public void setProfile_img(String profile_img) {
         this.profile_img = profile_img;
     }
 

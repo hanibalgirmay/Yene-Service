@@ -17,14 +17,10 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.yeneservice.Extra.AppointedUsersActivity;
-import com.example.yeneservice.Extra.MessageActivity;
 import com.example.yeneservice.PagesFragment.AppointementFragment;
 import com.example.yeneservice.PagesFragment.HomeFragment;
-import com.example.yeneservice.PagesFragment.SearchFragment;
-import com.example.yeneservice.Users.PhoneAuthenticateActivity;
+import com.example.yeneservice.PagesFragment.HouseFragment;
 import com.example.yeneservice.Users.RegisterInformationActivity;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -98,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 case R.id.menu_search:
 //                    toolbar.setTitle("Search");
-                    fragment = new SearchFragment();
+                    fragment = new HouseFragment();
                     loadFragment(fragment);
                     return true;
             }
@@ -137,27 +133,12 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_msg) {
-            startActivity(new Intent(HomeActivity.this, ServiceProviderProfileActivity.class));
+            startActivity(new Intent(HomeActivity.this, AppointedUsersActivity.class));
             return true;
         }
         if(id == R.id.action_map){
             startActivity(new Intent(HomeActivity.this, MapsActivity.class));
             return true;
-        }
-        if(id == R.id.action_notification){
-            SearchView view = (SearchView) MenuItemCompat.getActionView(item);
-            view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-//                    searchDatat(s);
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
-                }
-            });
         }
         if (id == R.id.action_notification) {
 //            Intent n = new Intent(HomeActivity.this, NotificationActivity.class);

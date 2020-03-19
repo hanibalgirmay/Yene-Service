@@ -1,7 +1,5 @@
 package com.example.yeneservice.PagesFragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -33,22 +31,22 @@ import javax.annotation.Nullable;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link SearchFragment#newInstance} factory method to
+ * Use the {@link HouseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment {
+public class HouseFragment extends Fragment {
     List<Service> lstBook ;
     List<Service> lstHor ;
     HomeServiceAdapter serviceAdapter;
     HomeHorizontalServicesAdapter horizontalServicesAdapter;
     private static final String TAG = "MyActivity";
-    public SearchFragment() {
+    public HouseFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static SearchFragment newInstance(String param1, String param2) {
-        SearchFragment fragment = new SearchFragment();
+    public static HouseFragment newInstance(String param1, String param2) {
+        HouseFragment fragment = new HouseFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

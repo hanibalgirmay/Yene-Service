@@ -3,31 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="#f7f5f0"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 <!--
         android:divider="@android:color/transparent"-->
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardId"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:cardCornerRadius="15dp"
-        android:elevation="8dp"
+        android:elevation="0dp"
         android:dividerHeight="0.0px"
         android:clipToPadding="false"
         android:clipChildren="true"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="false"
-        android:outlineSpotShadowColor="@color/white"
         android:layout_marginTop="5dp"
         tools:targetApi="p">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/white"
             android:outlineAmbientShadowColor="#ffc"
             android:orientation="vertical">
 
@@ -106,11 +103,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="3"
                         android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/book"
-                            android:layout_width="130dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_marginTop="10dp"
                             android:layout_height="35dp"
                             android:textAllCaps="false"
@@ -121,7 +120,8 @@
 
                         <Button
                             android:id="@+id/review"
-                            android:layout_width="130dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_marginTop="10dp"
                             android:layout_height="35dp"
                             android:layout_marginLeft="15dp"
@@ -140,6 +140,6 @@
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

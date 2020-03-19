@@ -51,24 +51,24 @@ public class CarFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_car, container, false);
 
-        expandableView = root.findViewById(R.id.expandableView);
-        arrowBtn = root.findViewById(R.id.arrowBtn);
-        cardView = root.findViewById(R.id.cardView);
+//        expandableView = root.findViewById(R.id.expandableView);
+//        arrowBtn = root.findViewById(R.id.arrowBtn);
+//        cardView = root.findViewById(R.id.cardView);
 
-        arrowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (expandableView.getVisibility()==View.GONE){
-                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                    expandableView.setVisibility(View.VISIBLE);
-                    arrowBtn.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_black_24dp);
-                } else {
-                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
-                    expandableView.setVisibility(View.GONE);
-                    arrowBtn.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
-                }
-            }
-        });
+//        arrowBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (expandableView.getVisibility()==View.GONE){
+//                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+//                    expandableView.setVisibility(View.VISIBLE);
+//                    arrowBtn.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_black_24dp);
+//                } else {
+//                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+//                    expandableView.setVisibility(View.GONE);
+//                    arrowBtn.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
+//                }
+//            }
+//        });
         return root;
     }
 

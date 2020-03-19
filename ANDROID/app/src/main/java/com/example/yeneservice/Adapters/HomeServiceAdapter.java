@@ -48,7 +48,6 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(context, ServiceListProvidersActivity.class);
                 // passing data to the book activity
                 intent.putExtra("name",mData.get(position).getTitle());
