@@ -61,7 +61,7 @@ public class HouseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_house, container, false);
 
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.horizontal_hm);
         rv.setHasFixedSize(true);
@@ -78,17 +78,22 @@ public class HouseFragment extends Fragment {
                     Log.d(TAG,"Error: "+ e.getMessage());
                 }
                 for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-                    if(doc.getType() == DocumentChange.Type.ADDED){
-                        String firstename = doc.getDocument().getString("name");
-                        String img = doc.getDocument().getString("image");
+//                    if(doc.getType() == DocumentChange.Type.ADDED){
+                        String n = doc.getDocument().getString("category");
+//                        String ty = doc.getDocument().getString("type").toLowerCase();
+                        if(n.equals("home")){
+                            String firstename = doc.getDocument().getString("name");
+                            String img = doc.getDocument().getString("image");
 
-                        Log.d(TAG,"file name: "+ firstename);
-                        lstHor.add(new Service(firstename,img));
-                        horizontalServicesAdapter.notifyDataSetChanged();
+                            Log.d(TAG,"file name: "+ firstename);
+                            lstHor.add(new Service(firstename,img));
+                            horizontalServicesAdapter.notifyDataSetChanged();
+                        }
+
                         // stop animating Shimmer and hide the layout
 //                        hShimmerViewContainer.stopShimmerAnimation();
 //                        hShimmerViewContainer.setVisibility(View.GONE);
-                    }
+//                    }
                 }
             }
         });
@@ -118,13 +123,18 @@ public class HouseFragment extends Fragment {
                 }
                 for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
                     if(doc.getType() == DocumentChange.Type.ADDED){
-                        String firstename = doc.getDocument().getString("name");
-                        String img = doc.getDocument().getString("image");
+                        String n = doc.getDocument().getString("category");
+//                        String ty = doc.getDocument().getString("type").toLowerCase();
+                        if(n.equals("home")){
+                            String firstename = doc.getDocument().getString("name");
+                            String img = doc.getDocument().getString("image");
 
-                        Log.d(TAG,"file name: "+ firstename);
+                            Log.d(TAG,"file name: "+ firstename);
 
-                        lstBook.add(new Service(firstename,img));
-                        serviceAdapter.notifyDataSetChanged();
+                            lstBook.add(new Service(firstename,img));
+                            serviceAdapter.notifyDataSetChanged();
+                        }
+
                         // stop animating Shimmer and hide the layout
 //                        mShimmerViewContainer.stopShimmerAnimation();
 //                        mShimmerViewContainer.setVisibility(View.GONE);

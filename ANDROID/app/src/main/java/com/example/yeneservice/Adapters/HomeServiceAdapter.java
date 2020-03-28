@@ -51,6 +51,7 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                 Intent intent = new Intent(context, ServiceListProvidersActivity.class);
                 // passing data to the book activity
                 intent.putExtra("name",mData.get(position).getTitle());
+                intent.putExtra("serviceID",mData.get(position).getServiceID());
                 intent.putExtra("image",mData.get(position).getImg());
                 // start the activity
                 context.startActivity(intent);

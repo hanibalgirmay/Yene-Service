@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.yeneservice.Models.ServicesProvider;
+import com.example.yeneservice.PagesFragment.ServiceListProvidersActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,13 +33,25 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import javax.annotation.Nullable;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener {
 
@@ -168,6 +182,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return super.dispatchTouchEvent(event);
     }
 
+    private void listProvider(final String z){
+
+        //query
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Service_Providers").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                if(e != null){
+                    Log.d(TAG,"Error: "+ e.getMessage());
+                }
+                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    if(doc.getType() == DocumentChange.Type.ADDED){
+                        final GeoPoint l = doc.getDocument().getGeoPoint("location");
+                        final String id = doc.getDocument().getString("userID");
+                        final String work = doc.getDocument().getString("working_area");
+
+                        if(z.equals(work)){
+                            Log.d(TAG,"working name: "+ work);
+                            db.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    String image = documentSnapshot.getString("image");
+                                    String firstename = documentSnapshot.getString("firstName");
+                                    String lastename = documentSnapshot.getString("lastName");
+
+//                                    lstBook.add(new ServicesProvider(id,firstename,lastename,image,add,work,me,l));
+//                                    serviceProviderAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        } else {
+                            new SweetAlertDialog(MapsActivity.this, SweetAlertDialog.WARNING_TYPE)
+                                    .setTitleText("We are really sorry?")
+                                    .setContentText("There is no service provider at the time for now!")
+                                    .setConfirmText("Ok!")
+                                    .showCancelButton(true)
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                }
+            }
+        });
+        //end query
+    }
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -204,6 +268,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String lname = intent.getExtras().getString("lName");
         String img = intent.getExtras().getString("img");
 
+        final String cat = intent.getExtras().getString("category");
         String fullName = fname +" "+ lname;
 
 //        mMap = googleMap;

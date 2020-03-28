@@ -3,7 +3,7 @@ package com.example.yeneservice.Models;
 import com.google.firebase.firestore.GeoPoint;
 
 public class ServicesProvider {
-    private String userID, firstName,lastName,middleName,address,city,working_area,about_me;
+    private String documentId,userID, firstName,lastName,middleName,address,city,working_area,about_me;
 //    private Double latitude,longitude;
     private Number expriance, age, phone_number;
     private String profile_img;
@@ -11,11 +11,11 @@ public class ServicesProvider {
 
     public ServicesProvider() {}
 
-    public ServicesProvider(String userID, String firstName, String lastName, String image , String address,
+    public ServicesProvider(String documentId,String userID, String firstName, String lastName, String image , String address,
                             String working_area, String about,GeoPoint longt) {
         this.userID = userID;
         this.firstName = firstName;
-//        this.middleName= middleName;
+        this.documentId= documentId;
         this.lastName = lastName;
         this.profile_img = image;
         this.address = address;
@@ -26,6 +26,10 @@ public class ServicesProvider {
         this.about_me = about;
         this.longt = longt;
 //        this.lat = lat;
+    }
+
+    public String getDocumentId() {
+        return documentId;
     }
 
     public GeoPoint getLongt() {

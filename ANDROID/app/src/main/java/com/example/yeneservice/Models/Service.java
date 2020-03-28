@@ -4,10 +4,15 @@ public class Service {
 
     private String title;
     private String img;
+    private String serviceID;
 
     public Service(String title_name, String img_holder) {
         title = title_name;
         img = img_holder;
+    }
+
+    public String getServiceID() {
+        return serviceID;
     }
 
     public String getTitle() {

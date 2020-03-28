@@ -49,6 +49,15 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <Spinner
+                        android:id="@+id/service_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:outlineSpotShadowColor="@color/dot_dark_screen3"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                        android:autofillHints="Type of service"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

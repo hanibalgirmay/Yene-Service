@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.yeneservice.Adapters.ServiceProviderAdapter;
+import com.example.yeneservice.MapsActivity;
 import com.example.yeneservice.Models.ServicesProvider;
 import com.example.yeneservice.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,6 +39,7 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
     List<ServicesProvider> lstBook ;
     private static final String TAG = "MyActivity";
     ServiceProviderAdapter serviceProviderAdapter;
+    ExtendedFloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +49,11 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Provider Lists");
 
+        fab = findViewById(R.id.fab_list);
         // Recieve data
         Intent intent = getIntent();
         final String tte = intent.getExtras().getString("name").toLowerCase();
+        final String serviceId = intent.getExtras().getString("serviceID");
 
         if(tte != null){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -71,7 +77,6 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
         db.collection("Service_Providers").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
                 if(e != null){
                     Log.d(TAG,"Error: "+ e.getMessage());
                 }
@@ -89,13 +94,14 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
 
                         if(tte.equals(work)){
                             Log.d(TAG,"file name: "+ cty);
+                            final String documentId = doc.getDocument().getId();
                             db.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     String image = documentSnapshot.getString("image");
                                     String firstename = documentSnapshot.getString("firstName");
                                     String lastename = documentSnapshot.getString("lastName");
-                                    lstBook.add(new ServicesProvider(id,firstename,lastename,image,add,work,me,l));
+                                    lstBook.add(new ServicesProvider(serviceId,id,firstename,lastename,image,add,work,me,l));
                                     serviceProviderAdapter.notifyDataSetChanged();
                                 }
                             });
@@ -117,6 +123,15 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                     }
 
                 }
+
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent o = new Intent(ServiceListProvidersActivity.this, MapsActivity.class);
+                        o.putExtra("category",tte);
+                        startActivity(o);
+                    }
+                });
 //                new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
 //                        .setTitleText("We are really sorry?")
 //                        .setContentText("Something is wrong!")
