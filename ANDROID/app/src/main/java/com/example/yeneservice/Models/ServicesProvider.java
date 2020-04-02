@@ -28,6 +28,15 @@ public class ServicesProvider {
 //        this.lat = lat;
     }
 
+    public ServicesProvider(String userID, String firstName, String lastName, String working_area, String about_me, String profile_img) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.working_area = working_area;
+        this.about_me = about_me;
+        this.profile_img = profile_img;
+    }
+
     public String getDocumentId() {
         return documentId;
     }

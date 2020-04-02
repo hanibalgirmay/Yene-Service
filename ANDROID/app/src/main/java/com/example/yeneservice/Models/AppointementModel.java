@@ -1,23 +1,29 @@
 package com.example.yeneservice.Models;
 
+import android.widget.Toast;
+
+import com.google.firebase.Timestamp;
+
 import java.util.Comparator;
 
-public class AppointementModel  {
+public class AppointementModel extends com.example.yeneservice.Models.AppointementID  {
 
 //    private String DocId;
     private String name;
-    private int image;
+    private String image;
     private String userId;
     private String serviceProviderId;
     private String description;
     private String date;
     private String time;
     private String DocId;
+    private com.google.firebase.Timestamp timestamp;
 //    private String pay;
 
     public AppointementModel(){}
 //String userId,String serviceProviderId
-    public AppointementModel(String name, int image , String description, String date, String time, String DocId) {
+    public AppointementModel(String name, String image, String userId, String serviceProviderId, String description, String date, String time,
+                             String DocId, com.google.firebase.Timestamp timestamp) {
         this.name = name;
         this.image = image;
         this.userId = userId;
@@ -26,6 +32,15 @@ public class AppointementModel  {
         this.date = date;
         this.time = time;
         this.DocId = DocId;
+        this.timestamp= timestamp;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getDocId() {
@@ -44,11 +59,11 @@ public class AppointementModel  {
         this.name = name;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -100,17 +115,17 @@ public class AppointementModel  {
         this.time = time;
     }
 
-    public static final Comparator<AppointementModel> BY_DATE_ASCENDINGS = new Comparator<AppointementModel>() {
+    public static final Comparator<AppointementModel> BY_DATE_ASCENDING = new Comparator<AppointementModel>() {
         @Override
         public int compare(AppointementModel o1, AppointementModel o2) {
-            return o1.getDate().compareTo(o2.getDate());
+            return o1.getTimestamp().compareTo(o2.getTimestamp());
         }
     };
 
-    public static final Comparator<AppointementModel> BY_DATE_DESCENDINGS = new Comparator<AppointementModel>() {
+    public static final Comparator<AppointementModel> BY_DATE_DESCENDING = new Comparator<AppointementModel>() {
         @Override
         public int compare(AppointementModel o1, AppointementModel o2) {
-            return o2.getDate().compareTo(o1.getDate());
+            return o2.getTimestamp().compareTo(o1.getTimestamp());
         }
     };
 }

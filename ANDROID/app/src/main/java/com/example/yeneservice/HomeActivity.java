@@ -9,26 +9,48 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yeneservice.Extra.AppointedUsersActivity;
+import com.example.yeneservice.Extra.NotificationActivity;
+import com.example.yeneservice.Models.ChatModel;
 import com.example.yeneservice.PagesFragment.AppointementFragment;
 import com.example.yeneservice.PagesFragment.HomeFragment;
 import com.example.yeneservice.PagesFragment.HouseFragment;
+import com.example.yeneservice.PagesFragment.MyFavoritesFragment;
 import com.example.yeneservice.Users.RegisterInformationActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.common.base.Converter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import javax.annotation.Nullable;
 
 public class HomeActivity extends AppCompatActivity {
     private ActionBar toolbar;
     private FirebaseAuth auth;
+    private FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
+    TextView textViewBadge;
+    MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -63,6 +86,8 @@ public class HomeActivity extends AppCompatActivity {
         layoutParams.setBehavior(new BottomNavigation());
 
         loadFragment(new HomeFragment());
+
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -77,11 +102,11 @@ public class HomeActivity extends AppCompatActivity {
                     fragment = new AppointementFragment();
                     loadFragment(fragment);
                     return true;
-//                case R.id.menu_geosearch:
+                case R.id.action_fav:
 //                    toolbar.setTitle("Geo Search");
-//                    fragment = new LocationSearch();
-//                    loadFragment(fragment);
-//                    return true;
+                    fragment = new MyFavoritesFragment();
+                    loadFragment(fragment);
+                    return true;
                 case R.id.menu_home:
 //                    toolbar.setTitle("Home");
                     fragment = new HomeFragment();
@@ -118,8 +143,43 @@ public class HomeActivity extends AppCompatActivity {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        menuItem = menu.findItem(R.id.action_msg);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+//                int id = item.getItemId();
+//                //noinspection SimplifiableIfStatement
+//                if (id == R.id.action_msg) {
+                    startActivity(new Intent(HomeActivity.this, AppointedUsersActivity.class));
+//                    return true;
+//                }
+                return true;
+            }
+        });
+        //badge
+        firebaseFirestore.collection("Messages").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                int unread = 0;
+                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    ChatModel chatModel = doc.getDocument().toObject(ChatModel.class);
+                    if(chatModel.getReceiver().equals(firebaseUser.getUid()) && !chatModel.isSeen()){
+                        unread++;
+                    }
+                }
+                if(unread == 0){
+                    menuItem.setActionView(null);
+                } else {
+                    menuItem.setActionView(R.layout.msg_badge);
+                    View view = menuItem.getActionView();
+                    textViewBadge = view.findViewById(R.id.badge_counter);
+                    textViewBadge.setText(String.valueOf(unread));
+                }
+            }
+        });
         return true;
     }
 
@@ -141,9 +201,9 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_notification) {
-//            Intent n = new Intent(HomeActivity.this, NotificationActivity.class);
-//            n.putExtra("userID", auth.getUid());
-//            startActivity(n);
+            Intent n = new Intent(HomeActivity.this, NotificationActivity.class);
+            n.putExtra("userID", auth.getUid());
+            startActivity(n);
             return true;
         }
         else if (id == R.id.action_about){

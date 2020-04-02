@@ -23,9 +23,16 @@ import android.widget.Toast;
 
 import com.example.yeneservice.Adapters.ChatAppointedUserAdapter;
 import com.example.yeneservice.Models.ChatModel;
+import com.example.yeneservice.Models.UserModel;
+import com.example.yeneservice.Notification.Client;
+import com.example.yeneservice.Notification.NotficationData;
+import com.example.yeneservice.Notification.NotificationSender;
+import com.example.yeneservice.Notification.MyResponse;
+import com.example.yeneservice.Notification.Token;
 import com.example.yeneservice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -35,7 +42,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -47,6 +56,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MessageActivity extends AppCompatActivity {
     CircleImageView profile_images;
@@ -63,6 +75,7 @@ public class MessageActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private FirebaseAuth auth;
     private String user_id;
+    APIService apiService;
     RelativeLayout Bottom;
     private FirebaseFirestore firebaseFirestore;
     Intent intent;
@@ -71,6 +84,7 @@ public class MessageActivity extends AppCompatActivity {
     private Bitmap compressedImageFile;
     private static final String TAG = "MessageActivity";
     int SELECT_IMAGE = 0;
+    boolean notify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +98,12 @@ public class MessageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(MessageActivity.this,AppointementUserActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                finish();
+                startActivity(new Intent(MessageActivity.this,AppointedUsersActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//                finish();
             }
         });
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -161,6 +177,7 @@ public class MessageActivity extends AppCompatActivity {
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notify = true;
                 String msg = text_send.getText().toString();
                 if(!msg.equals("")){
                     sendMessage(fuser.getUid(),idd, msg);
@@ -233,7 +250,7 @@ public class MessageActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void sendMessage(final String user_id){
+    private void seenMessage(final String user_id){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Messages").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -260,7 +277,15 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    private void sendMessage(String sender, String receiver, String message){
+    private void updateToken(String token){
+        FirebaseFirestore firebaseFirestore;
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference reference = FirebaseFirestore.getInstance().collection("Token").document();
+        Token token1 = new Token(token);
+        firebaseFirestore.collection("Tokens").document(auth.getCurrentUser().getUid()).set(token1);
+    }
+
+    private void sendMessage(String sender, final String receiver, String message){
         intent = getIntent();
         final String reciverid = intent.getStringExtra("providerID");
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -268,7 +293,7 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("receiver", reciverid);
         hashMap.put("message", message);
         hashMap.put("isSeen", false);
-        hashMap.put("timestamp", FieldValue.serverTimestamp());
+        hashMap.put("timestamp", Timestamp.now());
         firebaseFirestore.collection("Messages").add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -284,7 +309,50 @@ public class MessageActivity extends AppCompatActivity {
 //                    progressBar.setVisibility(View.INVISIBLE);
             }
         });
-//        reference.child("Chats").push().setValue(hashMap);
+        final String msg = message;
+
+        firebaseFirestore.collection("Users").document(auth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                UserModel userModel = documentSnapshot.toObject(UserModel.class);
+                if(notify){
+                    sendNotification(receiver,userModel.getUsername(),msg);
+                }
+                notify = false;
+            }
+        });
+    }
+
+    private void sendNotification(String receiver, final String username, final String msg) {
+        DocumentReference tokens = FirebaseFirestore.getInstance().collection("Tokens").document();
+        Query query = tokens.collection("Tokens").orderBy(receiver);
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    Token token = doc.getDocument().toObject(Token.class);
+                    NotficationData data = new NotficationData(fuser.getUid(),R.drawable.ic_notifications_black_24dp,username+
+                            ": "+msg,"New Message",user_id);
+                    NotificationSender sender = new NotificationSender(data,token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if(response.code() == 200){
+                                        if(response.body().success != 1){
+                                            Toast.makeText(MessageActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+        });
     }
 
     private void readMessage(final String myid, final String useriD, final String imageurl){
@@ -315,6 +383,7 @@ public class MessageActivity extends AppCompatActivity {
                 }
             }
         });
+        updateToken(FirebaseInstanceId.getInstance().getToken());
     }
 
     private void status(String status){

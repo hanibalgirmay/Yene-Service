@@ -45,14 +45,12 @@ public class HomeHorizontalServicesAdapter extends RecyclerView.Adapter<HomeHori
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(mContext, ServiceListProvidersActivity.class);
 //                // passing data to the book activity
                 intent.putExtra("name",mData.get(position).getTitle());
                 intent.putExtra("image",mData.get(position).getImg());
 //                // start the activity
                 mContext.startActivity(intent);
-
             }
         });
     }

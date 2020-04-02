@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,6 +39,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     private RelativeLayout mRelativeLayout;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
+    DocumentReference reference;
     private static final String TAG = "ServiceProvider";
     Snackbar snackbar;
 
@@ -57,41 +59,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         return new MyViewHolder(view);
     }
 
-    public void removeItem(final int postion){
-//        reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-//                Toast.makeText(mContext, "data:"+ mData.get(postion).getDate()+ mData.get(postion).getTime(), Toast.LENGTH_SHORT).show();
-//                documentSnapshot.getDocumentReference();
-//                final String keyRef = mData.get(postion).getDocId();
-//                firebaseFirestore.collection("Appointments").document(keyRef)
-//                        .delete()
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                Toast.makeText(mContext, "Appointment delete successfully:  "+keyRef, Toast.LENGTH_SHORT).show();
-//                                mData.remove(postion);
-//                                notifyItemRemoved(postion);
-//                            }
-//                        }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(mContext, "can not delete Appointment", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//                Toast.makeText(mContext, "doc id"+ mData.get(postion).getDocId(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-        mData.remove(postion);
-        notifyItemRemoved(postion);
-
-    }
-
 
     @Override
     public void onBindViewHolder(final AppointmentAdapter.MyViewHolder holder, final int position) {
+        reference = firebaseFirestore.collection("Appointments").document();
         holder.name.setText(mData.get(position).getName());
         holder.appointdate.setText(mData.get(position).getDate());
         holder.desc.setText(mData.get(position).getDesc());
@@ -126,6 +97,38 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public void removeItem(final int postion){
+        reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                Toast.makeText(mContext, "data:"+ mData.get(postion).getDate()+ mData.get(postion).getTime(), Toast.LENGTH_SHORT).show();
+//                documentSnapshot.getDocumentReference();
+                final String keyRef = mData.get(postion).getDocId();
+                firebaseFirestore.collection("Appointments").document(keyRef)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(mContext, "Appointment delete successfully:  "+keyRef, Toast.LENGTH_SHORT).show();
+                                mData.remove(postion);
+                                notifyItemRemoved(postion);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(mContext, "can not delete Appointment", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Toast.makeText(mContext, "doc id"+ mData.get(postion).getDocId(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+//        mData.remove(postion);
+//        notifyItemRemoved(postion);
+
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{

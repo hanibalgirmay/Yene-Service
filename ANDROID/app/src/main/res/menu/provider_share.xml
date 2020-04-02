@@ -4,9 +4,15 @@
     tools:context=".extra.MessageActivity">
 
     <item
+        android:id="@+id/provider_save"
+        android:title="Favorite"
+        android:icon="@drawable/ic_bookmark"
+        app:showAsAction="always"
+        android:orderInCategory="100"/>
+    <item
         android:id="@+id/provider_share"
         android:title="Share"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:icon="@drawable/icons_share"
         app:showAsAction="always" />
 

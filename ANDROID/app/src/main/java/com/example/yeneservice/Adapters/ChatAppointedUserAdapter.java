@@ -18,6 +18,7 @@ import com.example.yeneservice.Models.ChatModel;
 import com.example.yeneservice.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -126,9 +127,8 @@ public class ChatAppointedUserAdapter extends RecyclerView.Adapter<ChatAppointed
     }
 
     private void deleteMessage(final int a) {
-        final Date msgTime = mChat.get(a).getTimestamp();
+        final Timestamp msgTime = mChat.get(a).getTimestamp();
         final String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
 
     }
 

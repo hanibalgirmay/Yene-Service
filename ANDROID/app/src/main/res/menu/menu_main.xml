@@ -22,6 +22,7 @@
         android:title="Message"
         android:orderInCategory="100"
         android:icon="@drawable/ic_message_black_24dp"
+        android:actionLayout="@layout/msg_badge"
         app:showAsAction="always" />
 
     <item

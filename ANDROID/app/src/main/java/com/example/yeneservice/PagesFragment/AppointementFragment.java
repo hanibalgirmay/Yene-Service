@@ -25,12 +25,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.yeneservice.Adapters.AppointmentAdapter;
 import com.example.yeneservice.Models.AppointementModel;
 import com.example.yeneservice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -61,6 +63,7 @@ public class AppointementFragment extends Fragment {
     AppointementModel appointementModel;
     private Drawable icon;
     private ColorDrawable background;
+    LottieAnimationView lottieAnimationView;
 
     public AppointementFragment() {
         // Required empty public constructor
@@ -86,9 +89,10 @@ public class AppointementFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_appointement, container, false);
 
         //Get Firebase auth instance
-//        auth = FirebaseAuth.getInstance();
-//        user_id = auth.getCurrentUser().getUid();
+        auth = FirebaseAuth.getInstance();
+        user_id = auth.getCurrentUser().getUid();
         view = rootview.findViewById(R.id.ty);
+        lottieAnimationView = rootview.findViewById(R.id.animation_view);
         pref = getActivity().getSharedPreferences("MY_Data", MODE_PRIVATE);
 
         Sort = rootview.findViewById(R.id.sort);
@@ -136,93 +140,99 @@ public class AppointementFragment extends Fragment {
     private void showData() {
         lstBook = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        if(user_id != null){
-//            db.collection("Appointments").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                @Override
-//                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-//                    if(e != null){
-//                        Log.d(TAG,"Error: "+ e.getMessage());
-//                    }
-//                    for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-//                        if(doc.getType() == DocumentChange.Type.ADDED){
-//                            final String id = doc.getDocument().getId();
-//                            final String uid = doc.getDocument().getString("appointedID");
-//                            final String serviceId = doc.getDocument().getString("service_provider_id");
-//                            final String desc = doc.getDocument().getString("description");
-//                            final String date = doc.getDocument().getString("date");
-//                            final String time = doc.getDocument().getString("time");
-//
-//                            if(user_id.equals(uid)){
-//                                Log.d(TAG,"appoint data of:  "+ serviceId);
-//                                FirebaseFirestore dba = FirebaseFirestore.getInstance();
-//                                if (serviceId != null) {
-//                                    assert serviceId != null;
-//                                    dba.collection("Users").document(serviceId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                            if(task.isSuccessful()){
-////                                        String docid = task.;
-//                                                String fname = task.getResult().getString("firstName");
-//                                                String image = task.getResult().getString("image");
-//
-//                                                lstBook.add(new AppointementModel(fname,image,uid,serviceId,desc,date,time,id));
-//                                                adapter.notifyDataSetChanged();
-//                                            } else {
-//                                                String error = task.getException().getMessage();
-//                                                Toast.makeText(getActivity(), "(FIRESTORE Retrieve Error) : " + error, Toast.LENGTH_LONG).show();
-//                                            }
-//                                        }
-//                                    });
-//
-//                                } else {
-////                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-////                                        .setTitleText("Good jobError happen!")
-////                                        .setContentText("try later! !")
-////                                        .show();
-//                                }
-//
-//                            }
-//
-//                        }
-//                    }
-//                }
-//            });
-//        } else {
-//            Toast.makeText(getContext(), "You are not registered", Toast.LENGTH_SHORT).show();
-//        }
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2011","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2012","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2013","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2014","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2015","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2016","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2017","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2018","12:54","123123"));
-        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
-                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
-                "12/3/2019","12:54","123123"));
+        if(user_id != null){
+            db.collection("Appointments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    if(e != null){
+                        Log.d(TAG,"Error: "+ e.getMessage());
+                    }
+                    for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                        if(doc.getType() == DocumentChange.Type.ADDED){
+                            final String id = doc.getDocument().getId();
+                            final String uid = doc.getDocument().getString("appointedID");
+                            final String serviceId = doc.getDocument().getString("service_provider_id");
+                            final String desc = doc.getDocument().getString("description");
+                            final String date = doc.getDocument().getString("date");
+                            final String time = doc.getDocument().getString("time");
+                            final Timestamp timestamps = doc.getDocument().getTimestamp("timestamp");
+
+                            if(user_id.equals(uid)){
+                                lottieAnimationView.setVisibility(View.GONE);
+                                Log.d(TAG,"appoint data of:  "+ serviceId);
+                                FirebaseFirestore dba = FirebaseFirestore.getInstance();
+                                if (serviceId != null) {
+                                    assert serviceId != null;
+                                    dba.collection("Users").document(serviceId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if(task.isSuccessful()){
+//                                        String docid = task.;
+                                                String fname = task.getResult().getString("firstName");
+                                                String image = task.getResult().getString("image");
+
+                                                lstBook.add(new AppointementModel(fname,image,uid,serviceId,desc,date,time,id,timestamps));
+                                                adapter.notifyDataSetChanged();
+                                            } else {
+                                                String error = task.getException().getMessage();
+                                                Toast.makeText(getActivity(), "(FIRESTORE Retrieve Error) : " + error, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
+                                } else {
+//                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+//                                        .setTitleText("Good jobError happen!")
+//                                        .setContentText("try later! !")
+//                                        .show();
+                                }
+
+                            } else {
+                                lottieAnimationView.setVisibility(View.VISIBLE);
+                            }
+
+                        }
+                    }
+                }
+            });
+        } else {
+            lottieAnimationView.setVisibility(View.VISIBLE);
+            Toast.makeText(getContext(), "You are not registered", Toast.LENGTH_SHORT).show();
+        }
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2011","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2012","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2013","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2014","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2015","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2016","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2017","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2018","12:54","123123"));
+//        lstBook.add(new AppointementModel("full name",R.drawable.businessman_profile_cartoon_removebg,
+//                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec",
+//                "12/3/2019","12:54","123123"));
 
         String mSortSettings = pref.getString("Sort", "ascending");
         if(mSortSettings.equals("ascending")){
-            Collections.sort(lstBook, AppointementModel.BY_DATE_ASCENDINGS);
+            Toast.makeText(getContext(), ""+AppointementModel.BY_DATE_ASCENDING, Toast.LENGTH_SHORT).show();
+            Collections.sort(lstBook, AppointementModel.BY_DATE_ASCENDING);
         } else if(mSortSettings.equals("descending")){
-            Collections.sort(lstBook, AppointementModel.BY_DATE_DESCENDINGS);
+            Collections.sort(lstBook, AppointementModel.BY_DATE_DESCENDING);
         }
         adapter = new AppointmentAdapter(getContext(), lstBook);
 

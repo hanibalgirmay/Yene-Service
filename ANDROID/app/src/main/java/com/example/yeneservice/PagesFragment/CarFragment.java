@@ -109,16 +109,27 @@ public class CarFragment extends Fragment {
                 }
             }
         });
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(mLayoutManager);
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+//        rv.setLayoutManager(mLayoutManager);
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv.setAdapter(horizontalServicesAdapter);
 
+        //*********************************************************************************
         //vertical main card
         RecyclerView vm = (RecyclerView) root.findViewById(R.id.vertical_vm);
         vm.setHasFixedSize(true);
         lstBook = new ArrayList<>();
 
+        horizontalService();
+
+        serviceAdapter = new HomeServiceAdapter(getContext(),lstBook);
+        vm.setLayoutManager(new GridLayoutManager(getContext(),3));
+        vm.setAdapter(serviceAdapter);
+
+        return root;
+    }
+
+    private void horizontalService() {
         FirebaseFirestore data = FirebaseFirestore.getInstance();
         data.collection("Services_List").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -133,13 +144,13 @@ public class CarFragment extends Fragment {
                         if(catagory.equals("car")){
                             String ty = doc.getDocument().getString("type");
 //                            if(ty.equals("Basic")){
-                                String firstename = doc.getDocument().getString("name");
-                                String img = doc.getDocument().getString("image");
+                            String firstename = doc.getDocument().getString("name");
+                            String img = doc.getDocument().getString("image");
 
-                                Log.d(TAG,"file name: "+ firstename);
+                            Log.d(TAG,"file name: "+ firstename);
 
-                                lstBook.add(new Service(firstename,img));
-                                serviceAdapter.notifyDataSetChanged();
+                            lstBook.add(new Service(firstename,img));
+                            serviceAdapter.notifyDataSetChanged();
 //                            }
 
                         }
@@ -148,11 +159,6 @@ public class CarFragment extends Fragment {
                 }
             }
         });
-        serviceAdapter = new HomeServiceAdapter(getActivity(),lstBook);
-        vm.setLayoutManager(new GridLayoutManager(getActivity(),3));
-        vm.setAdapter(serviceAdapter);
-
-        return root;
     }
 
 

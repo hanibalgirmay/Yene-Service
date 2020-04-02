@@ -1,5 +1,6 @@
 package com.example.yeneservice.Models;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
@@ -10,13 +11,13 @@ public class ChatModel {
     private String message;
     private String image;
     private boolean isSeen;
-    private Date timestamp;
+    private Timestamp timestamp;
     private String time;
 
     private String DocId;
 
-    @ServerTimestamp
-    private Date dateSent;
+//    @ServerTimestamp
+//    private Date dateSent;
 
     public ChatModel() { }
 
@@ -26,12 +27,12 @@ public class ChatModel {
         this.message = message;
         this.isSeen = isSeen;
     }
-    public ChatModel(String sender, String receiver, String image, boolean isSeen,Date time,String DocId) {
+    public ChatModel(String sender, String receiver, String image, boolean isSeen,Timestamp timestamp,String DocId) {
         this.sender = sender;
         this.receiver = receiver;
         this.image = image;
         this.isSeen = isSeen;
-        this.timestamp = time;
+        this.timestamp = timestamp;
         this.DocId = DocId;
     }
 
@@ -75,11 +76,11 @@ public class ChatModel {
         isSeen = seen;
     }
 
-    public Date getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -99,11 +100,11 @@ public class ChatModel {
         DocId = docId;
     }
 
-    public Date getDateSent() {
-        return dateSent;
-    }
-
-    public void setDateSent(Date dateSent) {
-        this.dateSent = dateSent;
-    }
+//    public Date getDateSent() {
+//        return dateSent;
+//    }
+//
+//    public void setDateSent(Date dateSent) {
+//        this.dateSent = dateSent;
+//    }
 }

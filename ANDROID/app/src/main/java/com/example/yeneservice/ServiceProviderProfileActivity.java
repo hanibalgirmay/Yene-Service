@@ -46,6 +46,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -424,6 +425,38 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
             return true;
         }
+        else if(id == R.id.provider_save){
+            boolean favorite = false;
+//            if(favorite){
+                Intent intent = getIntent();
+                String idd = intent.getExtras().getString("userID");
+                String Docid = intent.getExtras().getString("documentID");
+
+                addToFav(idd,Docid);
+                Toast.makeText(this, "Item added to wishlist."+id, Toast.LENGTH_SHORT).show();
+//            } else {
+//
+//            }
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addToFav(String idd, String docid) {
+        final FirebaseAuth auth;
+        auth = FirebaseAuth.getInstance();
+        final FirebaseFirestore firebaseFirestore;
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        //get timestamp
+        Timestamp timestamp = Timestamp.now();
+
+        Map<String, Object> favMap = new HashMap<>();
+        favMap.put("documentID", idd);
+        favMap.put("timestamp", timestamp);
+        firebaseFirestore.collection("Users/"+auth.getUid()+"/Favorite").add(favMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(ServiceProviderProfileActivity.this, "added to wishList", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

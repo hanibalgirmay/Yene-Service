@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.yeneservice.Adapters.ServiceProviderAdapter;
 import com.example.yeneservice.MapsActivity;
 import com.example.yeneservice.Models.ServicesProvider;
@@ -40,6 +42,8 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
     private static final String TAG = "MyActivity";
     ServiceProviderAdapter serviceProviderAdapter;
     ExtendedFloatingActionButton fab;
+    LottieAnimationView lottieAnimationView;
+    TextView count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Provider Lists");
 
+        count = findViewById(R.id.bage_count);
+        lottieAnimationView = findViewById(R.id.animation_view);
         fab = findViewById(R.id.fab_list);
         // Recieve data
         Intent intent = getIntent();
@@ -60,6 +66,16 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                 toolbar.setTitle(tte);
             }
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent o = new Intent(ServiceListProvidersActivity.this, MapsActivity.class);
+                o.putExtra("category",tte);
+                startActivity(o);
+            }
+        });
+
         lstBook = new ArrayList<>();
         serviceProviderAdapter = new ServiceProviderAdapter(this,lstBook);
 
@@ -82,7 +98,7 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                 }
                 for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
                     if(doc.getType() == DocumentChange.Type.ADDED){
-//                        String id = doc.;
+
                         final String id = doc.getDocument().getString("userID");
 //                        final String firstename = doc.getDocument().getString("firstName");
                         final String cty = doc.getDocument().getString("city");
@@ -93,6 +109,8 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
 //                        final Double g = doc.getDocument().getDouble("longitude");
 
                         if(tte.equals(work)){
+                            fab.setVisibility(View.VISIBLE);
+                            lottieAnimationView.setVisibility(View.GONE);
                             Log.d(TAG,"file name: "+ cty);
                             final String documentId = doc.getDocument().getId();
                             db.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -101,49 +119,31 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                                     String image = documentSnapshot.getString("image");
                                     String firstename = documentSnapshot.getString("firstName");
                                     String lastename = documentSnapshot.getString("lastName");
-                                    lstBook.add(new ServicesProvider(serviceId,id,firstename,lastename,image,add,work,me,l));
+                                    lstBook.add(new ServicesProvider(documentId,id,firstename,lastename,image,add,work,me,l));
                                     serviceProviderAdapter.notifyDataSetChanged();
                                 }
                             });
                         } else {
-                            new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
-                                    .setTitleText("We are really sorry?")
-                                    .setContentText("There is no service provider at the time for now!")
-                                    .setConfirmText("Ok!")
-                                    .showCancelButton(true)
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismissWithAnimation();
-                                        }
-                                    })
-                                    .show();
+                            fab.setVisibility(View.GONE);
+                            lottieAnimationView.setVisibility(View.VISIBLE);
+//                            new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
+//                                    .setTitleText("We are really sorry?")
+//                                    .setContentText("There is no service provider at the time for now!")
+//                                    .setConfirmText("Ok!")
+//                                    .showCancelButton(true)
+//                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                        @Override
+//                                        public void onClick(SweetAlertDialog sDialog) {
+//                                            sDialog.dismissWithAnimation();
+//                                        }
+//                                    })
+//                                    .show();
                         }
 
                     }
 
                 }
 
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent o = new Intent(ServiceListProvidersActivity.this, MapsActivity.class);
-                        o.putExtra("category",tte);
-                        startActivity(o);
-                    }
-                });
-//                new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
-//                        .setTitleText("We are really sorry?")
-//                        .setContentText("Something is wrong!")
-//                        .setConfirmText("Ok!")
-//                        .showCancelButton(true)
-//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                            @Override
-//                            public void onClick(SweetAlertDialog sDialog) {
-//                                sDialog.dismissWithAnimation();
-//                            }
-//                        })
-//                        .show();
             }
         });
     }

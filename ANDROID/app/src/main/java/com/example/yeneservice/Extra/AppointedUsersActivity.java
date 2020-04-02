@@ -82,6 +82,7 @@ public class AppointedUsersActivity extends AppCompatActivity {
                     if(doc.getType() == DocumentChange.Type.ADDED){
                         final String id = doc.getDocument().getString("appointedID");
                         final String firstename = doc.getDocument().getString("service_provider_id");
+                        final String working = doc.getDocument().getString("working_area");
                         assert id != null;
                         if(user_id.equals(id)){
                             Log.d(TAG,"file name: "+ firstename);
@@ -97,7 +98,7 @@ public class AppointedUsersActivity extends AppCompatActivity {
                                             email = task.getResult().getString("email");
                                             st = task.getResult().getString("status");
 
-                                            lstUser.add(new AppointemntUserModel(firstename, fname,ph,img,st,true));
+                                            lstUser.add(new AppointemntUserModel(firstename, fname,working,img,st,true));
                                             appointmentUserAdapter.notifyDataSetChanged();
                                         }
                                     }
