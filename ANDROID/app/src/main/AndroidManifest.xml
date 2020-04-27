@@ -14,6 +14,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
     <uses-permission
         android:name="android.permission.CALL_PRIVILEGED"
         tools:ignore="ProtectedPermissions" />
@@ -26,7 +29,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".Extra.NotificationActivity"></activity>
+        <activity android:name=".PaymentActivity"></activity>
+        <activity android:name=".ReportActivity" />
+        <activity android:name=".Users.LoginActivity" />
+        <activity android:name=".Extra.ShowNotificationDetailActivity" />
+        <activity android:name=".Extra.ProviderMapActivity" />
+        <activity android:name=".Users.ProfileEditPageActivity" />
+        <activity android:name=".ReviewActivity" />
+        <activity android:name=".SearchProviderActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".Extra.NotificationActivity" />
         <!--
       FirebaseInstanceIdService performs security checks at runtime,
       no need for explicit permissions despite exported="true"

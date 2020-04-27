@@ -16,7 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yeneservice.Models.AppointementModel;
+import com.example.yeneservice.PaymentActivity;
 import com.example.yeneservice.R;
+import com.example.yeneservice.ReviewActivity;
+import com.example.yeneservice.ServiceProviderProfileActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -69,29 +72,29 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         Picasso.get().load(mData.get(position).getImage()).into(holder.img);
 //        holder.img.setImageResource(mData.get(position).getImg());
 
-//        holder.cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(mContext, ServiceProviderInfoActivity.class);
-//                // passing data to the book activity
-////                intent.putExtra("my_id",mData.get(position).getUserId());
-//                intent.putExtra("userID",mData.get(position).getServiceProviderId());
-//                mContext.startActivity(intent);
-//
-//            }
-//        });
-//        holder.review.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                re.putExtra("userID",mData.get(position).getServiceProviderId())
-//                final Intent re = new Intent(mContext, ReviewActivity.class);
-////                String id = documentSnapshot.getId();
-//                re.putExtra("documentID",mData.get(position).getDocId());
-//                re.putExtra("desc",mData.get(position).getDesc());
-//                re.putExtra("provider_id",mData.get(position).getServiceProviderId());
-//                mContext.startActivity(re);
-//            }
-//        });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, PaymentActivity.class);
+                // passing data to the book activity
+//                intent.putExtra("my_id",mData.get(position).getUserId());
+                intent.putExtra("userID",mData.get(position).getServiceProviderId());
+                mContext.startActivity(intent);
+
+            }
+        });
+        holder.review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                re.putExtra("userID",mData.get(position).getServiceProviderId())
+                final Intent re = new Intent(mContext, ReviewActivity.class);
+//                String id = documentSnapshot.getId();
+                re.putExtra("documentID",mData.get(position).getDocId());
+                re.putExtra("desc",mData.get(position).getDesc());
+                re.putExtra("provider_id",mData.get(position).getServiceProviderId());
+                mContext.startActivity(re);
+            }
+        });
     }
 
     @Override

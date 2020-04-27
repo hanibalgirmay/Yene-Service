@@ -9,7 +9,7 @@
 
     android:layout_height="match_parent">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="12dp"
@@ -182,6 +182,6 @@
             </LinearLayout>
 
         </RelativeLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 
 </androidx.core.widget.NestedScrollView>

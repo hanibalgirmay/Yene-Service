@@ -53,7 +53,7 @@ public class ServiceProviderAdapter extends RecyclerView.Adapter<ServiceProvider
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ServiceProviderProfileActivity.class);
                 intent.putExtra("documentID",mData.get(position).getDocumentId());
-                intent.putExtra("userID",mData.get(position).getUserID());
+                intent.putExtra("providerID",mData.get(position).getUserID());
                 intent.putExtra("firstName",mData.get(position).getFirstName());
                 intent.putExtra("lastname",mData.get(position).getLastName());
                 intent.putExtra("address",mData.get(position).getAddress());

@@ -21,7 +21,7 @@ public class PhoneAuthenticateActivity extends AppCompatActivity {
     private Spinner spinner;
     private EditText editText;
     Button login, create;
-    Button cont;
+    Button cont,usingEmail_btn;
     private FirebaseAuth mAuth;
 
     @Override
@@ -34,6 +34,15 @@ public class PhoneAuthenticateActivity extends AppCompatActivity {
         editText = findViewById(R.id.phone_number);
 
         cont = findViewById(R.id.cont);
+        usingEmail_btn = findViewById(R.id.using_email);
+
+        usingEmail_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent lo = new Intent(PhoneAuthenticateActivity.this,LoginActivity.class);
+                startActivity(lo);
+            }
+        });
 
         cont.setOnClickListener(new View.OnClickListener() {
             @Override

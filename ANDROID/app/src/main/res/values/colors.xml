@@ -4,6 +4,15 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+<!--    //dialgo alert-->
+    <color name="starColor">#45b9ad</color>
+    <color name="noteDescriptionTextColor">#45b9ad</color>
+    <color name="titleTextColor">#FFFFFF</color>
+    <color name="descriptionTextColor">#A6FFFFFF</color>
+    <color name="commentTextColor">#FFFFFF</color>
+    <color name="hintTextColor">#55000000</color>
+
+<!--    end dialog-->
 <!--    night-->
     <color name="colorPrimaryNight">#16202c</color>
     <color name="colorPrimaryDarkNight">#141d26</color>
@@ -36,6 +45,7 @@
     <color name="bgBottomNavigation">#fe485a</color>
     <color name="splashActive">#E5F410</color>
     <color name="backgroundColor">#219151</color>
+    <color name="mainBG">#E28D8D</color>
     <array name="array_dot_active">
         <item>@color/splashActive</item>
         <item>@color/splashActive</item>

@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:fitsSystemWindows="true"
         android:background="@android:color/transparent"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -22,17 +22,8 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:titleEnabled="false">
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/provider_profile_bg"
-                app:layout_collapseMode="parallax" />
 
             <View
                 android:layout_width="match_parent"
@@ -40,9 +31,10 @@
                 android:background="@android:color/transparent" />
 
             <ImageView
+                android:id="@+id/t"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/undraw_personal_information_burned"/>
+                android:background="@color/dot_dark_screen3"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -50,27 +42,13 @@
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
+                    app:layout_collapseMode="pin"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:contentInsetStartWithNavigation="0dp"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-
-<!--                <ImageView-->
-<!--                    android:layout_width="120dp"-->
-<!--                    android:layout_height="120dp"-->
-<!--                    android:tint="@android:color/transparent"-->
-<!--                    app:srcCompat="@drawable/businessman_profile_cartoon_removebg" />-->
-
-            </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -95,225 +73,169 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="50dp"
                 android:layout_height="match_parent">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="32dp"
-                    android:overScrollMode="ifContentScrolls"
-                    app:cardCornerRadius="15dp"
-                    app:cardPreventCornerOverlap="true">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="25dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/fullName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:layout_marginTop="15dp"
-                                android:text="Full Name"
-                                android:textSize="30sp"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:id="@+id/verify"
-                                android:layout_width="30dp"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/icons_verified_account"
-                                android:layout_marginTop="15dp"
-                                android:paddingStart="10dp"
-                                android:contentDescription="TODO" />
-
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/category"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Painting"
-                            android:textSize="17sp"
-                            android:textStyle="normal" />
-
-                        <TextView
-                            android:id="@+id/about_me"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginRight="40dp"
-                            android:gravity="center"
-                            android:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/item_divider"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:layout_weight="3"
-                            android:orientation="horizontal">
-
-                            <RatingBar
-                                android:id="@+id/ratingBar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:numStars="5"
-                                android:stepSize="0.1"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginRight="12dp"
-                                android:layout_marginTop="5dp"
-                                android:rating="3.5"
-                                android:isIndicator="true"
-                                style="?android:attr/ratingBarStyleIndicator"/>
-                            <TextView
-                                android:id="@+id/display_rate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="3.4/5"
-                                android:textSize="25dp"
-                                android:textColor="@color/black"
-                                android:gravity="center" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="2"
-                            android:orientation="horizontal"
-                            android:baselineAligned="false">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:gravity="center"
-                                    android:text="Reviews"
-                                    android:textColor="@color/dark_blue"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginLeft="20dp"
-                                    android:gravity="center"
-                                    android:text="15"
-                                    android:textColor="@color/colorAccent"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp"
-                                android:layout_weight="1"
-                                android:gravity="end"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:gravity="center"
-                                    android:text="Jobs Done"
-                                    android:textColor="@color/dark_blue"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:gravity="center"
-                                    android:text="15"
-                                    android:textColor="@color/colorAccent"
-                                    android:textSize="17sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+               <de.hdodenhof.circleimageview.CircleImageView
+                   android:id="@+id/myPic"
+                   android:layout_width="160dp"
+                   android:layout_height="160dp"
+                   android:overScrollMode="ifContentScrolls"
+                   android:src="@drawable/businessman_profile_cartoon_removebg"
+                   />
 
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/spacing_large" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
-                android:background="@android:color/white"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="2dp">
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="32dp"
+                android:overScrollMode="ifContentScrolls"
+                app:cardCornerRadius="5dp"
+                app:cardPreventCornerOverlap="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/spacing_large"
-                    android:paddingLeft="@dimen/spacing_large"
-                    android:paddingRight="@dimen/spacing_large">
+                    android:layout_marginBottom="25dp"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:gravity="center_vertical"
-                        android:text="Address"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@color/dot_dark_screen3" />
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="14321 Saddle Wood Dr, North Little Rock \nAR, 72117"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:textColor="@color/gray_btn_bg_color" />
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/fullName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginTop="15dp"
+                            android:text="Full Name"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/verify"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icons_verified_account"
+                            android:layout_marginTop="15dp"
+                            android:paddingStart="10dp"
+                            android:contentDescription="TODO" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Painting"
+                        android:textSize="17sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/about_me"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:gravity="center"
+                        android:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/item_divider"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="3"
+                        android:orientation="horizontal">
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:numStars="5"
+                            android:stepSize="0.1"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="5dp"
+                            android:rating="3.5"
+                            android:isIndicator="true"
+                            style="?android:attr/ratingBarStyleIndicator"/>
+                        <TextView
+                            android:id="@+id/display_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="3.4/5"
+                            android:textSize="25dp"
+                            android:textColor="@color/black"
+                            android:gravity="center" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_large" />
+
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="@dimen/spacing_large"-->
+<!--                android:layout_marginRight="@dimen/spacing_large"-->
+<!--                android:background="@android:color/white"-->
+<!--                app:cardCornerRadius="2dp"-->
+<!--                app:cardElevation="2dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:paddingBottom="@dimen/spacing_large"-->
+<!--                    android:paddingLeft="@dimen/spacing_large"-->
+<!--                    android:paddingRight="@dimen/spacing_large">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="?attr/actionBarSize"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:text="Address"-->
+<!--                        android:textAppearance="@style/TextAppearance.AppCompat.Title"-->
+<!--                        android:textColor="@color/dot_dark_screen3" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:text="14321 Saddle Wood Dr, North Little Rock \nAR, 72117"-->
+<!--                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
+<!--                        android:textColor="@color/gray_btn_bg_color" />-->
+
+<!--                </LinearLayout>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
 
             <View
                 android:layout_width="match_parent"
@@ -354,12 +276,24 @@
 
             </LinearLayout>
 
-            <include layout="@layout/card_review_view"/>
-            <include layout="@layout/card_review_view"/>
-            <include layout="@layout/card_review_view"/>
-            <include layout="@layout/card_review_view"/>
-            <include layout="@layout/card_review_view"/>
-            <include layout="@layout/card_review_view"/>
+<!--            <include layout="@layout/card_review_view"/>-->
+<!--            <include layout="@layout/card_review_view"/>-->
+<!--            <include layout="@layout/card_review_view"/>-->
+<!--            <include layout="@layout/card_review_view"/>-->
+<!--            <include layout="@layout/card_review_view"/>-->
+<!--            <include layout="@layout/card_review_view"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/review_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
 <!--            <androidx.viewpager.widget.ViewPager-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="match_parent"-->

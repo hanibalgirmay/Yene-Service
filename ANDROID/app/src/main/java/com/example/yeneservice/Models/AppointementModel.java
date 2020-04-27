@@ -118,14 +118,14 @@ public class AppointementModel extends com.example.yeneservice.Models.Appointeme
     public static final Comparator<AppointementModel> BY_DATE_ASCENDING = new Comparator<AppointementModel>() {
         @Override
         public int compare(AppointementModel o1, AppointementModel o2) {
-            return o1.getTimestamp().compareTo(o2.getTimestamp());
+            return o1.getTimestamp().toString().compareTo(o2.getTimestamp().toString());
         }
     };
 
     public static final Comparator<AppointementModel> BY_DATE_DESCENDING = new Comparator<AppointementModel>() {
         @Override
         public int compare(AppointementModel o1, AppointementModel o2) {
-            return o2.getTimestamp().compareTo(o1.getTimestamp());
+            return o2.getTimestamp().toString().compareTo(o1.getTimestamp().toString());
         }
     };
 }

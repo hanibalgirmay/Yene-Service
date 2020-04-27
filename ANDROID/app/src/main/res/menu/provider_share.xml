@@ -8,13 +8,32 @@
         android:title="Favorite"
         android:icon="@drawable/ic_bookmark"
         app:showAsAction="always"
-        android:orderInCategory="100"/>
+        android:orderInCategory="300"/>
     <item
-        android:id="@+id/provider_share"
-        android:title="Share"
-        android:orderInCategory="200"
-        android:icon="@drawable/icons_share"
-        app:showAsAction="always" />
+        android:id="@+id/provider"
+        android:title="Favorite"
+        android:icon="@drawable/ic_more_horiz_black_24dp"
+        app:showAsAction="always"
+        android:orderInCategory="300">
+
+        <menu>
+            <item
+                android:id="@+id/provider_share"
+                android:title="Share"
+                android:orderInCategory="200"
+                android:icon="@drawable/icons_share"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/provider_qr"
+                android:title="Share"
+                android:orderInCategory="100"
+                android:icon="@drawable/icons_barcode"
+                app:showAsAction="never" />
+        </menu>
+
+    </item>
+
 
 
 </menu>

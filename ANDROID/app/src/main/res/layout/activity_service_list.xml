@@ -24,11 +24,12 @@
             android:layout_height="?attr/actionBarSize"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="?actionBarSize"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_id"
@@ -37,7 +38,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="match_parent"/>
 
-    </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"

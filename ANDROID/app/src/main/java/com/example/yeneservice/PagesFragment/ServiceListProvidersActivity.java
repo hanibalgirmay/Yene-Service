@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.yeneservice.Adapters.ServiceProviderAdapter;
+import com.example.yeneservice.Extra.ProviderMapActivity;
 import com.example.yeneservice.MapsActivity;
 import com.example.yeneservice.Models.ServicesProvider;
 import com.example.yeneservice.R;
@@ -70,7 +71,7 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent o = new Intent(ServiceListProvidersActivity.this, MapsActivity.class);
+                Intent o = new Intent(ServiceListProvidersActivity.this, ProviderMapActivity.class);
                 o.putExtra("category",tte);
                 startActivity(o);
             }
@@ -88,6 +89,10 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
 
         myrv.setAdapter(serviceProviderAdapter);
 
+        loadData(tte);
+    }
+
+    private void loadData(final String catagory_service) {
         // Access a Cloud Firestore instance from your Activity
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Service_Providers").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -100,15 +105,15 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                     if(doc.getType() == DocumentChange.Type.ADDED){
 
                         final String id = doc.getDocument().getString("userID");
-//                        final String firstename = doc.getDocument().getString("firstName");
                         final String cty = doc.getDocument().getString("city");
                         final String work = doc.getDocument().getString("working_area");
                         final String add = doc.getDocument().getString("address");
                         final String me = doc.getDocument().getString("about_me");
+                        final String email = doc.getDocument().getString("email");
+                        final String type = doc.getDocument().getString("type");
                         final GeoPoint l = doc.getDocument().getGeoPoint("location");
-//                        final Double g = doc.getDocument().getDouble("longitude");
 
-                        if(tte.equals(work)){
+                        if(catagory_service.equals(work)){
                             fab.setVisibility(View.VISIBLE);
                             lottieAnimationView.setVisibility(View.GONE);
                             Log.d(TAG,"file name: "+ cty);
@@ -117,33 +122,18 @@ public class ServiceListProvidersActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     String image = documentSnapshot.getString("image");
-                                    String firstename = documentSnapshot.getString("firstName");
-                                    String lastename = documentSnapshot.getString("lastName");
-                                    lstBook.add(new ServicesProvider(documentId,id,firstename,lastename,image,add,work,me,l));
+                                    String first_name = documentSnapshot.getString("firstName");
+                                    String last_name = documentSnapshot.getString("lastName");
+                                    lstBook.add(new ServicesProvider(documentId,id,first_name,last_name,image,add,work,me,l));
                                     serviceProviderAdapter.notifyDataSetChanged();
                                 }
                             });
                         } else {
                             fab.setVisibility(View.GONE);
                             lottieAnimationView.setVisibility(View.VISIBLE);
-//                            new SweetAlertDialog(ServiceListProvidersActivity.this, SweetAlertDialog.WARNING_TYPE)
-//                                    .setTitleText("We are really sorry?")
-//                                    .setContentText("There is no service provider at the time for now!")
-//                                    .setConfirmText("Ok!")
-//                                    .showCancelButton(true)
-//                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                        @Override
-//                                        public void onClick(SweetAlertDialog sDialog) {
-//                                            sDialog.dismissWithAnimation();
-//                                        }
-//                                    })
-//                                    .show();
                         }
-
                     }
-
                 }
-
             }
         });
     }

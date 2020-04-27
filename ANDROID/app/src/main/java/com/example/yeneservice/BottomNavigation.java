@@ -41,7 +41,7 @@ public class BottomNavigation extends CoordinatorLayout.Behavior<BottomNavigatio
     }
 
     private void hideBottomNavigationView(BottomNavigationView view) {
-        view.animate().translationY(view.getHeight());
+        view.animate().translationY(view.getHeight()*2);
     }
 
     private void showBottomNavigationView(BottomNavigationView view) {

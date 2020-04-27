@@ -4,7 +4,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 public class ServicesProvider {
     private String documentId,userID, firstName,lastName,middleName,address,city,working_area,about_me;
-//    private Double latitude,longitude;
+    private Float rating;
     private Number expriance, age, phone_number;
     private String profile_img;
     private GeoPoint longt,lat;
@@ -28,13 +28,23 @@ public class ServicesProvider {
 //        this.lat = lat;
     }
 
-    public ServicesProvider(String userID, String firstName, String lastName, String working_area, String about_me, String profile_img) {
+    public ServicesProvider(String documentId,String userID, String firstName, String lastName, String working_area, String about_me, String profile_img, Float rating) {
+        this.documentId = documentId;
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.working_area = working_area;
         this.about_me = about_me;
         this.profile_img = profile_img;
+        this.rating = rating;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 
     public String getDocumentId() {

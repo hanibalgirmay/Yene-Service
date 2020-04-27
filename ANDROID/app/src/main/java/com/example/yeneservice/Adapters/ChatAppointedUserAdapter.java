@@ -28,8 +28,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -76,7 +78,11 @@ public class ChatAppointedUserAdapter extends RecyclerView.Adapter<ChatAppointed
         ChatModel chat = mChat.get(position);
         reference  = FirebaseFirestore.getInstance().collection("Messages").document();
         holder.show_message.setText(chat.getMessage());
-        holder.time.setText(chat.getTimestamp().toString());
+        //get time
+        Date newD = (new Date(chat.getTimestamp().getSeconds()));
+        SimpleDateFormat a = new SimpleDateFormat("HH:MM:SS", Locale.getDefault());
+
+        holder.time.setText(a.format(newD));
 
         holder.messageLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

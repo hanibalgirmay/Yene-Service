@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,21 +73,18 @@ public class AppointedUsersActivity extends AppCompatActivity {
         // Access a Cloud Firestore instance from your Activity
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        firebaseFirestore.collection("Appointments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseFirestore.collection("JobsRequests").whereEqualTo("isAccepted",true).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if(e != null){
-                    Log.d(TAG,"Error: "+ e.getMessage());
-                }
                 for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-                    if(doc.getType() == DocumentChange.Type.ADDED){
-                        final String id = doc.getDocument().getString("appointedID");
-                        final String firstename = doc.getDocument().getString("service_provider_id");
-                        final String working = doc.getDocument().getString("working_area");
+//                    if(doc.getType() == DocumentChange.Type.MODIFIED){
+                        final String id = doc.getDocument().getString("jobAppointedUserID");
+                        final String serviceProviderId = doc.getDocument().getString("service_provider_id");
+//                        final String working = doc.getDocument().getString("working_area");
                         assert id != null;
                         if(user_id.equals(id)){
-                            Log.d(TAG,"file name: "+ firstename);
-                            firebaseFirestore.collection("Users").document(firstename).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            Log.d(TAG,"file name: "+ serviceProviderId);
+                            firebaseFirestore.collection("Users").document(serviceProviderId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if(task.isSuccessful()){
@@ -98,7 +96,8 @@ public class AppointedUsersActivity extends AppCompatActivity {
                                             email = task.getResult().getString("email");
                                             st = task.getResult().getString("status");
 
-                                            lstUser.add(new AppointemntUserModel(firstename, fname,working,img,st,true));
+
+                                            lstUser.add(new AppointemntUserModel(serviceProviderId, fname,email,img,st,true));
                                             appointmentUserAdapter.notifyDataSetChanged();
                                         }
                                     }
@@ -107,22 +106,12 @@ public class AppointedUsersActivity extends AppCompatActivity {
 
                         }
 
-                    }
+//                    }
                 }
 
             }
         });
-//        lstUser.add(new AppointemntUserModel("Hanibal","Hanibal","3123123",R.drawable.businessman_profile_cartoon_removebg,
-//                "status",false));
-//        lstUser.add(new AppointemntUserModel("Hanibal","awet","3123123",R.drawable.businessman_profile_cartoon_removebg,
-//                "status",false));
-//        lstUser.add(new AppointemntUserModel("Hanibal","senaay","3123123",R.drawable.businessman_profile_cartoon_removebg,
-//                "status",false));
-//        lstUser.add(new AppointemntUserModel("Hanibal","tete","3123123",R.drawable.businessman_profile_cartoon_removebg,
-//                "status",false));
-//        lstUser.add(new AppointemntUserModel("Hanibal","feve","3123123",R.drawable.businessman_profile_cartoon_removebg,
-//                "status",false));
-
 
     }
+
 }

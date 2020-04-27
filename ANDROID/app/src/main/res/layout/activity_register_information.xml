@@ -1,240 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
-    android:gravity="center_horizontal"
-    tools:context=".Users.RegisterInformationActivity">
-
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="35dp">
-
-        <LinearLayout
-            android:id="@+id/email_login_form"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="10dp"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
-
-            <requestFocus />
-
-
-<!--            <com.loopeer.shadow.ShadowView-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:layout_width="80dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                app:cornerRadius="40dp"-->
-<!--                app:shadowMargin="6dp"-->
-<!--                app:shadowRadius="0dp"-->
-<!--                app:backgroundColor="@android:color/white"-->
-<!--                app:shadowColor="@color/backgroundColor">-->
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/businessman_profile_cartoon_removebg"
-                    app:layout_gravity="center"
-                    android:contentDescription="looper" />
-
-
-<!--            </com.loopeer.shadow.ShadowView>-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Welcome to LearnCodeOnline \n Create an Account."
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="serif"
-                tools:ignore="HardcodedText" />
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/firstname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="First Name"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/lastname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Last Name"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp">
-
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="City">
-
-                <AutoCompleteTextView
-                    android:id="@+id/city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp">
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:imeActionId="6"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp">
-
-                <EditText
-                    android:id="@+id/re_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Confirm Password"
-                    android:imeActionId="6"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-
-<!--            <com.loopeer.shadow.ShadowView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="55dp"-->
-<!--                android:layout_marginTop="15dp"-->
-<!--                android:elevation="5dp"-->
-<!--                app:backgroundColor="@android:color/white"-->
-<!--                app:cornerRadius="2dp"-->
-<!--                app:shadowColor="@color/colorPrimaryDark"-->
-<!--                app:shadowMargin="5dp"-->
-<!--                app:shadowRadius="3dp">-->
-
-                <Button
-                    android:id="@+id/sign_up_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:gravity="center"
-                    android:text="Register"
-                    android:layout_marginTop="40dp"
-                    android:textAlignment="center"
-                    android:background="@drawable/rectangle"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold" />
-
-<!--            </com.loopeer.shadow.ShadowView>-->
-
-
-
-        </LinearLayout>
-
-    </ScrollView>
-
+    tools:context=".Users.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:src="@android:mipmap/sym_def_app_icon"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="First Name"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Last Name"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/city_spinner"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:autofillHints="select city"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirmPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_to_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="Have you account?"
-            tools:ignore="HardcodedText" />
+            android:background="@android:color/transparent"
+            android:text="login"
+            android:layout_marginTop="20dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:onClick="openLoginPage"
-            android:padding="3dp"
-            android:text="Log In"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
+
 
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/background_blur_register"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/register_loader"
-        android:layout_height="wrap_content"
+    <ProgressBar
+        android:id="@+id/progressRegsiter"
         android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="invisible"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/dot_dark_screen3"
+        android:padding="20dp"
+        android:layout_gravity="center"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/sign_up_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Register"/>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

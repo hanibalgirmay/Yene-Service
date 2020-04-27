@@ -20,6 +20,8 @@
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="false"
         android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         tools:targetApi="p">
 
         <LinearLayout
@@ -63,6 +65,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -70,10 +73,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Test Example"
-                                    android:textColor="@color/black"
-                                    android:layout_marginLeft="3dp"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_marginStart="3dp" />
+                                    android:textSize="18sp"
+                                    android:layout_marginTop="10dp" />
 
                                 <TextView
                                     android:id="@+id/dd"
@@ -82,10 +83,18 @@
                                     android:text="12/23/1223"
                                     android:textSize="10sp"
                                     android:textColor="@color/black"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginStart="5dp"
                                     tools:ignore="SmallSp" />
                             </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="4.2"
+                                android:layout_gravity="end"
+                                android:textStyle="bold"
+                                android:gravity="end"
+                                android:layout_marginRight="10dp"
+                                android:src="@drawable/ic_menu_black_24dp"/>
 
                         </LinearLayout>
 
@@ -94,16 +103,18 @@
 
                     <TextView
                         android:id="@+id/descr"
-                        android:textColor="@color/black"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
                         android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore."
                         android:textSize="12sp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="bottom"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <Button
@@ -111,11 +122,12 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_marginTop="10dp"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:textAllCaps="false"
-                            android:text="Book Again"
+                            android:text="Pay"
+                            android:hapticFeedbackEnabled="true"
                             android:textColor="@color/white"
-                            android:layout_marginRight="15dp"
+                            android:layout_marginEnd="15dp"
                             android:background="@drawable/login_background"/>
 
                         <Button
@@ -123,12 +135,12 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_marginTop="10dp"
-                            android:layout_height="35dp"
-                            android:layout_marginLeft="15dp"
+                            android:layout_height="wrap_content"
                             android:text="Review Job"
+                            android:hapticFeedbackEnabled="true"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
-                            android:background="@color/aluminum"
+                            android:background="@drawable/btn_2"
                             android:layout_marginStart="15dp"
                             tools:ignore="ButtonStyle" />
 

@@ -20,6 +20,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.yeneservice.Adapters.AppointmentAdapter;
 import com.example.yeneservice.Adapters.FavoriteAdapter;
 import com.example.yeneservice.Adapters.NotificationRecyclerViewAdapter;
+import com.example.yeneservice.HomeActivity;
 import com.example.yeneservice.Models.AppointementModel;
 import com.example.yeneservice.Models.NotificationModel;
 import com.example.yeneservice.Models.ServicesProvider;
@@ -50,7 +51,7 @@ public class MyFavoritesFragment extends Fragment {
     FirebaseAuth auth;
     private String user_id;
     List<ServicesProvider> lstnot ;
-    private static final String TAG = "NotificationActivity";
+    private static final String TAG = "MyActivity";
     FirebaseFirestore firebaseFirestore;
     LottieAnimationView lottieAnimationView;
     RecyclerView rv;
@@ -80,6 +81,7 @@ public class MyFavoritesFragment extends Fragment {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
         user_id = auth.getCurrentUser().getUid();
 //        view = rootview.findViewById(R.id.ty);
         lottieAnimationView = rootView.findViewById(R.id.animation_view);
@@ -96,54 +98,18 @@ public class MyFavoritesFragment extends Fragment {
             favList = new ArrayList<>();
             final FirebaseFirestore db = FirebaseFirestore.getInstance();
             if(user_id != null){
-                db.collection("Users/"+auth.getUid()+"/Favorite").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                db.collection("Users").document(auth.getUid())
+                        .collection("Favorite").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if(e != null){
-                            Log.d(TAG,"Error: "+ e.getMessage());
-                        }
                         for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
                             if(doc.getType() == DocumentChange.Type.ADDED){
                                 final String id = doc.getDocument().getId();
-                                final String uid = doc.getDocument().getString("documentID");
-                                final Timestamp timestamps = doc.getDocument().getTimestamp("timestamp");
+                                final String uuid = doc.getDocument().getString("providerID");
 
-                                if (uid != null) {
-                                    assert uid != null;
-                                    db.collection("Users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if(task.isSuccessful()){
-                                                final String fname = task.getResult().getString("firstName");
-                                                final String lname = task.getResult().getString("lastName");
-                                                final String image = task.getResult().getString("image");
-
-                                                db.collection("Service_Providers").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                                                        for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-                                                            String working = doc.getDocument().getString("working_area");
-                                                            String about = doc.getDocument().getString("about_me");
-                                                            String uID = doc.getDocument().getString("userID");
-
-                                                            if(uID.equals(uid)){
-                                                                favList.add(new ServicesProvider(uid,fname,lname,working,about,image));
-                                                                adapter.notifyDataSetChanged();
-                                                            } else {
-                                                                Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
-                                                            }
-
-                                                        }
-                                                    }
-                                                });
-
-                                            } else {
-                                                String error = task.getException().getMessage();
-                                                Toast.makeText(getActivity(), "(FIRESTORE Retrieve Error) : " + error, Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-
+                                if (uuid != null) {
+//                                    Toast.makeText(getContext(), ""+uuid, Toast.LENGTH_SHORT).show();
+                                    loadUSer(id,uuid);
                                 } else {
                                     lottieAnimationView.setVisibility(View.VISIBLE);
                                 }
@@ -167,6 +133,51 @@ public class MyFavoritesFragment extends Fragment {
 
     }
 
+    private void loadUSer(final String d, final String uuidd) {
+        firebaseFirestore.collection("Users").document(uuidd).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    final String fname = task.getResult().getString("firstName");
+                    final String lname = task.getResult().getString("lastName");
+                    final String image = task.getResult().getString("image");
+
+                    firebaseFirestore.collection("Service_Providers").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                                String working = doc.getDocument().getString("working_area");
+                                String about = doc.getDocument().getString("about_me");
+                                String uID = doc.getDocument().getString("userID");
+
+                                Float po = 3.3f;
+                                if(uID.equals(uuidd)){
+                                    favList.add(new ServicesProvider(d,uuidd,fname,lname,working,about,image,po));
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        }
+                    });
+
+                } else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(getActivity(), "(FIRESTORE Retrieve Error) : " + error, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set title bar
+//        ((HomeActivity) getActivity())
+//                .setActionBarTitle("Favorite");
+    }
 
     @Override
     public void onAttach(Context context) {

@@ -51,13 +51,14 @@
 
                     <Spinner
                         android:id="@+id/service_spinner"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
                         android:outlineSpotShadowColor="@color/dot_dark_screen3"
                         style="@style/Widget.AppCompat.DropDownItem.Spinner"
-                        android:autofillHints="Type of service"/>
+                        android:autofillHints="Priority"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -118,15 +119,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Delivery Address"
-                        android:textColor="#444"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="20dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/mainBG"
+                        android:text="Precaution " />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Flat No 404, Skyline Apartments, Vizag - 500576" />
+                        android:layout_marginTop="16dp"
+                        android:text="We'll replay as soon as possible , if the provider didn't accept on the following 2 days the request will be removed"
+                        android:textColor="#444"
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/appoint"

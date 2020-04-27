@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.yeneservice.Adapters.HomeHorizontalServicesAdapter;
 import com.example.yeneservice.Adapters.HomeServiceAdapter;
@@ -113,20 +114,26 @@ public class HouseFragment extends Fragment {
                 if(e != null){
                     Log.d(TAG,"Error: "+ e.getMessage());
                 }
-                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-                    if(doc.getType() == DocumentChange.Type.ADDED){
-                        String n = doc.getDocument().getString("category");
-//                        String ty = doc.getDocument().getString("type").toLowerCase();
-                        if(n.equals("home")){
-                            String firstename = doc.getDocument().getString("name");
-                            String img = doc.getDocument().getString("image");
+                if (queryDocumentSnapshots != null) {
+                    for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                        if(doc.getType() == DocumentChange.Type.ADDED || doc.getType() == DocumentChange.Type.MODIFIED){
+                            String nt = doc.getDocument().getString("category");
+    //                        String ty = doc.getDocument().getString("type").toLowerCase();
+                            assert nt != null;
+                            if(nt.equals("home")){
+                                String firstename = doc.getDocument().getString("name");
+                                String img = doc.getDocument().getString("image");
 
-//                            Log.d(TAG,"file name: "+ firstename);
-                            lstBook.add(new Service(firstename,img));
-                            serviceAdapter.notifyDataSetChanged();
+                                lstBook.add(new Service(firstename,img));
+                                serviceAdapter.notifyDataSetChanged();
+                            } else {
+                                Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
+                            }
+
                         }
-
                     }
+                } else {
+                    Toast.makeText(getContext(), "ops...", Toast.LENGTH_SHORT).show();
                 }
             }
         });

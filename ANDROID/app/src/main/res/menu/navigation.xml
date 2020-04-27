@@ -18,14 +18,15 @@
         android:title="Favourite"
         android:icon="@drawable/ic_bookmark"/>
 
-    <item
-        android:id="@+id/menu_search"
-        android:icon="@drawable/ic_search_24px"
-        android:title="Search" />
+<!--    <item-->
+<!--        android:id="@+id/menu_search"-->
+<!--        android:icon="@drawable/ic_search_24px"-->
+<!--        android:title="Search" />-->
 
     <item
         android:id="@+id/menu_navigation_profile"
-        android:icon="@drawable/ic_person_white_24dp"
+        android:icon="@drawable/pic_nav"
+        android:actionLayout="@layout/my_pic"
         android:title="Profile" />
 
 </menu>

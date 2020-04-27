@@ -24,17 +24,54 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <RelativeLayout
+<!--    <com.google.android.material.tabs.TabLayout-->
+<!--        android:id="@+id/tabs"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_marginStart="30dp"-->
+<!--        android:layout_marginEnd="30dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:icon="@drawable/icon_material_security"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:text="Request"/>-->
+<!--        <com.google.android.material.tabs.TabItem-->
+<!--            android:icon="@drawable/ic_message_black_24dp"-->
+<!--            android:text="Jobs"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_width="wrap_content" />-->
+<!--    </com.google.android.material.tabs.TabLayout>-->
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/tabs"
+        app:tabTextColor="@color/aluminum"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorColor="@color/white"
+        app:tabIndicator="@color/dot_dark_screen3"
+        android:background="@drawable/cicrcle"/>
+
+    <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp">
+        android:visibility="gone"
+        android:id="@+id/viewpagerId">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    </androidx.viewpager.widget.ViewPager>
+    <FrameLayout
+        android:id="@+id/frame_container_not"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        </androidx.recyclerview.widget.RecyclerView>
-    </RelativeLayout>
 
 </LinearLayout>

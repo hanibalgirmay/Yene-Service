@@ -1,14 +1,18 @@
 package com.example.yeneservice.Extra;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,12 +28,15 @@ import android.widget.Toast;
 import com.example.yeneservice.Adapters.ChatAppointedUserAdapter;
 import com.example.yeneservice.Models.ChatModel;
 import com.example.yeneservice.Models.UserModel;
+import com.example.yeneservice.MyProfileActivity;
 import com.example.yeneservice.Notification.Client;
 import com.example.yeneservice.Notification.NotficationData;
 import com.example.yeneservice.Notification.NotificationSender;
 import com.example.yeneservice.Notification.MyResponse;
 import com.example.yeneservice.Notification.Token;
+import com.example.yeneservice.PagesFragment.CarFragment;
 import com.example.yeneservice.R;
+import com.example.yeneservice.ReportActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -47,6 +54,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
+import com.r0adkll.slidr.model.SlidrInterface;
+import com.r0adkll.slidr.model.SlidrListener;
+import com.r0adkll.slidr.model.SlidrPosition;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -59,6 +71,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.view.Gravity.BOTTOM;
+import static android.view.Gravity.RIGHT;
+import static android.view.Gravity.TOP;
+import static android.widget.LinearLayout.VERTICAL;
 
 public class MessageActivity extends AppCompatActivity {
     CircleImageView profile_images;
@@ -83,9 +100,12 @@ public class MessageActivity extends AppCompatActivity {
     private boolean isChanged = false;
     private Bitmap compressedImageFile;
     private static final String TAG = "MessageActivity";
+    String idd;
     int SELECT_IMAGE = 0;
     boolean notify = false;
+    private SlidrInterface slidrInterface;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +123,45 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+
+        Slidr.attach(this);
+
+        //to view profile
+        SlidrConfig config = new SlidrConfig.Builder()
+                .primaryColor(getColor(R.color.colorPrimary))
+                .secondaryColor(getColor(R.color.black))
+                .position(SlidrPosition.TOP)
+                .sensitivity(1f)
+                .scrimColor(Color.BLACK)
+                .scrimStartAlpha(0.8f)
+                .scrimEndAlpha(0f)
+                .velocityThreshold(2400)
+                .distanceThreshold(0.25f)
+                .edge(true)
+                .edgeSize(0.18f) // The % of the screen that counts as the edge, default 18%
+                .listener(new SlidrListener(){
+                    @Override
+                    public void onSlideStateChanged(int state) {
+
+                    }
+
+                    @Override
+                    public void onSlideChange(float percent) {
+
+                    }
+
+                    @Override
+                    public void onSlideOpened() {
+                        Intent i = new Intent(MessageActivity.this,MyProfileActivity.class);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onSlideClosed() {
+
+                    }})
+                .build();
+        Slidr.attach(this, config);
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -134,7 +193,7 @@ public class MessageActivity extends AppCompatActivity {
 //        }
 
         intent = getIntent();
-        final String idd = intent.getStringExtra("providerID");
+        idd = intent.getStringExtra("providerID");
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
         img.setOnClickListener(new View.OnClickListener() {
@@ -155,15 +214,21 @@ public class MessageActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     if(task.getResult().exists()){
                         String fname = task.getResult().getString("firstName");
-                        String lname = task.getResult().getString("lastName");
-                        String email = task.getResult().getString("email");
-                        String phone = task.getResult().getString("phone");
                         String image = task.getResult().getString("image");
                         String sta = task.getResult().getString("status");
 
                         username.setText(fname);
                         status.setText(sta);
                         Picasso.get().load(image).into(profile_images);
+
+                        profile_images.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent e = new Intent(MessageActivity.this, MyProfileActivity.class);
+                                e.putExtra("userID",idd);
+                                startActivity(e);
+                            }
+                        });
                     }
                 } else {
                     String error = task.getException().getMessage();
@@ -241,8 +306,12 @@ public class MessageActivity extends AppCompatActivity {
             });
             return true;
         }
-        if (id == R.id.action_msg) {
-//            startActivity(new Intent(MessageActivity.this, AppointementUserActivity.class));
+        if (id == R.id.chat_report) {
+//            Intent report = new Intent(MessageActivity.this, ReportActivity.class);
+//            report.putExtra("providerId", idd);
+//            startActivity(report);
+            Fragment fragment = new CarFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
             return true;
         } else {
 

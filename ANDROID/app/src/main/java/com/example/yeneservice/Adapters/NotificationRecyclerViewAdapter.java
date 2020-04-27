@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.yeneservice.Extra.ShowNotificationDetailActivity;
 import com.example.yeneservice.Models.NotificationModel;
 import com.example.yeneservice.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,10 +57,8 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         firebaseFirestore.collection("Users").document(from).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-
                 String name = documentSnapshot.getString("firstName");
                 String image = documentSnapshot.getString("image");
-
                 holder.name.setText(name);
                 Picasso.get().load(image).into(holder.circleImageView);
             }
@@ -67,10 +66,13 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent s = new Intent(context, ShowNotificationDetailActivity.class);
-//                s.putExtra("message", notificationList.get(position).getMessages());
-//                s.putExtra("from_user_id", notificationList.get(position).getFrom());
-//                context.startActivity(s);
+                Intent s = new Intent(context, ShowNotificationDetailActivity.class);
+                s.putExtra("message", notificationList.get(position).getMessages());
+                s.putExtra("timestamp", notificationList.get(position).getTimestamp());
+                s.putExtra("to", notificationList.get(position).getTo());
+                s.putExtra("from_user_id", notificationList.get(position).getFrom());
+                s.putExtra("documentID", notificationList.get(position).getDocID());
+                context.startActivity(s);
             }
         });
     }

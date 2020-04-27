@@ -12,6 +12,11 @@
 <!--        app:showAsAction="always" />-->
 
     <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/action_notification"
         android:title="Notification"
         android:orderInCategory="100"

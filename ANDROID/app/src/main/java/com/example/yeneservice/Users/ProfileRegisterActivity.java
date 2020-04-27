@@ -26,8 +26,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.yeneservice.HomeActivity;
 import com.example.yeneservice.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,6 +60,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 
     private StorageReference storageReference;
     private FirebaseAuth firebaseAuth;
+    private DocumentReference reference;
     private FirebaseFirestore firebaseFirestore;
 
     private Bitmap compressedImageFile;
@@ -66,13 +69,13 @@ public class ProfileRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_register);
 
-        Toolbar setupToolbar = findViewById(R.id.setupToolbar);
-        setSupportActionBar(setupToolbar);
-        getSupportActionBar().setTitle("Account Setup");
+//        Toolbar setupToolbar = findViewById(R.id.setupToolbar);
+//        setSupportActionBar(setupToolbar);
+//        getSupportActionBar().setTitle("Account Setup");
 
         firebaseAuth = FirebaseAuth.getInstance();
         user_id = firebaseAuth.getCurrentUser().getUid();
-
+        reference = FirebaseFirestore.getInstance().collection("Users").document(user_id);
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -82,32 +85,32 @@ public class ProfileRegisterActivity extends AppCompatActivity {
         setupProgress = findViewById(R.id.setup_progress);
 
         setupProgress.setVisibility(View.VISIBLE);
-        setupBtn.setEnabled(false);
+//        setupBtn.setEnabled(false);
 
-        firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @SuppressLint("CheckResult")
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    if(task.getResult().exists()){
-                        String name = task.getResult().getString("name");
-                        String image = task.getResult().getString("image");
-
-                        mainImageURI = Uri.parse(image);
-                        setupName.setText(name);
-                        RequestOptions placeholderRequest = new RequestOptions();
-                        placeholderRequest.placeholder(R.drawable.default_image);
-
-                        Glide.with(ProfileRegisterActivity.this).setDefaultRequestOptions(placeholderRequest).load(image).into(setupImage);
-                    }
-                } else {
-                    String error = task.getException().getMessage();
-                    Toast.makeText(ProfileRegisterActivity.this, "(FIRESTORE Retrieve Error) : " + error, Toast.LENGTH_LONG).show();
-                }
-                setupProgress.setVisibility(View.INVISIBLE);
-                setupBtn.setEnabled(true);
-            }
-        });
+//        firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @SuppressLint("CheckResult")
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if(task.isSuccessful()){
+//                    if(task.getResult().exists()){
+//                        String name = task.getResult().getString("name");
+//                        String image = task.getResult().getString("image");
+//
+//                        mainImageURI = Uri.parse(image);
+//                        setupName.setText(name);
+//                        RequestOptions placeholderRequest = new RequestOptions();
+//                        placeholderRequest.placeholder(R.drawable.default_image);
+//
+//                        Glide.with(ProfileRegisterActivity.this).setDefaultRequestOptions(placeholderRequest).load(image).into(setupImage);
+//                    }
+//                } else {
+//                    String error = task.getException().getMessage();
+//                    Toast.makeText(ProfileRegisterActivity.this, "(FIRESTORE Retrieve Error) : " + error, Toast.LENGTH_LONG).show();
+//                }
+//                setupProgress.setVisibility(View.INVISIBLE);
+//                setupBtn.setEnabled(true);
+//            }
+//        });
 
 
         setupBtn.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +165,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     if(ContextCompat.checkSelfPermission(ProfileRegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                        Toast.makeText(ProfileRegisterActivity.this, "Permission Denied", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileRegisterActivity.this, "Permission Request", Toast.LENGTH_LONG).show();
                         ActivityCompat.requestPermissions(ProfileRegisterActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                     } else {
                         BringImagePicker();
@@ -183,11 +186,11 @@ public class ProfileRegisterActivity extends AppCompatActivity {
             download_uri = mainImageURI;
         }
 
-        Map<String, String> userMap = new HashMap<>();
-        userMap.put("name", user_name);
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("username", user_name);
         userMap.put("image", download_uri.toString());
 
-        firebaseFirestore.collection("Users").document(user_id).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseFirestore.collection("Users").document(user_id).update(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
@@ -226,5 +229,27 @@ public class ProfileRegisterActivity extends AppCompatActivity {
                 Exception error = result.getError();
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        reference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String img = documentSnapshot.getString("image");
+                String usr = documentSnapshot.getString("username");
+
+                if (img != null && usr != null && !img.equals("default")) {
+                    sendToMain();
+                }
+            }
+        });
+    }
+    private void sendToMain() {
+        Intent mainIntent = new Intent(ProfileRegisterActivity.this, HomeActivity.class);
+        startActivity(mainIntent);
+        finish();
+
     }
 }

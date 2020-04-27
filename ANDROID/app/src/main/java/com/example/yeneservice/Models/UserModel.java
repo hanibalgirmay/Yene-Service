@@ -5,7 +5,11 @@ public class UserModel {
 
     public UserModel(){}
 
-    public UserModel(String firstName, String lastName,String username, String email, String phone, String image) {
+    public UserModel(String image) {
+        this.image = image;
+    }
+
+    public UserModel(String firstName, String lastName, String username, String email, String phone, String image) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

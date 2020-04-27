@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.yeneservice.Extra.ProviderMapActivity;
+
 public class PermissionUtils {
     /**
      * Requests the fine location permission. If a rationale with an additional explanation should
      * be shown to the user, displays a dialog that triggers the request.
      */
-    public static void requestPermission(MapsActivity activity, int requestId,
+    public static void requestPermission(ProviderMapActivity activity, int requestId,
                                          String permission, boolean finishActivity) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
             // Display a dialog with rationale.

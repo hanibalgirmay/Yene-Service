@@ -1,6 +1,7 @@
 package com.example.yeneservice;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -9,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +23,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.yeneservice.FirebaseRepo.LocationRepModelView;
+import com.example.yeneservice.Models.LocationModel;
 import com.example.yeneservice.Models.ServicesProvider;
 import com.example.yeneservice.PagesFragment.ServiceListProvidersActivity;
 import com.google.android.gms.maps.CameraUpdate;
@@ -33,10 +40,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,9 +71,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     TextView name,locationName,Distance,add,add2;
     ImageView pro;
     RatingBar providerRate;
+    FirebaseFirestore firebaseFirestore;
+    DocumentReference reference;
+    private LocationRepModelView locationRepModelView;
     Geocoder geocoder;
     private boolean mPermissionDenied = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +95,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                    Manifest.permission.ACCESS_FINE_LOCATION, true);
 //        }
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        loadAllLocations();
+
         initComponent();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -96,7 +113,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         providerRate = findViewById(R.id.provider_rate);
     }
 
-//    @Override
+    private void loadAllLocations(){
+        firebaseFirestore.collection("Locations").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
+                if(e != null){
+                    Log.d(TAG,"Error: "+ e.getMessage());
+                }
+                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    if(doc.getDocument().getData() != null){
+                        LocationModel c = doc.getDocument().toObject(LocationModel.class);
+                        Log.d(TAG,"Datas_loc: "+c.getLocationId());
+                    } else {
+                        Log.d(TAG,"Error happen");
+                    }
+                }
+            }
+
+        });
+    }
+
+    //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 //        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
 //            return;
@@ -242,7 +279,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
@@ -262,66 +299,211 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        mMap.setOnMyLocationClickListener(this);
 
         Intent intent = getIntent();
-        Double b = intent.getExtras().getDouble("lon");
-        Double a = intent.getExtras().getDouble("la");
-        String fname = intent.getExtras().getString("fName");
-        String lname = intent.getExtras().getString("lName");
-        String img = intent.getExtras().getString("img");
+        if(intent != null){
+            final Double b = intent.getExtras().getDouble("lon");
+            final Double a = intent.getExtras().getDouble("la");
+            String fname = intent.getExtras().getString("fName");
+            String lname = intent.getExtras().getString("lName");
+            final String img = intent.getExtras().getString("img");
+            final String fullName = fname +" "+ lname;
 
-        final String cat = intent.getExtras().getString("category");
-        String fullName = fname +" "+ lname;
+            final String cat = intent.getExtras().getString("category");
+        } else {
+            firebaseFirestore.collection("Locations").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
+                    if(e != null){
+                        Log.d(TAG,"Error: "+ e.getMessage());
+                    }
+                    for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                        if(doc.getDocument().getData() != null){
+                            LocationModel c = doc.getDocument().toObject(LocationModel.class);
+                            Log.d(TAG,"Datas_loc: "+c.getLocationId());
 
-//        mMap = googleMap;
-        mMap = Tools.configActivityMaps(googleMap);
-        // Add a marker in Sydney and move the camera
-        LatLng eth = new LatLng(a, b);
+                            mMap = googleMap;
+                            mMap = Tools.configActivityMaps(googleMap);
+                            // Add a marker in Sydney and move the camera
 
-//        mMap.addMarker(new MarkerOptions().position(eth).title("Marker in Addis abeba,Ethiopia"));
-        MarkerOptions markerOptions = new MarkerOptions().position(eth);
-        mMap.addMarker(markerOptions);
-        mMap.moveCamera(zoomingLocation());
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(eth));
-        String loca = markerOptions.getPosition().toString();
-        List<Address> addresses;
-        geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            addresses = geocoder.getFromLocation(a, b, 2);
+                            Double lt = c.getLocation().getLatitude();
+                            Double lg = c.getLocation().getLongitude();
+                            LatLng eth = new LatLng(lt, lg);
 
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
-            String state = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
-            String postalCode = addresses.get(0).getPostalCode();
-            String postalCode2 = addresses.get(0).getSubAdminArea();
-            String knownName = addresses.get(1).getFeatureName(); // Only if available else return NULL
-            locationName.setText(address);
-            add.setText(knownName);
-        } catch (IOException e) {
-            e.printStackTrace();
+                            MarkerOptions markerOptions = new MarkerOptions().position(eth).title("service provider");
+                            mMap.addMarker(markerOptions);
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(eth));
+                            String loca = markerOptions.getPosition().toString();
+                            List<Address> addresses;
+                            geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                            try {
+                                addresses = geocoder.getFromLocation(lt, lg, 2);
+
+                                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                String city = addresses.get(0).getLocality();
+                                String state = addresses.get(0).getAdminArea();
+                                String country = addresses.get(0).getCountryName();
+                                String postalCode = addresses.get(0).getPostalCode();
+                                String postalCode2 = addresses.get(0).getSubAdminArea();
+                                String knownName = addresses.get(1).getFeatureName(); // Only if available else return NULL
+//                                locationName.setText(address);
+//                                add.setText(knownName);
+
+//                                name.setText(fullName);
+//                                Picasso.get().load(img).into(pro);
+                                Distance.setText(loca);
+                                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                                        try {
+                                            mMap.animateCamera(zoomingLocation());
+                                        } catch (Exception e) {
+                                        }
+                                        return true;
+                                    }
+                                });
+                            } catch (IOException ie) {
+                                ie.printStackTrace();
+                            }
+                        } else {
+                            Log.d(TAG,"Error happen");
+                        }
+                    }
+                }
+
+            });
         }
 
 
-        name.setText(fullName);
-        Picasso.get().load(img).into(pro);
-        Distance.setText(loca);
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-                try {
-                    mMap.animateCamera(zoomingLocation());
-                } catch (Exception e) {
-                }
-                return true;
-            }
-        });
+        //query
+//        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("Service_Providers").addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                if(e != null){
+//                    Log.d(TAG,"Error: "+ e.getMessage());
+//                }
+//                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+//                    if(doc.getType() == DocumentChange.Type.ADDED){
+//                        final GeoPoint location = doc.getDocument().getGeoPoint("location");
+//                        final String idd = doc.getDocument().getString("userID");
+//                        final String work = doc.getDocument().getString("working_area");
+//
+//                        if(cat.equals(work)){
+//                            Log.d(TAG,"working name: "+ work);
+//                            db.collection("Users").document(idd).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+////                                    GeoPoint location = documentSnapshot.getGeoPoint("location");
+//                                    mMap = googleMap;
+//                                    mMap = Tools.configActivityMaps(googleMap);
+//                                    // Add a marker in Sydney and move the camera
+//                                    Double lt = location.getLatitude();
+//                                    Double lg = location.getLongitude();
+//                                    LatLng eth = new LatLng(lt, lg);
+//
+////        mMap.addMarker(new MarkerOptions().position(eth).title("Marker in Addis abeba,Ethiopia"));
+//                                    MarkerOptions markerOptions = new MarkerOptions().position(eth);
+//                                    mMap.addMarker(markerOptions);
+//                                    mMap.moveCamera(zoomingLocation());
+////        mMap.moveCamera(CameraUpdateFactory.newLatLng(eth));
+//                                    String loca = markerOptions.getPosition().toString();
+//                                    List<Address> addresses;
+//                                    geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+//                                    try {
+//                                        addresses = geocoder.getFromLocation(lt, lg, 2);
+//
+//                                        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//                                        String city = addresses.get(0).getLocality();
+//                                        String state = addresses.get(0).getAdminArea();
+//                                        String country = addresses.get(0).getCountryName();
+//                                        String postalCode = addresses.get(0).getPostalCode();
+//                                        String postalCode2 = addresses.get(0).getSubAdminArea();
+//                                        String knownName = addresses.get(1).getFeatureName(); // Only if available else return NULL
+//                                        locationName.setText(address);
+//                                        add.setText(knownName);
+//
+//                                        name.setText(fullName);
+//                                        Picasso.get().load(img).into(pro);
+//                                        Distance.setText(loca);
+//                                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                                            @Override
+//                                            public boolean onMarkerClick(Marker marker) {
+//                                                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//
+//                                                try {
+//                                                    mMap.animateCamera(zoomingLocation());
+//                                                } catch (Exception e) {
+//                                                }
+//                                                return true;
+//                                            }
+//                                        });
+//                                    } catch (IOException e) {
+//                                        e.printStackTrace();
+//                                    }
+//
+//                                }
+//                            });
+//                        } else {
+//                            mMap = googleMap;
+//                            mMap = Tools.configActivityMaps(googleMap);
+//                            // Add a marker in Sydney and move the camera
+//                            LatLng eth = new LatLng(a, b);
+//
+////        mMap.addMarker(new MarkerOptions().position(eth).title("Marker in Addis abeba,Ethiopia"));
+//                            MarkerOptions markerOptions = new MarkerOptions().position(eth);
+//                            mMap.addMarker(markerOptions);
+//                            mMap.moveCamera(zoomingLocation());
+////        mMap.moveCamera(CameraUpdateFactory.newLatLng(eth));
+//                            String loca = markerOptions.getPosition().toString();
+//                            List<Address> addresses;
+//                            geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+//                            try {
+//                                addresses = geocoder.getFromLocation(a, b, 2);
+//
+//                                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//                                String city = addresses.get(0).getLocality();
+//                                String state = addresses.get(0).getAdminArea();
+//                                String country = addresses.get(0).getCountryName();
+//                                String postalCode = addresses.get(0).getPostalCode();
+//                                String postalCode2 = addresses.get(0).getSubAdminArea();
+//                                String knownName = addresses.get(1).getFeatureName(); // Only if available else return NULL
+//                                locationName.setText(address);
+//                                add.setText(knownName);
+//
+//
+//                                name.setText(fullName);
+//                                Picasso.get().load(img).into(pro);
+//                                Distance.setText(loca);
+//                                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                                    @Override
+//                                    public boolean onMarkerClick(Marker marker) {
+//                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//
+//                                        try {
+//                                            mMap.animateCamera(zoomingLocation());
+//                                        } catch (Exception e) {
+//                                        }
+//                                        return true;
+//                                    }
+//                                });
+//                            } catch (IOException ei) {
+//                                ei.printStackTrace();
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        });
+        //end query
+
     }
     private CameraUpdate zoomingLocation() {
         Intent intent = getIntent();
         Double b = intent.getExtras().getDouble("lon");
         Double a = intent.getExtras().getDouble("la");
-        return CameraUpdateFactory.newLatLngZoom(new LatLng(a,b), 43);
+        return CameraUpdateFactory.newLatLngZoom(new LatLng(9.035466, 38.752631), 43);
     }
 
     @Override
@@ -336,4 +518,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // (the camera animates to the user's current position).
         return false;
     }
+
 }

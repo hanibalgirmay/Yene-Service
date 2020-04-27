@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.DatePickerDialog;
@@ -12,6 +14,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,11 +30,23 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.yeneservice.Adapters.ReviewsAdapter;
+import com.example.yeneservice.Adapters.ViewPageAdapter;
+import com.example.yeneservice.Models.ReviewsModel;
+import com.example.yeneservice.PagesFragment.AppointementFragment;
+import com.example.yeneservice.PagesFragment.CarFragment;
+import com.example.yeneservice.Users.ShareServiceProviderProfileActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -51,6 +66,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,6 +74,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,6 +85,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 
 public class ServiceProviderProfileActivity extends AppCompatActivity implements OnMapReadyCallback{ //implements OnMapReadyCallback
 
@@ -75,6 +94,7 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
     private static final String TAG = MapsActivity.class.getSimpleName();
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    RecyclerView recyclerView;
     TextView name,catag,bio,t,da,appoint_desc;
     ImageView ver,profile;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -83,6 +103,10 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
     String user;
     FirebaseAuth auth;
     Spinner spinner;
+    List<ReviewsModel> lstBook ;
+    ReviewsAdapter reviewAdapter;
+    RatingBar total_rate;
+    boolean favorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +135,7 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
 
         initComponent();
 
+        profile = findViewById(R.id.myPic);
         name = findViewById(R.id.fullName);
         catag = findViewById(R.id.category);
         bio = findViewById(R.id.about_me);
@@ -123,6 +148,11 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
         btn_tim = findViewById(R.id.dialog_bt_time);
         btn_submit = findViewById(R.id.appoint);
         spinner = findViewById(R.id.service_spinner);
+
+        total_rate = findViewById(R.id.ratingBar);
+//        display = rootView.findViewById(R.id.display_rate);
+        recyclerView = findViewById(R.id.review_recycler);
+        recyclerView.setHasFixedSize(true);
         //end
 
         btn_date.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +177,7 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
             }
         });
 
-
+        //
         c = findViewById(R.id.view_map);
         // Recieve data
         Intent intent = getIntent();
@@ -157,31 +187,35 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
         final String work = intent.getExtras().getString("working_area");
         final String abt = intent.getExtras().getString("about_me");
         final String img = intent.getExtras().getString("img");
-        final String uId = intent.getExtras().getString("userID");
+        final String uId = intent.getExtras().getString("providerID");
 
         final Double lg = intent.getExtras().getDouble("long");
         final Double lat = intent.getExtras().getDouble("lat");
 
+        //load fav
+//        loadFav(uId);
 
+        Picasso.get().load(img).placeholder(R.drawable.businessman_profile_cartoon_removebg).into(profile);
+        ImageView bg = findViewById(R.id.t);
+        //background blur
+        com.bumptech.glide.load.MultiTransformation<Bitmap> multiTransformation = new MultiTransformation<>(new BlurTransformation(25, 3), new CenterCrop());
+        Glide.with(this).load(img)
+                .apply(RequestOptions.bitmapTransform(multiTransformation))
+                .into(bg);
         Toast.makeText(this, "doc"+ docId, Toast.LENGTH_SHORT).show();
-        //spinner data from firebase load
-        firebaseFirestore.collection("Services_List/"+ docId+ "/services").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if(e != null){
-                    Log.d(TAG,"Error: "+ e.getMessage());
-                }
-                final List<String> areas = new ArrayList<String>();
-                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-                    String o = doc.getDocument().getData().toString();
-                    areas.add(o);
-                }
-                ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(ServiceProviderProfileActivity.this, android.R.layout.simple_spinner_item, areas);
-                areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(areasAdapter);
-            }
-        });
-        //end spinner
+
+        //---------------spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.priority, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        //-----------------------------end spinner------------------------
+
+        loadReviews(uId);
+
         c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,18 +232,85 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
         name.setText(fname+ " "+ lname);
         catag.setText(work);
         bio.setText(abt);
-//        tabLayout = findViewById(R.id.tanlayoutId);
-//        viewPager = findViewById(R.id.viewpagerId);
+    }
 
-//        SearchFragment frag1 = new SearchFragment();
-//        AppointementFragment frag2 = new AppointementFragment();
-//        ViewPageAdapter myadapter = new ViewPageAdapter(getSupportFragmentManager());
+    private void loadFav(String uid) {
+        firebaseFirestore.collection("Users").document(user)
+                .collection("Favorite").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot result = task.getResult();
+                    if(result != null && result.exists()){
+                        MenuItem item = null;
 
-//        myadapter.addFragment(frag1, "Reviews");
-//        myadapter.addFragment(frag2, "Information");
+                    } else{
 
-//        viewPager.setAdapter(myadapter);
-//        tabLayout.setupWithViewPager(viewPager);
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadReviews(final String uId) {
+        lstBook = new ArrayList<>();
+        final ReviewsAdapter reviewAdapter = new ReviewsAdapter(this, lstBook);
+        recyclerView.setAdapter(reviewAdapter);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(reviewAdapter);
+
+        firebaseFirestore.collection("Reviews").orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if(e != null){
+                    Log.d(TAG,"Error: "+ e.getMessage());
+                }
+                final float[] total = {0};
+                final float[] count = {0};
+                final float[] average = new float[1];
+
+                for(DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                    if(doc.getType() == DocumentChange.Type.ADDED){
+                        String review_id = doc.getDocument().getString("reviewID");
+                        String provider_id = doc.getDocument().getString("service_provider_id");
+                        final String cont = doc.getDocument().getString("content");
+                        Timestamp timestamp = doc.getDocument().getTimestamp("timestamp");
+                        final int rate = Integer.parseInt(String.valueOf(doc.getDocument().getLong("rate")));
+
+                        if(provider_id.equals(uId)){
+                            firebaseFirestore.collection("Users").document(review_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        String fname = task.getResult().getString("firstName");
+                                        String image = task.getResult().getString("image");
+
+                                        total[0] = total[0] + rate;
+                                        count[0] = count[0] + 1;
+                                        average[0] = total[0] / count[0];
+                                        total_rate.setRating(average[0]);
+                                        String d = average[0] + "/"+ 5;
+
+                                        Log.d(TAG,"review data: "+ cont);
+                                        lstBook.add(new ReviewsModel(fname,cont,image,rate));
+                                        reviewAdapter.notifyDataSetChanged();
+//                                        lstBook.add(new AppointModel(fname,image,uid,serviceId,desc,date,time));
+//                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(ServiceProviderProfileActivity.this, "(FIRESTORE Retrieve Error) : " + error, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+//
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void handleTimeButton() {
@@ -238,6 +339,7 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
         final String description = appoint_desc.getText().toString().trim();
         final String dateAppoint = da.getText().toString().trim();
         final String timeAppoint = t.getText().toString().trim();
+        String priority = spinner.getSelectedItem().toString().trim();
 
         if (TextUtils.isEmpty(description)) {
             appoint_desc.setError("Enter problem description!");
@@ -248,21 +350,21 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
 //            progressBar.setVisibility(View.VISIBLE);
 //            user = auth.getCurrentUser().getUid();
             Intent intent = getIntent();
-            String idd = intent.getExtras().getString("userID");
+            String idd = intent.getExtras().getString("providerID");
             String nm = intent.getExtras().getString("firstName");
 
             Map<String, Object> appointMap = new HashMap<>();
-            appointMap.put("appointedID", user);
+            appointMap.put("jobAppointedUserID", user);
             appointMap.put("service_provider_id", idd);
-            appointMap.put("description", description);
+            appointMap.put("problem_description", description);
             appointMap.put("date", dateAppoint);
             appointMap.put("time", timeAppoint);
-            appointMap.put("timestamp", FieldValue.serverTimestamp());
-            appointMap.put("isAccept", false);
+            appointMap.put("timestamp", Timestamp.now());
+            appointMap.put("isAccepted", false);
+            appointMap.put("priority", priority);
 
-//            appointMap.put("createdAt", date.toString());
-            final DocumentReference ref = firebaseFirestore.collection("Appointments").document();
-            firebaseFirestore.collection("Appointments").document().set(appointMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            final DocumentReference ref = firebaseFirestore.collection("JobsAppointments").document();
+            firebaseFirestore.collection("JobsRequests").document().set(appointMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
@@ -270,7 +372,7 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
 //                        Toast.makeText(ServiceProviderInfoActivity.this, "The user Settings are updated.", Toast.LENGTH_LONG).show();
                         new SweetAlertDialog(ServiceProviderProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                                 .setTitleText("Good job!")
-                                .setContentText("You Appointed Successfully!")
+                                .setContentText("You request appointment Successfully!")
                                 .show();
 
                         Intent mainIntent = new Intent(ServiceProviderProfileActivity.this, HomeActivity.class);
@@ -285,11 +387,14 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
                 }
             });
 
-            Map<String, Object> notficationMessage = new HashMap<>();
-            notficationMessage.put("messages",description);
-            notficationMessage.put("from", user);
+            Map<String, Object> notificationMessage = new HashMap<>();
+            String msg = "There is New Job request, "+description;
+            notificationMessage.put("messages",msg);
+            notificationMessage.put("to",idd);
+            notificationMessage.put("from", user);
+            notificationMessage.put("timestamp", Timestamp.now());
 
-            firebaseFirestore.collection("Users/" + idd + "/Notifications").add(notficationMessage).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            firebaseFirestore.collection("Notifications").add(notificationMessage).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     Toast.makeText(ServiceProviderProfileActivity.this, "notification sent", Toast.LENGTH_SHORT).show();
@@ -375,26 +480,13 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         final Double lg = intent.getExtras().getDouble("long");
         final Double lat = intent.getExtras().getDouble("lat");
+        final String fname = intent.getExtras().getString("firstName");
 //        final Double lt = intent.getExtras().getDouble("lat");
-
-        //cusrom
-//        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-//        Bitmap bmp = Bitmap.createBitmap(100, 100, conf);
-//        Canvas canvas1 = new Canvas(bmp);
-
-        // paint defines the text color, stroke width and size
-//        Paint color = new Paint();
-//        color.setTextSize(35);
-//        color.setColor(Color.BLACK);
-
-        // modify canvas
-//        canvas1.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.businessman_profile_cartoon_removebg), 0,0, color);
-//        canvas1.drawText("Me Name!", 30, 40, color);
 
         // Add a marker in Sydney and move the camera
         LatLng eth = new LatLng(lat, lg);
         googleMap.addMarker(new MarkerOptions().position(eth)
-                .title("Marker in AA,my place"));
+                .title(fname));
         mMap.setMinZoomPreference(6.0f);
 //        mMap.addMarker(new MarkerOptions().position(eth).title("Marker in Addis abeba,Ethiopia").icon(BitmapDescriptorFactory.fromBitmap(bmp)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eth));
@@ -426,22 +518,30 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
             return true;
         }
         else if(id == R.id.provider_save){
-            boolean favorite = false;
-//            if(favorite){
-                Intent intent = getIntent();
-                String idd = intent.getExtras().getString("userID");
-                String Docid = intent.getExtras().getString("documentID");
 
-                addToFav(idd,Docid);
+            if(favorite){
+                Intent intent = getIntent();
+                String idd = intent.getExtras().getString("providerID");
+
+                addToFav(idd);
                 Toast.makeText(this, "Item added to wishlist."+id, Toast.LENGTH_SHORT).show();
-//            } else {
+            } else {
 //
-//            }
+            }
+        }
+        else if (id == R.id.provider_qr){
+            Intent o = new Intent(ServiceProviderProfileActivity.this, ShareServiceProviderProfileActivity.class);
+            Intent intent = getIntent();
+            String idd = intent.getExtras().getString("providerID");
+            String Docid = intent.getExtras().getString("documentID");
+            o.putExtra("user",idd);
+            o.putExtra("doc", Docid);
+            startActivity(o);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void addToFav(String idd, String docid) {
+    private void addToFav(String idd) {
         final FirebaseAuth auth;
         auth = FirebaseAuth.getInstance();
         final FirebaseFirestore firebaseFirestore;
@@ -450,12 +550,15 @@ public class ServiceProviderProfileActivity extends AppCompatActivity implements
         Timestamp timestamp = Timestamp.now();
 
         Map<String, Object> favMap = new HashMap<>();
-        favMap.put("documentID", idd);
+        favMap.put("providerID", idd);
         favMap.put("timestamp", timestamp);
-        firebaseFirestore.collection("Users/"+auth.getUid()+"/Favorite").add(favMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        firebaseFirestore.collection("Users").document(auth.getUid())
+                .collection("Favorite").document(idd).set(favMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(ServiceProviderProfileActivity.this, "added to wishList", Toast.LENGTH_SHORT).show();
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(ServiceProviderProfileActivity.this, "added to wishList", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
         ViewPageAdapter myadapter = new ViewPageAdapter(getChildFragmentManager());
 //        add fragment
         myadapter.addFragment(frag1, "House");
-        myadapter.addFragment(frag2, "Transportation");
+        myadapter.addFragment(frag2, "Transport");
         myadapter.addFragment(frag3, "Car");
 //        setup adapter
         viewPager.setAdapter(myadapter);
