@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:background="@color/colorWhite"
+    tools:context=".activities.PaymentActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cardsLayout"
+                android:fitsSystemWindows="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <!--        <include layout="@layout/payment_card" />-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/accountLayout"
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="30dp"
+                    app:boxStrokeWidth="2dp"
+                    app:boxStrokeColor="@color/colorBlack"
+                    app:boxBackgroundColor="@color/colorCard"
+                    app:errorEnabled="true"
+                    app:counterEnabled="true"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/accountNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:keyboardNavigationCluster="true"
+                        app:textInputLayoutFocusedRectEnabled="true"
+                        android:maxLength="14"
+                        android:hint="Account code"
+                        tools:targetApi="o" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/secretLayout"
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="30dp"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/accountSecretCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Account codeUnique code"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cceLayout"
+                        android:layout_width="0dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginStart="30dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginTop="30dp"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/accountCCECode"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:maxLength="5"
+                            android:hint="CCE code"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/expireLayout"
+                        android:layout_width="0dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_marginStart="30dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginTop="30dp"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/accountExpire"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="date"
+                            android:hint="Expire Date"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/curved"
+        android:gravity="bottom"
+        android:paddingBottom="15dp"
+        android:layout_gravity="bottom">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Payment For Service for"
+            android:textSize="20sp"
+            android:paddingTop="20dp"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="3"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="start"
+                    android:src="@drawable/placeholder_profile"
+                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_width="2dp"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="320.00 birr"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="end|center"
+                android:layout_gravity="center"
+                android:paddingEnd="30dp"
+                android:paddingStart="0dp"
+                android:layout_weight="1">
+                <ImageButton
+                    android:id="@+id/pay"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:hapticFeedbackEnabled="true"
+                    android:background="@drawable/circle_btn"
+                    android:tint="@color/colorBlack"
+                    android:src="@drawable/ic_arrow_forward_black_24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="payment btn" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

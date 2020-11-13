@@ -1,0 +1,171 @@
+{
+  "project_info": {
+    "project_number": "885935246711",
+    "firebase_url": "https://yene-service.firebaseio.com",
+    "project_id": "yene-service",
+    "storage_bucket": "yene-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885935246711:android:dd6b995ec571068cca6572",
+        "android_client_info": {
+          "package_name": "com.example.yeneservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885935246711-bktmcnhg6nsks8ad5riojlm33b4rdhe3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yeneservice",
+            "certificate_hash": "b2cb940a3b0bf686bcbae7a7c4ed6e3557f1bedc"
+          }
+        },
+        {
+          "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR1cj7_E87SDj9weVra0Dgpajob5szuI4"
+        },
+        {
+          "current_key": "AIzaSyBOczmolSP8zWCxESpPC_diT94kndQGoJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885935246711:android:0c792427b5ddad74ca6572",
+        "android_client_info": {
+          "package_name": "com.hanibalg.yene_services"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885935246711-frb68e91uuds72u0sjjpd91pjocejdjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hanibalg.yene_services",
+            "certificate_hash": "9b94afda6d3800122067385b3c125a10f7557ab4"
+          }
+        },
+        {
+          "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR1cj7_E87SDj9weVra0Dgpajob5szuI4"
+        },
+        {
+          "current_key": "AIzaSyBOczmolSP8zWCxESpPC_diT94kndQGoJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885935246711:android:e1c63b3ab6768cadca6572",
+        "android_client_info": {
+          "package_name": "com.hanibalg.yeneservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885935246711-petvbq1mvj57ul1p66ouh590bkmi1ma6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hanibalg.yeneservice",
+            "certificate_hash": "b2cb940a3b0bf686bcbae7a7c4ed6e3557f1bedc"
+          }
+        },
+        {
+          "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR1cj7_E87SDj9weVra0Dgpajob5szuI4"
+        },
+        {
+          "current_key": "AIzaSyBOczmolSP8zWCxESpPC_diT94kndQGoJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885935246711:android:0339f01f332724b5ca6572",
+        "android_client_info": {
+          "package_name": "com.project.yene_service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885935246711-uu147bcvi5rk97ijhoc4fckrll57c37o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.yene_service",
+            "certificate_hash": "9b94afda6d3800122067385b3c125a10f7557ab4"
+          }
+        },
+        {
+          "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR1cj7_E87SDj9weVra0Dgpajob5szuI4"
+        },
+        {
+          "current_key": "AIzaSyBOczmolSP8zWCxESpPC_diT94kndQGoJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885935246711-1vtu41mh7r6f2kpcrpi30aeudocvhglq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

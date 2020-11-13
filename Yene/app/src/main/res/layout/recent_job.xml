@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.hdodenhof.circleimageview.CircleImageView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:strokeColor="@color/blue"
+    android:layout_margin="-30dp"
+    android:id="@+id/image"
+    android:forceHasOverlappingRendering="true"
+    app:shapeAppearance="@style/ShapeAppearanceOverlay.Cut.han"
+    android:src="@drawable/placeholder_profile"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:targetApi="n" />

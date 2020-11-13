@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="screen">#1B2A3B</color>
+
+    <color name="mainBG">#E28D8D</color>
+    <color name="green">#21D66A</color>
+    <color name="blue">#001EBB</color>
+    <color name="splashActive">#E5F410</color>
+    <color name="colorBlack">#070707</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="lightBlue">#3A55E0</color>
+    <color name="colorBlackDark">#77817D</color>
+    <color name="colorCard">#E0E0E0</color>
+    <!--    dots-->
+    <array name="array_dot_active">
+        <item>@color/blue</item>
+        <item>@color/green</item>
+        <item>@color/colorAccent</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/splashActive</item>
+    </array>
+<!--    end-->
+</resources>

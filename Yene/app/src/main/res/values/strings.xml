@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Yene Service</string>
+    <string name="next">Next</string>
+    <string name="start">Start</string>
+    <string name="skip">Skip</string>
+    <string name="startText">Please login by using given credentials and enjoy our services</string>
+    <string name="dummy_text_appoint">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias deleniti dicta eius iste magnam nesciunt nihil non nostrum odit placeat quas repellendus velit, voluptatum?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_provider_maps" translatable="false">Map</string>
+    <string name="location_permission_denied"><![CDATA[This sample requires location permission to enable the \\\'my location\\\' layer. Please try again and grant access to use the location.\\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \\\'Google Maps API Demos\\\']]></string>
+    <string name="permission_required_toast">Location permission is required for this demo.</string>
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \\\'my location\\\' feature, which shows your current location on the map.</string>
+    <string name="minimum_password">password should be min 6</string>
+    <string name="auth_failed">Authentication error</string>
+
+    <!--    drawer-->
+    <string name="openDrawerNav">Navigation Drawer open</string>
+    <string name="closeDrawerNav">Navigation Drawer close</string>
+    <string name="graph">Graph</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+    <string name="pages">pages</string>
+    <string name="setting">Settings</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="report">Report</string>
+    <string name="question">Ask Question</string>
+    <string name="logout">Log out</string>
+    <string name="msg">Message</string>
+    <string name="notification">Notification</string>
+    <string name="home">Home</string>
+    <string name="appointed">Appointed</string>
+    <string name="fav">Favourite</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="continue_with">Continue with</string>
+    <string name="register">Register</string>
+    <string name="fname">First Name</string>
+    <string name="lname">Last Name</string>
+    <string name="phone">Phone Number</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="our_services">Our Services</string>
+    <string name="tranding_service">Tranding Services</string>
+    <string name="pay">Pay</string>
+    <string name="forgot">Send</string>
+    <string name="ForgotPassword">Forgot Password</string>
+    <string name="add">Post</string>
+    <string name="accept">Accept</string>
+    <string name="GPSAlertDialogTitle">Enable Gps location</string>
+</resources>

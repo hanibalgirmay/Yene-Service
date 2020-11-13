@@ -1,0 +1,60 @@
+package com.hanibalg.yeneservice.activities;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.hanibalg.yeneservice.DashBoardActivity;
+import com.hanibalg.yeneservice.R;
+import com.hanibalg.yeneservice.Users.RegisterActivity;
+
+public class SocialActivity extends AppCompatActivity implements View.OnClickListener {
+
+    ImageButton btnTwitter,btnFacebook,btnLinkdn;
+    AppCompatButton logBtn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_social);
+
+        //init
+        logBtn = findViewById(R.id.phone_btn);
+        TextView textView = findViewById(R.id.nreUser);
+//        btnFacebook.setOnClickListener(this);
+//        btnLinkdn.setOnClickListener(this);
+//        btnTwitter.setOnClickListener(this);
+        logBtn.setOnClickListener(this);
+        textView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+//            case R.id.twitter_button:
+//                Toast.makeText(this, "twitter button clicked", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//            case R.id.facebook_button:
+//                Toast.makeText(this, "facebook button clicked", Toast.LENGTH_SHORT).show();
+//                break;
+//
+            case R.id.nreUser:
+//                Toast.makeText(this, "Register button clicked", Toast.LENGTH_SHORT).show();
+                Intent r = new Intent(SocialActivity.this, RegisterActivity.class);
+                startActivity(r);
+                break;
+            case R.id.phone_btn:
+                Intent s = new Intent(SocialActivity.this, DashBoardActivity.class);
+                startActivity(s);
+                break;
+        }
+    }
+}

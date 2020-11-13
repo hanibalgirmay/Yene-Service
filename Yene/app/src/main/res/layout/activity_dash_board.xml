@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".DashBoardActivity"
+    android:background="@color/colorWhite"
+    android:id="@+id/drawler"
+    >
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        >
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_height="150dp">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        app:titleTextColor="@color/colorBlack"
+                        app:navigationIcon="@drawable/ic_menu_black_24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="?actionBarSize"/>
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textSize="30sp"-->
+<!--                        android:textColor="@android:color/black"-->
+<!--                        android:layout_marginStart="20dp"-->
+<!--                        android:text="Explore"/>-->
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="ajksdhkjdsh kajdkas hdk hsakdj hkajsd kj adk kas djas dhkj"-->
+<!--                        android:layout_marginStart="20dp"-->
+<!--                        />-->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/searchLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:cardElevation="17dp"
+                        android:elevation="17dp"
+                        app:cardCornerRadius="4dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/searchableText"
+                                android:layout_gravity="center"
+                                android:gravity="start|center"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:hint="Search services..."
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_search_black_24dp"
+                                android:drawablePadding="20dp"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_container"
+            android:layout_width="match_parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Cut.han"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_height="match_parent"/>
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:itemIconTint="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/menu_bottom_navigation"
+            android:outlineSpotShadowColor="@color/colorAccent"
+            app:backgroundTint="@color/colorWhite"
+            app:morphCornerRadius="128dp"
+            app:itemHorizontalTranslationEnabled="true"
+            app:itemRippleColor="@color/colorAccent"
+            app:itemTextColor="@color/colorBlack"
+            app:morphItemRadius="63dp"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+            app:morphVerticalOffset="18dp"
+            style="@style/Widget.MaterialComponents.BottomNavigationView"
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_sidebar"
+        android:layout_width="wrap_content"
+        app:menu="@menu/drawer_menu"
+        app:itemShapeInsetBottom="@dimen/default_gap"
+        android:background="@color/colorWhite"
+        app:itemTextColor="@color/colorBlack"
+        android:padding="10dp"
+        app:itemIconPadding="10dp"
+        app:itemShapeAppearanceOverlay="@style/TextAppearance.AppCompat"
+        app:headerLayout="@layout/drawer_header"
+        android:layout_gravity="start"
+        android:layout_height="match_parent"/>
+</androidx.drawerlayout.widget.DrawerLayout>

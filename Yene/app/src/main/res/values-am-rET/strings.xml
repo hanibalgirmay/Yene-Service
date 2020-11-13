@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Yene Service</string>
+    <string name="next">ቀጥሎ</string>
+    <string name="start">ጀምር</string>
+    <string name="skip">ዝለል</string>
+    <string name="startText">የተሰጡ ማስረጃዎችን በመጠቀም እባክዎ በመለያ ይግቡ እና በአገልግሎቶቻችን ይደሰቱ</string>
+    <string name="dummy_text_appoint">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias deleniti dicta eius iste magnam nesciunt nihil non nostrum odit placeat quas repellendus velit, voluptatum?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">ሰላም ባዶ page</string>
+    <string name="title_activity_provider_maps" translatable="false">Map</string>
+    <string name="location_permission_denied"><![CDATA[ይህ ናሙና ይህንን ለማንቃት የአካባቢ ፈቃድ ይጠይቃል \\\'my location\\\' layer. እባክዎ እንደገና ይሞክሩ እና አካባቢውን ለመጠቀም መዳረሻ ይስጡ.\\nፈቃዱ በቋሚነት ከተከለከለ, ከስርዓት ቅንብሮች ሊነቃ ይችላል &gt; Apps &gt; \\\'Google Maps API Demos\\\']]></string>
+    <string name="permission_required_toast">ለዚህ ማሳያ የአካባቢ ፈቃድ ያስፈልጋል.</string>
+    <string name="permission_rationale_location">ባህሪውን ለማሳየት የአካባቢ አገልግሎቱ መዳረሻ ያስፈልጋል \\\'my location\\\', የአሁኑን ቦታዎን በካርታው ላይ የሚያሳይ.</string>
+    <string name="minimum_password">የይለፍ ቃል ደቂቃ 6 መሆን አለበት</string>
+    <string name="auth_failed">የማረጋገጫ ስህተት</string>
+
+    <!--    drawer-->
+    <string name="openDrawerNav">የአሰሳ መሳቢያ ይከፈታል</string>
+    <string name="closeDrawerNav">የአሰሳ መሳቢያ ይዘጋል</string>
+    <string name="graph">ግራፍ</string>
+    <string name="history">ታሪክ</string>
+    <string name="profile">መገለጫ</string>
+    <string name="pages">ገጾች</string>
+    <string name="setting">ቅንብሮች</string>
+    <string name="rate_us">ደረጃ ይስጡን</string>
+    <string name="report">ሪፖርት</string>
+    <string name="question">ጥያቄን ይጠይቁ</string>
+    <string name="forgot">Send</string>
+    <string name="add">Post</string>
+    <string name="GPSAlertDialogTitle">Enable Gps location</string>
+
+</resources>

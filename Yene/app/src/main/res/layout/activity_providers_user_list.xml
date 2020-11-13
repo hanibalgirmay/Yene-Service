@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    tools:context=".activities.ProvidersUserListActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@android:color/darker_gray"
+        tools:ignore="MissingConstraints">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:fitsSystemWindows="true"
+            android:elevation="0dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:layout_height="match_parent"
+            tools:targetApi="lollipop">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_collapseMode="pin"
+                android:elevation="0dp"
+                android:hapticFeedbackEnabled="true"
+                android:fitsSystemWindows="true"
+                app:titleTextColor="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                tools:targetApi="lollipop" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/curved"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="0dp"
+            android:paddingTop="20dp"
+            android:orientation="vertical"
+            tools:targetApi="lollipop">
+            <Spinner
+                android:id="@+id/type"
+                android:layout_margin="20dp"
+                android:padding="15dp"
+                android:visibility="gone"
+                android:background="@drawable/style_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/sortBtn"
+                android:layout_width="wrap_content"
+                android:scaleType="fitCenter"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_filter_list_black_24dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_id"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+<!--            <include layout="@layout/card_provider_individual"/>-->
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/noServices"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view_list"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:lottie_rawRes="@raw/job_search"
+            app:lottie_loop="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ops.. there is no service provider at the moment we are working on that."
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
+            android:layout_marginTop="20sp"/>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extended_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/colorWhite"
+        android:layout_gravity="bottom|right"
+        style="?attr/extendedFloatingActionButtonStyle"
+        android:contentDescription="view provider on map"
+        android:text="map"
+        app:icon="@drawable/ic_map_black_24dp"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

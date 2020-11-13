@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/icons_new_job"
+        android:name="@string/home"
+        android:title="@string/home" />
+<!--    <item-->
+<!--        android:id="@+id/search"-->
+<!--        android:name="Search"-->
+<!--        android:icon="@drawable/ic_search_black_24dp"/>-->
+    <item
+        android:id="@+id/job"
+        android:icon="@drawable/icons_planner"
+        android:title="@string/appointed"
+        android:name="@string/appointed"/>
+    <item
+        android:id="@+id/favourite"
+        android:icon="@drawable/icons_heart"
+        android:title="@string/fav"
+        android:name="@string/fav"/>
+    <item
+        android:id="@+id/addPost"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="@string/add"
+        />
+    <item
+        android:icon="@drawable/icons_settings"
+        android:title="@string/setting"
+        android:name="@string/setting"/>
+</menu>

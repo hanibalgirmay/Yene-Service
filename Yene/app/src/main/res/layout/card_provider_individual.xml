@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:orientation="vertical"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content">-->
+
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/card_v"
+    android:layout_width="match_parent"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_height="80dp"
+    android:clickable="true"
+    android:elevation="8dp"
+    app:cardBackgroundColor="@color/colorCard"
+    android:clipChildren="false"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/colorBlack"
+    android:clipToPadding="true"
+    app:cardElevation="18dp"
+    android:layout_marginLeft="13dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="13dp"
+    android:layout_marginBottom="1dp"
+    android:focusable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <RelativeLayout
+            android:id="@+id/name_pro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/mainBG"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"/>
+
+            <LinearLayout
+                android:id="@+id/n"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:paddingEnd="6dp"
+                android:layout_toRightOf="@+id/profile_img"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:text="Full Name"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    android:id="@+id/area_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Electrcian"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="10sp"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <RatingBar
+                        android:id="@+id/rateBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:numStars="1"
+                        android:rating="5"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.2"
+                        android:layout_toRightOf="@+id/rateBar"
+                        android:textSize="13sp"
+                        android:layout_marginStart="3dp"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@+id/n"
+                android:foregroundGravity="center"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/icons_verified_account"
+                />
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+<!--</RelativeLayout>-->

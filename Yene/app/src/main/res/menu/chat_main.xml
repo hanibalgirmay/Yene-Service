@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".extra.MessageActivity">
+
+    <item
+        android:id="@+id/chat_call"
+        android:name="Phone"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_local_phone_black_24dp"
+        app:showAsAction="always" />
+
+
+<!--    <item-->
+<!--        android:id="@+id/chat_settings"-->
+<!--        android:name="Settings"-->
+<!--        android:orderInCategory="100"-->
+<!--        app:showAsAction="never"-->
+<!--        android:title="Settings" />-->
+<!--    <item-->
+<!--        android:id="@+id/chat_report"-->
+<!--        android:name="Report"-->
+<!--        android:orderInCategory="100"-->
+<!--        app:showAsAction="never"-->
+<!--        android:title="Report" />-->
+</menu>
