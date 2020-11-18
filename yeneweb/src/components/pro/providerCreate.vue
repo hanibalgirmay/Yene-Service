@@ -1,11 +1,11 @@
 <template>
     <div class="mt-3">
-    <form @submit.prevent="onUpdateForm">
+    <form @submit.prevent="onFormSubmit">
         <div class="row justify-content-center">
           <div class="col-lg-12">
             <div class="card bg-light">
               <div class="card-body">
-                <h3 class="font-weight-light mb-3">Update Provider Detail</h3>
+                <h3 class="font-weight-light mb-3">Register</h3>
 
                 <div class="form-row">
                   <section class="col-sm-4 form-group">
@@ -153,7 +153,7 @@
                     class="btn btn-primary"
                     type="submit"
                   >
-                    Update
+                    Register
                   </button>
                 </div>
               </div>
@@ -169,48 +169,51 @@
   </div>
 </template>
 
-
 <script>
 import db from "../../db.js";
 
-
-    export default {
-        data() {
-            return {
-                coordinates: {
-                    lat: 0,
-                    lng: 0
+export default {
+    data () {
+        return {
+            coordinates: {
+                lat: 0,
+                lng: 0
+            },
+            provider: {
                 },
-                provider: {
-                }
-            }
-        },
-        created() {
-
-            
-            let dbRef = db.collection('serviceProviders').doc(this.$route.params.id);
-            dbRef.get().then((doc) => {
-                this.provider = doc.data();
-            }).catch((error) => {
-                console.log(error)
-            }),
-            this.$getLocation({ })
-            .then(coordinates => {
-                this.coordinates = coordinates;
-            })
-            .catch(error => alert(error));
-        },
-        methods: {
-            onUpdateForm(event) {
+        }
+    },
+    created() {
+        this.$getLocation({ })
+        .then(coordinates => {
+            this.coordinates = coordinates;
+        })
+        .catch(error => alert(error));
+    },
+    methods: {
+            onFormSubmit(event) {  
                 event.preventDefault()
-                db.collection('serviceProviders').doc(this.$route.params.id)
-                .update(this.provider).then(() => {
-                    console.log("provider successfully updated!");
-                    this.$router.push('/plist')
+                db.collection('serviceProviders').add(this.provider).then(() => {
+                    alert("Catagory successfully created!");
+                    // const timestamp = Math.round(+new Date()/1000); unix time stamp
+                    var today = new Date();
+                    var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var timestamp = date+' '+time;
+                    this.provider.firstName = ''
+                    this.provider.lastName = ''
+                    this.provider.phoneNumber = ''
+                    this.provider.email = ''
+                    this.provider.city = ''
+                    this.provider.educationLevel = ""
+                    this.provider.experience = ''
+                    this.provider.aboutMe = ''
+                    this.catagory.timestamp = timestamp
+                
                 }).catch((error) => {
                     console.log(error);
                 });
             }
         }
-    }
+}
 </script>
