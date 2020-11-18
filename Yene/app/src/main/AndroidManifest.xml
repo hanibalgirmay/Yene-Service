@@ -26,6 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+	<activity android:name=".activities.QRProviderCodeActivity"></activity>
         <activity android:name=".activities.AllCatagoriesActivity"></activity>
         <activity android:name=".Users.EditProfileActivity" />
         <activity android:name=".activities.CalanderActivity" />
