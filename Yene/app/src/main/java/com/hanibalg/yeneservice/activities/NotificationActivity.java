@@ -37,38 +37,36 @@ public class NotificationActivity extends AppCompatActivity {
         reference = FirebaseFirestore.getInstance().collection("Users").document(User_id);
 
         //init variable
-        ViewPager viewPager = findViewById(R.id.notification_viewPage);
-        TabLayout tabLayout = findViewById(R.id.notification_tab);
+        //ViewPager viewPager = findViewById(R.id.notification_viewPage);
+        //TabLayout tabLayout = findViewById(R.id.notification_tab);
 
-        final MyNotificationFragment myFrag = new MyNotificationFragment();
-        final JobNotificationFragment jobNot = new JobNotificationFragment();
+        //final MyNotificationFragment myFrag = new MyNotificationFragment();
+        //final JobNotificationFragment jobNot = new JobNotificationFragment();
 
-        final ViewPageAdapter myadapter = new ViewPageAdapter(getSupportFragmentManager());
+        //final ViewPageAdapter myadapter = new ViewPageAdapter(getSupportFragmentManager());
         // setup adapter
 
-        reference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    boolean isProvider = documentSnapshot.getBoolean("isProvider");
-                    if(isProvider){
-                        tabLayout.setVisibility(View.VISIBLE);
-                        viewPager.setVisibility(View.VISIBLE);
-                        myadapter.addFragment(jobNot,"Received");
-                        myadapter.addFragment(myFrag,"Sent");
-                    } else {
-                        tabLayout.setVisibility(View.GONE);
-                        viewPager.setVisibility(View.GONE);
-                        loadFragment(new MyNotificationFragment());
-                    }
-                    // setup adapter
-                    viewPager.setAdapter(myadapter);
-                    tabLayout.setupWithViewPager(viewPager);
-                }
-            }
-        });
-
+//        reference.get().addOnSuccessListener(documentSnapshot -> {
+//            if(documentSnapshot.exists()){
+//                boolean isProvider = documentSnapshot.getBoolean("isProvider");
+//                if(isProvider){
+//                    tabLayout.setVisibility(View.VISIBLE);
+//                    viewPager.setVisibility(View.VISIBLE);
+//                    myadapter.addFragment(jobNot,"Received");
+//                    myadapter.addFragment(myFrag,"Sent");
+//                } else {
+//                    tabLayout.setVisibility(View.GONE);
+//                    viewPager.setVisibility(View.GONE);
+//                    loadFragment(new MyNotificationFragment());
+//                }
+//
+//            }
+//        });
+        //myadapter.addFragment(jobNot,"Received");
+        //myadapter.addFragment(myFrag,"Sent");
+        // setup adapter
+        //viewPager.setAdapter(myadapter);
+        //tabLayout.setupWithViewPager(viewPager);
     }
     /**
      * loading fragment into FrameLayout

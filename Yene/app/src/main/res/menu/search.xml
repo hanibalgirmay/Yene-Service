@@ -18,4 +18,8 @@
                 android:title="Descending"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/scan"
+        android:title="Scan"
+        android:icon="@drawable/ic_camera"/>
 </menu>

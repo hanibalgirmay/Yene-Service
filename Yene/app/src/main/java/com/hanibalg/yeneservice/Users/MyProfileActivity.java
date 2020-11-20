@@ -52,6 +52,7 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
     Uri selectedUriList = null;
     private TextInputLayout uInputLayout;
     private TextInputEditText uText;
+    private LinearLayout uPhone,uEmail,uCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +70,28 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
         fab2 = findViewById(R.id.fab2);
         aSwitch = findViewById(R.id.receveNews);
         myProfile = findViewById(R.id.profile);
+
+        LinearLayout pAbout = findViewById(R.id.provider_about);
+        CardView pInfo = findViewById(R.id.card_provider_info);
+
         TextView name = findViewById(R.id.fullname);
         TextView email = findViewById(R.id.email);
         TextView phone = findViewById(R.id.phone);
+        TextView em = findViewById(R.id.profile_email);
+        TextView fn = findViewById(R.id.profile_username);
+        TextView ph = findViewById(R.id.profile_phone);
+        TextView ct = findViewById(R.id.profile_city);
 
+//        uInputLayout = findViewById(R.id.userLayout);
+//        uText = findViewById(R.id.username);
         LinearLayout po = findViewById(R.id.cr);
-        uInputLayout = findViewById(R.id.userLayout);
-        uText = findViewById(R.id.username);
+        uPhone = findViewById(R.id.crr);
+        uEmail = findViewById(R.id.crrr);
+        uCity = findViewById(R.id.crrrr);
         po.setOnClickListener(this);
+        uPhone.setOnClickListener(this);
+        uEmail.setOnClickListener(this);
+        uCity.setOnClickListener(this);
 
         //animation
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
@@ -93,9 +108,21 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
                 UserModel userModel = documentSnapshot.toObject(UserModel.class);
                 String full_name = userModel.getFirstName() + " " + userModel.getLastName();
                 name.setText(full_name);
+                em.setText(userModel.getEmail());
+                ph.setText(userModel.getPhone());
+                fn.setText(full_name);
                 email.setText(userModel.getEmail());
+                ct.setText(userModel.getCity());
+                aSwitch.setChecked(userModel.getReceiveNews());
                 Picasso.get().load(userModel.getImage()).placeholder(R.drawable.placeholder_profile).into(myProfile);
-
+                boolean isProvider = userModel.getProvider();
+                if(isProvider){
+                    pAbout.setVisibility(View.VISIBLE);
+                    pInfo.setVisibility(View.VISIBLE);
+                }else{
+                    pAbout.setVisibility(View.GONE);
+                    pInfo.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -131,8 +158,25 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.cr:
-                String va = uText.getText().toString();
-                editMyProfile("Username",va);
+                TextView user = findViewById(R.id.profile_username);
+                String u = user.getText().toString();
+                editMyProfile("Full Name",u);
+                break;
+
+            case R.id.crr:
+                TextView ph = findViewById(R.id.profile_phone);
+                String p = ph.getText().toString();
+                editMyProfile("phone",p);
+                break;
+            case R.id.crrr:
+                TextView em = findViewById(R.id.profile_email);
+                String e = em.getText().toString();
+                editMyProfile("Email",e);
+                break;
+             case R.id.crrrr:
+                TextView ct = findViewById(R.id.profile_city);
+                String c = ct.getText().toString();
+                editMyProfile("city",c);
                 break;
             default:
                 break;

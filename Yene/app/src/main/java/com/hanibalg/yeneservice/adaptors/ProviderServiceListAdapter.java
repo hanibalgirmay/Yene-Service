@@ -78,8 +78,13 @@ public class ProviderServiceListAdapter extends RecyclerView.Adapter<ProviderSer
             page.putExtra("providerDataInfo", pModels.getUser_id());
 //            page.putExtra("providerLocationInfo", (Parcelable) pModels.getLocationId());
             page.putExtra("providerDataSpe", String.valueOf(workingArea));
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)activity,(View)holder.cardView,"appCard");
-            activity.startActivity(page,options.toBundle());
+            page.putExtra("providerDataAbout",mData.get(position).getAbout_me());
+            page.putExtra("providerExpr",mData.get(position).getExperience());
+            page.putExtra("providerType",mData.get(position).getType());
+            page.putExtra("providerEducation",mData.get(position).getEducationLevel());
+            page.putExtra("providerAddress",mData.get(position).getAddress());
+//            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)activity,(View)holder.cardView,"appCard");
+            activity.startActivity(page); //,options.toBundle()
 
         });
     }

@@ -34,45 +34,37 @@
         </md-toolbar>
 
         <md-list>
-          <md-list-item>
+          <md-list-item to="/">
             <md-icon>dashboard</md-icon>
-            <span class="md-list-item-text"
-              ><router-link to="/">Dashboard</router-link></span
-            >
+            <span class="md-list-item-text">Dashboard</span>
           </md-list-item>
-          <md-list-item>
+          <md-list-item to="/service-list">
+            <md-icon>list</md-icon>
+            <span class="md-list-item-text">Services</span>
+          </md-list-item>
+          <md-list-item to="/users">
             <md-icon>person</md-icon>
-            <span class="md-list-item-text"
-              ><router-link to="/users">Users</router-link></span
-            >
+            <span class="md-list-item-text">Users</span>
           </md-list-item>
 
-          <md-list-item>
+          <md-list-item to="/provider">
             <md-icon>home_repair_service</md-icon>
-            <span class="md-list-item-text"
-              ><router-link to="/provider">Providers</router-link></span
-            >
+            <span class="md-list-item-text">Providers</span>
           </md-list-item>
 
-          <md-list-item>
+          <md-list-item to="/report">
             <md-icon>report</md-icon>
-            <span class="md-list-item-text"
-              ><router-link to="/report">Report</router-link></span
-            >
+            <span class="md-list-item-text">Report</span>
           </md-list-item>
 
-          <md-list-item>
+          <md-list-item to="/reviews">
             <md-icon>start</md-icon>
-            <span class="md-list-item-text"
-              ><router-link to="/reviews">Reviews</router-link></span
-            >
+            <span class="md-list-item-text">Reviews</span>
           </md-list-item>
 
-          <md-list-item>
+          <md-list-item to="/payment">
             <md-icon>payment</md-icon>
-            <span class="md-list-item-text"
-              ><router-link to="/payment">Payment</router-link></span
-            >
+            <span class="md-list-item-text">Payment</span>
           </md-list-item>
 
           <md-list-item>

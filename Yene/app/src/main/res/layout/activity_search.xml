@@ -122,6 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         app:elevation="2dp"
+        android:visibility="gone"
         app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
         android:layout_margin="30dp"
         android:src="@drawable/ic_filter_list_black_24dp"

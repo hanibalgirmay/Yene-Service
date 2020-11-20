@@ -15,6 +15,8 @@
   </div>
 </template>
 <script>
+import {db} from '../firebase.config';
+
   export default {
     name: 'DrawGraph',
     data:() => ({
@@ -24,7 +26,20 @@
             [ 40, 10, 10, 10 ],
             [ 30, 30, 30, 30 ]
         ] 
-    })
+    }),
+    methods: {
+      getValueGraph(){
+        db.collection("Users")
+          .get()
+          .then(()=>{
+
+          })
+          .catch((er) => console.log(er))
+      }
+    },
+    created() {
+      this.getValueGraph();
+    },
    
   }
 </script>

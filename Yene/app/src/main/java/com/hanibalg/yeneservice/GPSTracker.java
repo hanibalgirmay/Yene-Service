@@ -201,7 +201,7 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.setTitle(R.string.GPSAlertDialogTitle);
 
         //Setting Dialog Message
-        alertDialog.setMessage("lorem fdgfg dfggd gdg");
+        alertDialog.setMessage("Enable GPS service!");
 
         //On Pressing Setting button
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

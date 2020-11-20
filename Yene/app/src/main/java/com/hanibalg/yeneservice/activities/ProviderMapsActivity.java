@@ -162,12 +162,12 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
         });
         //---------------------------------------================================
         //GPS
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-        }else{
-            showGPSDisabledAlertToUser();
-        }
+//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+//            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+//        }else{
+//            showGPSDisabledAlertToUser();
+//        }
     }
     private void showGPSDisabledAlertToUser() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -202,8 +202,8 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
             }
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-//            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-//                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
         }
     }
     @Override
@@ -223,7 +223,7 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        if (permissionDenied) {
+        if (!gpsTracker.getIsGPSTrackingEnabled()) {
             // Permission was not granted, display error dialog.
             showMissingPermissionError();
             permissionDenied = false;
@@ -320,55 +320,54 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
         /**
          * my location coordinate
          */
-        double la = gpsTracker.getLatitude();
-        double lng = gpsTracker.getLongitude();
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(la, lng), 10));
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(this);
-            mMap.setOnMyLocationClickListener(this);
-        }
+
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(la, lng), 10));
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                mMap.setMyLocationEnabled(true);
+                mMap.setOnMyLocationButtonClickListener(this);
+                mMap.setOnMyLocationClickListener(this);
+            }
+//            mMap.addCircle(new CircleOptions()
+//                    .center(new LatLng(la, lng))
+//                    .radius(200)
+//                    .strokeColor(Color.RED)
+//                    .fillColor(Color.BLUE));
+//            mMap.addCircle(new CircleOptions());
+
         //get all locations from firebase
         firebaseFirestore.collection("Locations").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         LocationsModel l = doc.getDocument().toObject(LocationsModel.class);
                         //get latitudes and longitudes
-                        final double latitude = l.getLocation().getLatitude();
-                        final double longitude = l.getLocation().getLongitude();
+                        final double latitude = l.getProviderLocation().getLatitude();
+                        final double longitude = l.getProviderLocation().getLongitude();
                         final LatLng ET = new LatLng(latitude, longitude);
-                        l.getUser().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()){
-                                    UserModel m = task.getResult().toObject(UserModel.class);
+                        l.getUser().get().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                ProviderModel m = task.getResult().toObject(ProviderModel.class);
 
-                                    // Add a marker in Sydney and move the camera
-                                    MarkerOptions markerOptions = new MarkerOptions();
-                                    assert m != null;
-                                    markerOptions.title(m.getFirstName());
-                                    markerOptions.position(ET);
-                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_icon));
-                                    markerOptions.snippet("provider is here");
-                                    mMap.addMarker(markerOptions);
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ET, 15));
-                                    // // Zoom in, animating the camera.
-                                    mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+                                // Add a marker in Sydney and move the camera
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                assert m != null;
+                                markerOptions.title(m.getAbout_me());
+                                markerOptions.position(ET);
+//                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_icon));
+                                markerOptions.snippet("provider is here");
+                                mMap.addMarker(markerOptions);
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ET, 15));
+                                // // Zoom in, animating the camera.
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 
 //                                        mMap.setMinZoomPreference(5.13f);
 //                                        mMap.setMaxZoomPreference(30.0f);
-                                }
                             }
                         });
                     }
                 });
 
         //end firebase
-        Circle circle = mMap.addCircle(new CircleOptions()
-                .center(new LatLng(la, lng))
-                .radius(200)
-                .strokeColor(Color.RED)
-                .fillColor(Color.BLUE));
+
 //        ValueAnimator valueAnimator = new ValueAnimator();
 //        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
 //        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
@@ -383,7 +382,7 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
 
 //        valueAnimator.start();
 
-        enableMyLocation();
+//        enableMyLocation();
     }
     /**
      * @param encodedString

@@ -13,14 +13,14 @@ public class UserModel implements Serializable {
     private String email;
     private String image;
     private String phone;
+    private String city;
     private boolean isOnline;
     private boolean isProvider;
     private boolean receiveNews;
-    private Timestamp timestamp;
 
     public UserModel(){}
 
-    public UserModel(String userID, String firstName, String lastName,String phone, String email, String image,
+    public UserModel(String userID, String firstName, String lastName,String phone, String email, String image,String city,
                      boolean isOnline, boolean isProvider, boolean receiveNews) {
         this.userID = userID;
         this.firstName = firstName;
@@ -28,10 +28,15 @@ public class UserModel implements Serializable {
         this.phone = phone;
         this.email = email;
         this.image = image;
+        this.city = city;
         this.isOnline = isOnline;
         this.isProvider = isProvider;
         this.receiveNews = receiveNews;
 //        this.timestamp = timestamp;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public String getUserID() {
@@ -52,10 +57,6 @@ public class UserModel implements Serializable {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
     }
 
     public void setLastName(String lastName) {

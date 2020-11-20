@@ -34,23 +34,23 @@
             android:orientation="vertical">
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:id="@+id/cr"
+                android:id="@+id/nameLayout"
                 android:layout_marginBottom="2dp"
+                app:hintTextColor="@color/colorBlack"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:text="Username"
-                    android:id="@+id/username"
+                    android:id="@+id/name"
                     android:textColor="@color/colorBlack"
                     android:textColorHighlight="@color/colorBlack"
                     android:outlineAmbientShadowColor="@color/colorAccent"
                     android:enabled="true"
                     android:background="@android:color/transparent"
                     android:focusable="true"
-                    android:textColorHint="@color/colorPrimary"
+                    android:textColorHint="@color/colorAccent"
                     android:outlineProvider="bounds"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:layout_height="wrap_content"/>
 
             </com.google.android.material.textfield.TextInputLayout>
