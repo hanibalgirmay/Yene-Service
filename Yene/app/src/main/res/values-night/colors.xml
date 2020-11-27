@@ -7,6 +7,9 @@
     <color name="colorWhite">#312F2F</color>
     <color name="colorBlack">#FFFFFF</color>
 
+    <color name="colorNavBg">#218DE3</color>
+    <color name="colorNav">#C5D2D8</color>
+
     <color name="colorCard">#494848</color>
 
     <color name="colorBlackDark">#1A201E</color>

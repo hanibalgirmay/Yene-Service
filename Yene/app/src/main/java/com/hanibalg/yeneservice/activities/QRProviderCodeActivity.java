@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.ViewPageAdapter;
 import com.hanibalg.yeneservice.pages.MyBarCodeFragment;
@@ -14,17 +16,18 @@ import com.hanibalg.yeneservice.pages.ScanBarCodeFragment;
 
 public class QRProviderCodeActivity extends AppCompatActivity {
 
-//    FirebaseFirestore firebaseFirestore;
-//    DocumentReference reference;
+    private FirebaseFirestore firebaseFirestore;
+    private DocumentReference reference;
     FirebaseAuth auth;
     String User_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrprovider_code);
         auth = FirebaseAuth.getInstance();
         User_id = auth.getCurrentUser().getUid();
-//        reference = FirebaseFirestore.getInstance().collection("Users").document(User_id);
+        reference = FirebaseFirestore.getInstance().collection("Users").document(User_id);
         //init variable
         ViewPager viewPager = findViewById(R.id.qr_viewPage);
         TabLayout tabLayout = findViewById(R.id.qr_tab);
@@ -33,26 +36,28 @@ public class QRProviderCodeActivity extends AppCompatActivity {
         final ScanBarCodeFragment jobNot = new ScanBarCodeFragment();
 
         final ViewPageAdapter myadapter = new ViewPageAdapter(getSupportFragmentManager());
-        myadapter.addFragment(jobNot,"My BAR Code");
-        myadapter.addFragment(myFrag,"Scan QR Code");
-//        reference.get().addOnSuccessListener(documentSnapshot -> {
-//            if(documentSnapshot.exists()){
-//                boolean isProvider = documentSnapshot.getBoolean("isProvider");
-//                if(isProvider){
+        myadapter.addFragment(jobNot,"Scan QR Code");
+        myadapter.addFragment(myFrag,"My BAR Code");
+
+        reference.get().addOnSuccessListener(documentSnapshot -> {
+            if(documentSnapshot.exists()){
+                boolean isProvider = documentSnapshot.getBoolean("isProvider");
+                if(isProvider){
+                    myadapter.addFragment(jobNot,"Scan QR Code");
+                    myadapter.addFragment(myFrag,"My BAR Code");
 //                    tabLayout.setVisibility(View.VISIBLE);
 //                    viewPager.setVisibility(View.VISIBLE);
 //                    myadapter.addFragment(jobNot,"My BAR Code");
 //                    myadapter.addFragment(myFrag,"Scan QR Code");
-//                } else {
+                } else {
+                    myadapter.addFragment(jobNot,"Scan QR Code");
 //                    tabLayout.setVisibility(View.GONE);
 //                    viewPager.setVisibility(View.GONE);
 //                    myadapter.addFragment(myFrag,"Scan QR Code");
-////                    loadFragment(new ScanBarCodeFragment());
-//                }
-//                // setup adapter
-//
-//            }
-//        });
+                }
+            }
+        });
+
         viewPager.setAdapter(myadapter);
         tabLayout.setupWithViewPager(viewPager);
     }

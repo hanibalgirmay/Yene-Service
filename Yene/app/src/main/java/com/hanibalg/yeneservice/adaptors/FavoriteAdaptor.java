@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.hanibalg.yeneservice.R;
+import com.hanibalg.yeneservice.activities.ProviderPageActivity;
 import com.hanibalg.yeneservice.models.ProviderModel;
 import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.UserModel;
@@ -50,7 +51,6 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
 
         holder.name.setText(mProvider.get(position).getFirstName());
 //        holder.workingArea.setText(mProvider.get(position).serviceList());
-//        holder.about.setText(mProvider.get(position).getAboutMe());
         Picasso.get().load(mProvider.get(position).getImage()).into(holder.circleImageView);
 //        holder.ratingBar.setRating(mProvider.get(position).getRating());
         holder.favoriteButton.setFavorite(true);
@@ -67,18 +67,11 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
                 }
             }
         });
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent nw = new Intent(context, ServiceProviderProfileActivity.class);
-//                nw.putExtra("userID", mProvider.get(position).getUserID());
+        holder.cardView.setOnClickListener(v -> {
+            Intent nw = new Intent(context, ProviderPageActivity.class);
+            nw.putExtra("userID", mProvider.get(position).getUserID());
 //                nw.putExtra("firstName", mProvider.get(position).getFirstName());
-//                nw.putExtra("working_area", mProvider.get(position).getWorking_area());
-//                nw.putExtra("about_me", mProvider.get(position).getAbout_me());
-//                nw.putExtra("lastname", mProvider.get(position).getLastName());
-//                nw.putExtra("img", mProvider.get(position).getProfile_img());
-//                context.startActivity(nw);
-            }
+            context.startActivity(nw);
         });
     }
 

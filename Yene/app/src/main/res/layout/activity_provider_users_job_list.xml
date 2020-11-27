@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".activities.ProviderUsersJobListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -12,6 +13,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            app:titleTextColor="@color/colorBlack"
             android:layout_height="?actionBarSize"/>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -30,4 +32,12 @@
             android:overScrollMode="ifContentScrolls"
             />
     </LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noChat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/lets_chat"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

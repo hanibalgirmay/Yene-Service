@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -55,6 +56,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.RecentJobUserAdaptor;
 import com.hanibalg.yeneservice.adaptors.ReviewAdapter;
@@ -336,6 +338,17 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             floatingActionButton.isOrWillBeHidden();
         });
+    }
+
+    private void providerInfo(String id){
+        firebaseFirestore.collection("Service_Providers")
+                .whereEqualTo("user_id",id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    for (DocumentChange doc:task.getResult().getDocumentChanges()){
+                        UserModel userModel2 = doc.getDocument().toObject(UserModel.class);
+                    }
+                }).addOnFailureListener(e -> Toast.makeText(ProviderPageActivity.this, "error getting user", Toast.LENGTH_SHORT).show());
     }
 
     @Override

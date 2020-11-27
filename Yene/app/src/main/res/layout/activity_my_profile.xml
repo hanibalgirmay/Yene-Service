@@ -151,6 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="25dp"
+                    android:visibility="gone"
                     android:background="@color/colorCard"
                     android:paddingStart="25dp"
                     android:paddingEnd="25dp"
@@ -467,7 +468,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_provider_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
@@ -478,9 +478,11 @@
                 android:layout_marginEnd="20dp">
 
                 <LinearLayout
+                    android:id="@+id/card_provider_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp"
+                    android:visibility="gone"
                     android:background="@color/colorCard"
                     android:orientation="vertical">
                     <TextView

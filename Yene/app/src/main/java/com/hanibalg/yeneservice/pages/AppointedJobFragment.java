@@ -71,6 +71,7 @@ public class AppointedJobFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth auth;
     private FloatingActionButton floatingActionButton;
+    private LinearLayout noAppointmentLayout;
 
     public AppointedJobFragment() {
         // Required empty public constructor
@@ -88,6 +89,7 @@ public class AppointedJobFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        noAppointmentLayout = view.findViewById(R.id.card_not_job);
         floatingActionButton = view.findViewById(R.id.calenderId);
         floatingActionButton.setOnClickListener(v -> {
             Intent cal = new Intent(getActivity(), CalanderActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -147,14 +149,23 @@ public class AppointedJobFragment extends Fragment {
         firebaseFirestore.collection("JobsRequests")
                 .whereEqualTo("isAccepted",true)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if(queryDocumentSnapshots.isEmpty()){
+                        noAppointmentLayout.setVisibility(View.VISIBLE);
+                        floatingActionButton.setVisibility(View.GONE);
+                    }
                     for (DocumentChange doc:queryDocumentSnapshots.getDocumentChanges()){
-                        String doc_id = doc.getDocument().getId();
-                        AppointmentJobModel appointmentJobModel = doc.getDocument().toObject(AppointmentJobModel.class);
-                        appointmentJobModel.setDocID(doc_id);
-                        if (appointmentJobModel.getJobAppointedUserID().equals(auth.getUid())){
-                            getProviderDate(appointmentJobModel);
-                            Log.d("requests",doc.getDocument().getData().toString());
+                        if(doc.getDocument().exists()){
+                            String doc_id = doc.getDocument().getId();
+                            AppointmentJobModel appointmentJobModel = doc.getDocument().toObject(AppointmentJobModel.class);
+                            appointmentJobModel.setDocID(doc_id);
+                            if (appointmentJobModel.getJobAppointedUserID().equals(auth.getUid())){
+                                getProviderDate(appointmentJobModel);
+                                Log.d("requests",doc.getDocument().getData().toString());
 //                            mData.add(appointmentJobModel);
+                            }
+                        }else {
+                            noAppointmentLayout.setVisibility(View.VISIBLE);
+                            floatingActionButton.setVisibility(View.GONE);
                         }
                     }
                 });

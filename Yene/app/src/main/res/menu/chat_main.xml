@@ -6,7 +6,9 @@
     <item
         android:id="@+id/chat_call"
         android:name="Phone"
+        android:title="Phone"
         android:orderInCategory="100"
+        android:iconTint="@color/colorBlack"
         android:icon="@drawable/ic_local_phone_black_24dp"
         app:showAsAction="always" />
 
@@ -17,10 +19,11 @@
 <!--        android:orderInCategory="100"-->
 <!--        app:showAsAction="never"-->
 <!--        android:title="Settings" />-->
-<!--    <item-->
-<!--        android:id="@+id/chat_report"-->
-<!--        android:name="Report"-->
-<!--        android:orderInCategory="100"-->
-<!--        app:showAsAction="never"-->
-<!--        android:title="Report" />-->
+    <item
+        android:id="@+id/chat_report"
+        android:name="Report"
+        android:iconTint="@color/colorBlack"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="Report" />
 </menu>

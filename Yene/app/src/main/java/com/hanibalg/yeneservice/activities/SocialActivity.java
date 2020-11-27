@@ -10,7 +10,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hanibalg.yeneservice.DashBoardActivity;
+import com.hanibalg.yeneservice.MainActivity;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.Users.RegisterActivity;
 
@@ -18,11 +21,16 @@ public class SocialActivity extends AppCompatActivity implements View.OnClickLis
 
     ImageButton btnTwitter,btnFacebook,btnLinkdn;
     AppCompatButton logBtn;
+    private FirebaseAuth auth;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social);
+
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
 
         //init
         logBtn = findViewById(R.id.phone_btn);
@@ -55,6 +63,15 @@ public class SocialActivity extends AppCompatActivity implements View.OnClickLis
                 Intent s = new Intent(SocialActivity.this, DashBoardActivity.class);
                 startActivity(s);
                 break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(firebaseUser.getUid() != null){
+            startActivity(new Intent(SocialActivity.this, DashBoardActivity.class));
+            finish();
         }
     }
 }

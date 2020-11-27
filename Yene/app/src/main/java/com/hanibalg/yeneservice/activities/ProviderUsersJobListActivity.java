@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -37,6 +38,7 @@ public class ProviderUsersJobListActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth auth;
     private ProviderAppointmentUserAdapter appointmentUserAdapter;
+    private LottieAnimationView lottieAnimationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class ProviderUsersJobListActivity extends AppCompatActivity {
         //firebase initialize
         auth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        lottieAnimationView = findViewById(R.id.noChat);
 
         //init var
         recyclerView = findViewById(R.id.providerRecyclerView);
@@ -74,6 +77,9 @@ public class ProviderUsersJobListActivity extends AppCompatActivity {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if(queryDocumentSnapshots.isEmpty()){
+                            lottieAnimationView.setVisibility(View.VISIBLE);
+                        }
                         for(final DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
                             final String id = doc.getDocument().getString("jobAppointedUserID");
                             final String serviceProviderId = doc.getDocument().getString("service_provider_id");

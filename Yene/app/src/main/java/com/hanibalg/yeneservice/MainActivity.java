@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void launchHomeScreen() {
-//        prefManager.setFirstTimeLaunch(false);
+        prefManager.setFirstTimeLaunch(false);
         startActivity(new Intent(MainActivity.this, SocialActivity.class));
         finish();
     }

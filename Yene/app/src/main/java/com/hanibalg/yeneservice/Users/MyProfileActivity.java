@@ -1,10 +1,16 @@
 package com.hanibalg.yeneservice.Users;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +49,7 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
     FirebaseAuth auth;
     FirebaseFirestore firebaseFirestore;
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab0,fab1,fab2;
+    private FloatingActionButton fab0,fab1,fab2,cameraFab;
     private ImageView myProfile;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private int pos = 0;
@@ -53,6 +59,8 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
     private TextInputLayout uInputLayout;
     private TextInputEditText uText;
     private LinearLayout uPhone,uEmail,uCity;
+    private int CAMERA_PERMSSION_CODE = 1;
+    private int GALLERY_PERMSSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +76,13 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
         fab0 = findViewById(R.id.fab0);
         fab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
+        cameraFab = findViewById(R.id.camera);
+
         aSwitch = findViewById(R.id.receveNews);
         myProfile = findViewById(R.id.profile);
 
         LinearLayout pAbout = findViewById(R.id.provider_about);
-        CardView pInfo = findViewById(R.id.card_provider_info);
+        LinearLayout pInfo = findViewById(R.id.card_provider_info);
 
         TextView name = findViewById(R.id.fullname);
         TextView email = findViewById(R.id.email);
@@ -81,6 +91,8 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
         TextView fn = findViewById(R.id.profile_username);
         TextView ph = findViewById(R.id.profile_phone);
         TextView ct = findViewById(R.id.profile_city);
+        TextView abtme = findViewById(R.id.profile_aboutMe);
+
 
 //        uInputLayout = findViewById(R.id.userLayout);
 //        uText = findViewById(R.id.username);
@@ -115,14 +127,17 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
                 ct.setText(userModel.getCity());
                 aSwitch.setChecked(userModel.getReceiveNews());
                 Picasso.get().load(userModel.getImage()).placeholder(R.drawable.placeholder_profile).into(myProfile);
-                boolean isProvider = userModel.getProvider();
-                if(isProvider){
+                boolean providerCheck = userModel.getProvider();
+                Toast.makeText(this, "isProvider: "+providerCheck, Toast.LENGTH_SHORT).show();
+                if(providerCheck){
                     pAbout.setVisibility(View.VISIBLE);
                     pInfo.setVisibility(View.VISIBLE);
-                }else{
-                    pAbout.setVisibility(View.GONE);
-                    pInfo.setVisibility(View.GONE);
+
                 }
+//                else{
+//                    pAbout.setVisibility(View.GONE);
+//                    pInfo.setVisibility(View.GONE);
+//                }
             }
         });
 
@@ -153,6 +168,9 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
 //                            Picasso.get().load(uri).placeholder(R.drawable.placeholder_profile).into(myProfile);
                         });
                 break;
+            case R.id.camera:
+                openCamera();
+                break;
             case R.id.receveNews:
                 updateNews();
                 break;
@@ -181,6 +199,47 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private void openCamera() {
+        if(ContextCompat.checkSelfPermission(MyProfileActivity.this, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "you have already granted this permission", Toast.LENGTH_SHORT).show();
+        } else{
+            requestCameraPermissions();
+        }
+    }
+
+    private void requestCameraPermissions() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)){
+            //alert dialog
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permsiion is needed because of camera access now")
+                    .setPositiveButton("ok", (dialog, which) -> {
+                        ActivityCompat.requestPermissions(MyProfileActivity.this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMSSION_CODE);
+                    })
+                    .setNegativeButton("cancel",(dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .create()
+                    .show();
+        }else{
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA}, CAMERA_PERMSSION_CODE);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CAMERA_PERMSSION_CODE){
+            if(grantResults.length > 0 &&  grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "this permssion is granted", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "permission is denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void editMyProfile(String name, String data) {

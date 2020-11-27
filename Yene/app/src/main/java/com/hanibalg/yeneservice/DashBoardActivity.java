@@ -375,10 +375,9 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
     protected void onStart() {
         super.onStart();
         if(checkInternate()){
-            toolbar.setTitle("connected");
+//            toolbar.setTitle("connected");
         }else{
-
-            toolbar.setTitle("loading...");
+            toolbar.setTitle("connecting...");
         }
     }
 

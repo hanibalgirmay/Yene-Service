@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -43,6 +44,7 @@ public class BookmarkFragment extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore firebaseFirestore;
     RecyclerView recyclerView;
+    private LinearLayout bookmarkLayout;
 
     public BookmarkFragment() {
         // Required empty public constructor
@@ -67,6 +69,7 @@ public class BookmarkFragment extends Fragment {
         Lotti animation to be addded
          */
         //lottieAnimationView = rootView.findViewById(R.id.animation_view);
+        bookmarkLayout = view.findViewById(R.id.card_bookmark_job);
 
         recyclerView = view.findViewById(R.id.recycler_fav);
         recyclerView.setHasFixedSize(true);
@@ -84,6 +87,9 @@ public class BookmarkFragment extends Fragment {
                 .collection("Favorite")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(queryDocumentSnapshots.isEmpty()){
+                        bookmarkLayout.setVisibility(View.VISIBLE);
+                    }
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         String provider = doc.getDocument().getString("documentID");
                         getProfile(provider);
