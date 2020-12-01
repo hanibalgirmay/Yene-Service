@@ -147,7 +147,7 @@ public class AppointedJobFragment extends Fragment {
         // Source can be CACHE, SERVER, or DEFAULT.
         Source source = Source.CACHE;
         firebaseFirestore.collection("JobsRequests")
-                .whereEqualTo("isAccepted",true)
+                .whereEqualTo("accepted",true)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
                     if(queryDocumentSnapshots.isEmpty()){
                         noAppointmentLayout.setVisibility(View.VISIBLE);
@@ -159,8 +159,11 @@ public class AppointedJobFragment extends Fragment {
                             AppointmentJobModel appointmentJobModel = doc.getDocument().toObject(AppointmentJobModel.class);
                             appointmentJobModel.setDocID(doc_id);
                             if (appointmentJobModel.getJobAppointedUserID().equals(auth.getUid())){
+                                noAppointmentLayout.setVisibility(View.GONE);
+                                floatingActionButton.setVisibility(View.VISIBLE);
                                 getProviderDate(appointmentJobModel);
                                 Log.d("requests",doc.getDocument().getData().toString());
+                                Log.d("requests____",appointmentJobModel.toString());
 //                            mData.add(appointmentJobModel);
                             }
                         }else {
@@ -260,14 +263,18 @@ public class AppointedJobFragment extends Fragment {
         Collections.sort(mData,(l1,l2) ->l1.getTimestamp().compareTo(l2.getTimestamp()));
     }
 
-    private void getProviderDate(final AppointmentJobModel appointmentJobModel) {
-        firebaseFirestore.collection("Users").document(appointmentJobModel.getService_provider_id())
+    private void getProviderDate(AppointmentJobModel appointmentJobModel) {
+        Log.d("request___ID",appointmentJobModel.getService_provider_id());
+        firebaseFirestore.collection("Users")
+                .document(appointmentJobModel.getService_provider_id())
                 .get().addOnSuccessListener(documentSnapshot -> {
                     if(documentSnapshot.exists()) {
+                        noAppointmentLayout.setVisibility(View.GONE);
+                        floatingActionButton.setVisibility(View.VISIBLE);
                         UserModel userModel = documentSnapshot.toObject(UserModel.class);
                         mData.add(appointmentJobModel);
                         mUser.add(userModel);
-                        Log.d("Information-provider",documentSnapshot.getData().toString());
+                        Log.d("request",documentSnapshot.getData().toString());
                         appointedAdaptor.notifyDataSetChanged();
                     }
                 });

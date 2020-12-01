@@ -15,13 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.FavoriteAdaptor;
 import com.hanibalg.yeneservice.models.LocationsModel;
+import com.hanibalg.yeneservice.models.ProviderModel;
 import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.UserModel;
 
@@ -111,8 +115,11 @@ public class BookmarkFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     UserModel userModel = documentSnapshot.toObject(UserModel.class);
+//                    String i = documentSnapshot.getId();
+                    userModel.setUserID(provider);
                     favList.add(userModel);
                     adapter.notifyDataSetChanged();
                 });
     }
+
 }

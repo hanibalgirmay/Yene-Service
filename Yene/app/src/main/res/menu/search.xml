@@ -5,6 +5,7 @@
         android:id="@+id/filter"
         android:icon="@drawable/ic_filter_list_black_24dp"
         android:name="Filter"
+        android:iconTint="@color/colorBlack"
         app:showAsAction="always"
         android:title="Filter">
         <menu>
@@ -23,5 +24,6 @@
         android:id="@+id/scan"
         android:title="Scan"
         android:iconTint="@color/colorBlack"
-        android:icon="@drawable/ic_camera"/>
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_qr_code_scanner_24"/>
 </menu>

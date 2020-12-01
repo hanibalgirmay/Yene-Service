@@ -112,13 +112,13 @@ public class AddPostFragment extends Fragment implements View.OnClickListener, O
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (gpsTracker.getIsGPSTrackingEnabled()){
-            gpsTracker.updateGPSCoordinates();
-            gpsTracker.getLatitude();
-            gpsTracker.getLongitude();
-        }else {
-            gpsTracker.showSettingsAlert();
-        }
+//        if (gpsTracker.getIsGPSTrackingEnabled()){
+//            gpsTracker.updateGPSCoordinates();
+//            gpsTracker.getLatitude();
+//            gpsTracker.getLongitude();
+//        }else {
+//            gpsTracker.showSettingsAlert();
+//        }
         //init
         dateTxt = view.findViewById(R.id.txtDate);
         dateBtn = view.findViewById(R.id.post_choose_date);

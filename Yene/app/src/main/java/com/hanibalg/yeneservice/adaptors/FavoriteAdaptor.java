@@ -16,6 +16,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.activities.ProviderPageActivity;
 import com.hanibalg.yeneservice.models.ProviderModel;
@@ -23,13 +30,14 @@ import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.UserModel;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHolder> {
     private List<UserModel> mProvider;
-    private UserModel mUser;
-    private ServiceListModel mService;
     private Context context;
+    private UserModel user;
+    private FirebaseFirestore firebaseFirestore;
 
     public FavoriteAdaptor(Context context,List<UserModel> mProvider){
         this.context = context;
@@ -39,14 +47,14 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     @Override
     public FavoriteAdaptor.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_bookmark,parent,false);
-//        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 //        auth = FirebaseAuth.getInstance();
         return new FavoriteAdaptor.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteAdaptor.ViewHolder holder, int position) {
-//        mUser = mProvider.get(position).getUserId();
+        user = mProvider.get(position);
 //        mService = mProvider.get(position).getServiceListId();
 
         holder.name.setText(mProvider.get(position).getFirstName());
@@ -55,24 +63,44 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
 //        holder.ratingBar.setRating(mProvider.get(position).getRating());
         holder.favoriteButton.setFavorite(true);
         holder.ratingBar.setRating(3.8f);
-        holder.favoriteButton.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-            @Override
-            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                favorite = true;
-                if (buttonView.isFavorite()){
+        holder.favoriteButton.setOnFavoriteChangeListener((buttonView, favorite) -> {
+            favorite = true;
+            if (buttonView.isFavorite()){
 //                    removeFav(position);
-                }else {
+            }else {
 //                    removeFav(position);
-                    Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
             }
         });
         holder.cardView.setOnClickListener(v -> {
-            Intent nw = new Intent(context, ProviderPageActivity.class);
-            nw.putExtra("userID", mProvider.get(position).getUserID());
-//                nw.putExtra("firstName", mProvider.get(position).getFirstName());
-            context.startActivity(nw);
+            providerInfo(user);
+//            Intent nw = new Intent(context, ProviderPageActivity.class);
+//            nw.putExtra("userID", mProvider.get(position).getUserID());
+//            context.startActivity(nw);
         });
+    }
+
+    private void providerInfo(UserModel user){
+        firebaseFirestore.collection("Service_Providers")
+                .whereEqualTo("user_id",user.getUserID())
+                .get()
+                .addOnCompleteListener((OnCompleteListener<QuerySnapshot>) task -> {
+                    if(task.getResult().isEmpty()){
+                        Toast.makeText(context, "Provider did not exists anymore", Toast.LENGTH_SHORT).show();
+                    }
+                    if(task.isSuccessful()){
+                        for (DocumentChange doc: task.getResult().getDocumentChanges()){
+                            ProviderModel providerModel = doc.getDocument().toObject(ProviderModel.class);
+
+                            final List<String> workingArea = providerModel.getSpeciality();
+                            Intent nw = new Intent(context, ProviderPageActivity.class);
+                            nw.putExtra("userData", (Serializable) user);
+                            nw.putExtra("providerDataInfo", user.getUserID());
+                            nw.putExtra("providerDataSpe", String.valueOf(workingArea));
+                            context.startActivity(nw);
+                        }
+                    }
+                }).addOnFailureListener(e -> e.getStackTrace());
     }
 
     @Override

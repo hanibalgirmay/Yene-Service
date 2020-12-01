@@ -34,12 +34,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.models.UserModel;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
@@ -48,6 +54,8 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
 
     FirebaseAuth auth;
     FirebaseFirestore firebaseFirestore;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
     private Boolean isFabOpen = false;
     private FloatingActionButton fab0,fab1,fab2,cameraFab;
     private ImageView myProfile;
@@ -55,12 +63,14 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
     private int pos = 0;
     private DocumentReference reference;
     private Switch aSwitch;
-    Uri selectedUriList = null;
     private TextInputLayout uInputLayout;
+    Uri selectedUri = null;
+    List<Uri> selectedUriList = null;
     private TextInputEditText uText;
     private LinearLayout uPhone,uEmail,uCity;
     private int CAMERA_PERMSSION_CODE = 1;
     private int GALLERY_PERMSSION_CODE = 1;
+    ArrayList<Uri> imgUrl = new ArrayList<Uri>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +81,8 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
         auth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         String uId = auth.getCurrentUser().getUid();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         reference = FirebaseFirestore.getInstance().collection("Users").document(uId);
         //FLOATING ICONS!
         fab0 = findViewById(R.id.fab0);
@@ -151,22 +163,24 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
                 animateFAB();
                 break;
             case R.id.fab1:
-                Intent edit = new Intent(this,EditProfileActivity.class);
-                startActivity(edit);
+//                Intent edit = new Intent(this,EditProfileActivity.class);
+//                startActivity(edit);
+                Toast.makeText(this, "showcase add", Toast.LENGTH_SHORT).show();
+                showcase();
                 break;
             case R.id.fab2:
-                Toast.makeText(this, "select image", Toast.LENGTH_SHORT).show();
-                TedBottomPicker.with(this)
-                        .setPeekHeight(350)
-                        .showTitle(true)
-                        .setCompleteButtonText("Done")
-                        .setEmptySelectionText("No Select")
-                        .setSelectedUri(selectedUriList)
-                        .show(uri -> {
-                            Log.d("profileImage",uri.toString());
-                            updateUserProfile();
-//                            Picasso.get().load(uri).placeholder(R.drawable.placeholder_profile).into(myProfile);
-                        });
+                Toast.makeText(this, "education certificates", Toast.LENGTH_SHORT).show();
+//                TedBottomPicker.with(this)
+//                        .setPeekHeight(350)
+//                        .showTitle(true)
+//                        .setCompleteButtonText("Done")
+//                        .setEmptySelectionText("No Select")
+//                        .setSelectedUri(selectedUriList)
+//                        .show(uri -> {
+//                            Log.d("profileImage",uri.toString());
+//                            updateUserProfile();
+////                            Picasso.get().load(uri).placeholder(R.drawable.placeholder_profile).into(myProfile);
+//                        });
                 break;
             case R.id.camera:
                 openCamera();
@@ -199,6 +213,33 @@ public class MyProfileActivity extends AppCompatActivity implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private void showcase(){
+        TedBottomPicker.with(this)
+            .setPeekHeight(400)
+            .showTitle(false)
+            .setCompleteButtonText("Done")
+            .setEmptySelectionText("No Select")
+            .setSelectedUriList(selectedUriList)
+            .showMultiImage(uriList -> {
+                imgUrl.addAll(uriList);
+
+                final StorageReference ref = storageRef.child("providers");
+                int i=0;
+                for (i =0; i < imgUrl.size(); i++){
+                    final Uri individualImage = imgUrl.get(i);
+                    final StorageReference imgU = ref.child("showcases/" + UUID.randomUUID().toString());
+                    imgU.putFile(individualImage).addOnSuccessListener(taskSnapshot -> {
+                        imgU.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String link = String.valueOf(uri);
+                            Toast.makeText(MyProfileActivity.this, "Show-case Uploaded!!", Toast.LENGTH_SHORT).show();
+                        });
+                        Log.d("ddd","error");
+                    });
+                }
+            });
+
     }
 
     private void openCamera() {

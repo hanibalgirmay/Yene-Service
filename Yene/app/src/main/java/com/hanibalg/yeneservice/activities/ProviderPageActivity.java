@@ -73,6 +73,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class ProviderPageActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
     Toolbar toolbar;
@@ -450,7 +452,7 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
             appointMap.put("date", dateAppoint);
             appointMap.put("time", timeAppoint);
             appointMap.put("timestamp", Timestamp.now());
-            appointMap.put("isAccepted", false);
+            appointMap.put("accepted", false);
             appointMap.put("priority", priority);
 
             final DocumentReference ref = firebaseFirestore.collection("JobsAppointments").document();
@@ -460,11 +462,12 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
                     if(task.isSuccessful()){
                         String myId = ref.getId();
                         Toast.makeText(ProviderPageActivity.this, "Appointment successful.", Toast.LENGTH_LONG).show();
-//                        new SweetAlertDialog(ServiceProviderProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-//                                .setTitleText("Good job!")
-//                                .setContentText("You request appointment Successfully!")
-//                                .show();
+                        new SweetAlertDialog(ProviderPageActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Good job!")
+                                .setContentText("You request appointment Successfully!")
+                                .show();
 
+                        sendNotification(u);
 //                        Intent mainIntent = new Intent(ServiceProviderProfileActivity.this, HomeActivity.class);
 //                        mainIntent.putExtra("doccumentId",myId);
 //                        startActivity(mainIntent);
@@ -478,6 +481,24 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
             });
 
         }
+    }
+
+    private void sendNotification(UserModel u) {
+        String description = "New Job request from "+u.getFirstName();
+        Map<String, Object> notificationMessage = new HashMap<>();
+        notificationMessage.put("messages",description);
+        notificationMessage.put("from", auth.getUid());
+        notificationMessage.put("timestamp",Timestamp.now());
+
+        firebaseFirestore.collection("Users")
+                .document(u.getUserID())
+                .collection("Notifications")
+                .add(notificationMessage)
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Toast.makeText(ProviderPageActivity.this, "Notification sent", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(e -> Log.d(TAG,e.getMessage()));
     }
 
 

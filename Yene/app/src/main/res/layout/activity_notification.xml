@@ -17,6 +17,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/notification_viewPage"
         android:layout_width="match_parent"
+        android:visibility="gone"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_height="match_parent">
         <com.google.android.material.tabs.TabLayout
@@ -26,5 +27,19 @@
             app:tabTextColor="@color/colorPrimary"
             app:tabIndicatorColor="@color/blue"/>
     </androidx.viewpager.widget.ViewPager>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noNotification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/bookmark_animation"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:id="@+id/notification"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

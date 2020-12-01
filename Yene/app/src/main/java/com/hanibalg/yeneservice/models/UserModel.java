@@ -14,14 +14,14 @@ public class UserModel implements Serializable {
     private String image;
     private String phone;
     private String city;
-    private boolean isOnline;
-    private boolean isProvider;
+    private boolean Online;
+    private boolean Provider;
     private boolean receiveNews;
 
     public UserModel(){}
 
     public UserModel(String userID, String firstName, String lastName,String phone, String email, String image,String city,
-                     boolean isOnline, boolean isProvider, boolean receiveNews) {
+                     boolean Online, boolean Provider, boolean receiveNews) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,8 +29,8 @@ public class UserModel implements Serializable {
         this.email = email;
         this.image = image;
         this.city = city;
-        this.isOnline = isOnline;
-        this.isProvider = isProvider;
+        this.Online = Online;
+        this.Provider = Provider;
         this.receiveNews = receiveNews;
 //        this.timestamp = timestamp;
     }
@@ -80,19 +80,15 @@ public class UserModel implements Serializable {
     }
 
     public boolean getOnline() {
-        return isOnline;
+        return Online;
     }
 
     public void setOnline(boolean online) {
-        isOnline = online;
+        Online = online;
     }
 
     public boolean getProvider() {
-        return isProvider;
-    }
-
-    public void setProvider(boolean provider) {
-        isProvider = provider;
+        return Provider;
     }
 
     public boolean getReceiveNews() {

@@ -72,13 +72,27 @@
                 android:layout_gravity="end"
                 android:gravity="end"
                 android:layout_height="wrap_content">
-                <ImageView
+                <com.github.ivbaranov.mfb.MaterialFavoriteButton
                     android:id="@+id/bookmark"
-                    android:layout_width="wrap_content"
+                    android:textColor="#2d2d2d"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    android:gravity="end"
+                    android:layout_width="0dp"
+                    app:mfb_favorite_image="@drawable/ic_bookmark_black_24dp"
+                    app:mfb_not_favorite_image="@drawable/ic_bookmark"
+                    app:mfb_type="heart"
+                    app:mfb_animate_favorite="true"
+                    app:mfb_animate_unfavorite="false"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_bookmark"
-                    android:layout_gravity="end"
-                    android:contentDescription="TODO" />
+                    android:contentDescription="fav"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/bookmark"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/ic_bookmark"-->
+<!--                    android:layout_gravity="end"-->
+<!--                    android:contentDescription="TODO" />-->
             </RelativeLayout>
 
         </LinearLayout>

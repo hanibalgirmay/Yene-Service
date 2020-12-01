@@ -88,7 +88,7 @@ public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobV
         Picasso.get().load(mUser.get(position).getImage()).placeholder(R.drawable.background).into(holder.img);
         //TODO here
         //================layout================
-        boolean isA = mData.get(position).isAccepted();
+        boolean isA = mData.get(position).JobAccepted();
         if(isA){
             holder.jobAcceptLayout.setVisibility(View.GONE);
             holder.jobRequestLayout.setVisibility(View.VISIBLE);

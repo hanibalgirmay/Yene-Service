@@ -13,14 +13,14 @@ public class AppointmentJobModel {
     private String priority;
     private String time;
     private String problem_description;
-    private boolean isAccepted;
+    private boolean accepted;
     private Timestamp timestamp;
 
     public AppointmentJobModel() {
     }
 
     public AppointmentJobModel(String docID,String jobAppointedUserID, String service_provider_id, Timestamp date, String priority,
-                               String time, String problem_description, boolean isAccepted, Timestamp timestamp) {
+                               String time, String problem_description, boolean accepted, Timestamp timestamp) {
         this.docID = docID;
         this.jobAppointedUserID = jobAppointedUserID;
         this.service_provider_id = service_provider_id;
@@ -28,7 +28,7 @@ public class AppointmentJobModel {
         this.priority = priority;
         this.time = time;
         this.problem_description = problem_description;
-        this.isAccepted = isAccepted;
+        this.accepted = accepted;
         this.timestamp = timestamp;
     }
 
@@ -64,8 +64,8 @@ public class AppointmentJobModel {
         return problem_description;
     }
 
-    public boolean isAccepted() {
-        return isAccepted;
+    public boolean JobAccepted() {
+        return accepted;
     }
 
     public Timestamp getTimestamp() {
