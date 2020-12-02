@@ -59,7 +59,6 @@ public class NotificationAdaptor extends RecyclerView.Adapter<NotificationAdapto
 
     @Override
     public void onBindViewHolder(@NonNull NotificationAdaptor.MyView holder, int position) {
-
         String user = models.get(position).getFrom().trim();
         firebaseFirestore.collection("Users").document(user).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -79,8 +78,8 @@ public class NotificationAdaptor extends RecyclerView.Adapter<NotificationAdapto
             Intent detail = new Intent(context, ViewNotificationDetailActivity.class);
             detail.putExtra("userID", models.get(position).getFrom().trim());
             detail.putExtra("dataMsg", models.get(position).getNotificationDescription());
-            detail.putExtra("dataType", models.get(position).getNotificationType());
-            detail.putExtra("dataAccepted", models.get(position).getAccepted());
+//            detail.putExtra("dataType", models.get(position).getNotificationType());
+//            detail.putExtra("dataSeen", models.get(position).isSeen());
             context.startActivity(detail);
         });
         String documentID = models.get(position).getDocId();
@@ -105,7 +104,7 @@ public class NotificationAdaptor extends RecyclerView.Adapter<NotificationAdapto
 
     private void updateNotification(String id, boolean status){
         firebaseFirestore.collection("Users").document(auth.getUid()).collection("Notifications")
-                .document(id).update("isAccepted",status);
+                .document(id).update("seen",status);
     }
     class MyView extends RecyclerView.ViewHolder {
         private TextView name,time,msg;

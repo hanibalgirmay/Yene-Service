@@ -32,7 +32,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".payments.PayPalPaymentActivity"></activity>
+        <activity android:name=".Users.PhoneAuthenticationActivity"></activity>
+        <activity android:name=".payments.PayPalPaymentActivity" />
         <activity android:name=".activities.QRProviderCodeActivity" />
         <activity android:name=".activities.AllCatagoriesActivity" />
         <activity android:name=".Users.EditProfileActivity" />
@@ -61,7 +62,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
 
         <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
         <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />

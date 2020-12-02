@@ -197,17 +197,21 @@ public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobV
     }
 
     public void removeItem(final int postion){
-        reference.addSnapshotListener((documentSnapshot, e) -> {
-            Toast.makeText(mContext, "data:"+ mData.get(postion).getDate()+ mData.get(postion).getTime(), Toast.LENGTH_SHORT).show();
-            final String keyRef = mData.get(postion).getDocID();
-            firebaseFirestore.collection("JobsRequests").document(keyRef)
-                    .delete()
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(mContext, "Appointment delete successfully:  "+keyRef, Toast.LENGTH_SHORT).show();
-                        mData.remove(postion);
-                        notifyItemRemoved(postion);
-                    }).addOnFailureListener(e1 -> Toast.makeText(mContext, "can not delete Appointment", Toast.LENGTH_SHORT).show());
-        });
+        try{
+            reference.addSnapshotListener((documentSnapshot, e) -> {
+                Toast.makeText(mContext, "data:"+ mData.get(postion).getDate()+ mData.get(postion).getTime(), Toast.LENGTH_SHORT).show();
+                final String keyRef = mData.get(postion).getDocID();
+                firebaseFirestore.collection("JobsRequests").document(keyRef)
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(mContext, "Appointment delete successfully:  "+keyRef, Toast.LENGTH_SHORT).show();
+                            mData.remove(postion);
+                            notifyItemRemoved(postion);
+                        }).addOnFailureListener(e1 -> Toast.makeText(mContext, "can not delete Appointment", Toast.LENGTH_SHORT).show());
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public void EditItem(final int postion){
         Map<String,Object> updateItem = new HashMap<>();

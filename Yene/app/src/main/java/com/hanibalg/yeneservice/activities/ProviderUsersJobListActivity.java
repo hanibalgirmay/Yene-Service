@@ -95,7 +95,7 @@ public class ProviderUsersJobListActivity extends AppCompatActivity {
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                                 String id = documentSnapshot.getId();
                                                 UserModel u = documentSnapshot.toObject(UserModel.class);
-                                                u.setUserID(id);
+                                                u.setUserId(id);
 //                                                Log.d("Request-user",documentSnapshot.getData().toString());
                                                 getProviderInfo(u,id);
                                             }
@@ -107,7 +107,7 @@ public class ProviderUsersJobListActivity extends AppCompatActivity {
     }
 
     private void getProviderInfo(final UserModel uModel, String id) {
-        String userID = uModel.getUserID();
+        String userID = uModel.getUserId();
         firebaseFirestore.collection("Service_Providers")
                 .whereEqualTo("user_id",id)
                 .get()

@@ -11,6 +11,10 @@
         <item name="popupMenuBackground">@color/colorWhite</item>
     </style>
 
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorWhite</item>
+    </style>
+
     <style name="ShapeAppearanceOverlay.Cut.han">
         <item name="cornerSize">16dp</item>
         <item name="cornerFamily">rounded</item>

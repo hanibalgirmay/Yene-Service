@@ -2,6 +2,7 @@ package com.hanibalg.yeneservice.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -44,31 +46,36 @@ public class NotificationActivity extends AppCompatActivity {
     String User_id;
     List<NotificationModel> notificationList;
     NotificationAdaptor adaptor;
+    LottieAnimationView lottieAnimationView;
+    RecyclerView notificationLayer;
+    private String TAG = NotificationActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         auth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         User_id = auth.getCurrentUser().getUid();
         reference = FirebaseFirestore.getInstance().collection("Users").document(User_id);
 
-        RecyclerView notificationLayer = findViewById(R.id.notification);
-        LottieAnimationView lottieAnimationView = findViewById(R.id.noNotification);
+        notificationLayer = findViewById(R.id.notification);
+        lottieAnimationView = findViewById(R.id.noNotification);
         notificationLayer.setHasFixedSize(true);
-
+        getNofification();
         adaptor = new NotificationAdaptor(this,notificationList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         notificationLayer.setLayoutManager(mLayoutManager);
         notificationLayer.setAdapter(adaptor);
-        if(getNofification().size()>0){
-            getNofification();
-        }else{
-            notificationLayer.setVisibility(View.VISIBLE);
-            notificationLayer.setVisibility(View.GONE);
-        }
+//        if(getNofification().size()>0){
+
+//        }else{
+
+//        }
         //init variable
 //        ViewPager viewPager = findViewById(R.id.notification_viewPage);
 //        TabLayout tabLayout = findViewById(R.id.notification_tab);
@@ -114,21 +121,34 @@ public class NotificationActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private List<NotificationModel> getNofification(){
-        notificationList = new ArrayList<>();
-        firebaseFirestore.collection("Users")
-                .document(auth.getUid())
-                .collection("Notifications")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        for (DocumentChange doc: task.getResult().getDocumentChanges()){
-                            NotificationModel notificationModel = doc.getDocument().toObject(NotificationModel.class);
-                            notificationList.add(notificationModel);
+    private void getNofification(){
+        try {
+            notificationList = new ArrayList<>();
+            firebaseFirestore.collection("Users")
+                    .document(auth.getUid())
+                    .collection("Notifications")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if(task.getResult().isEmpty()) {
+                            lottieAnimationView.setVisibility(View.VISIBLE);
+                            notificationLayer.setVisibility(View.GONE);
                         }
-                    }
-                }).addOnFailureListener(e -> Toast.makeText(NotificationActivity.this, "error geting notification", Toast.LENGTH_SHORT).show());
+                        if(task.isSuccessful()){
+                            for (DocumentChange doc: task.getResult().getDocumentChanges()){
+                                NotificationModel notificationModel = doc.getDocument().toObject(NotificationModel.class);
+                                String id = doc.getDocument().getId();
+                                notificationModel.setDocId(id);
+                                Log.d(TAG,"_"+doc.getDocument().getData());
+                                notificationList.add(notificationModel);
+                                adaptor.notifyDataSetChanged();
+                            }
+                        }
+                    }).addOnFailureListener(e -> Toast.makeText(NotificationActivity.this, "error geting notification", Toast.LENGTH_SHORT).show());
 
-        return notificationList;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+//        return notificationList;
     }
 }

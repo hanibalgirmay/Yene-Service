@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -236,23 +238,40 @@ public class AppointedJobFragment extends Fragment {
     }
 
     private void deleteJob(int adapterPosition) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
-                alertDialogBuilder.setPositiveButton("yes",
-                        (arg0, arg1) -> {
-                            appointedAdaptor.removeItem(adapterPosition);
-                            Toast.makeText(getActivity(),"You clicked yes button",Toast.LENGTH_LONG).show();
-                        });
-
-        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-//                finish();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        SweetAlertDialog dialog =  new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+        dialog.setTitleText("Are you sure?");
+        dialog.setContentText("Won't be able to recover this file!");
+        dialog.setConfirmText("Yes,delete it!");
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelClickListener(sweetAlertDialog -> sweetAlertDialog.dismissWithAnimation());
+        dialog.setConfirmClickListener(sDialog -> sDialog
+                .setTitleText("Deleted!")
+                .setContentText("Your appointemnt file has been deleted!")
+//                .setConfirmText("OK")
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    appointedAdaptor.removeItem(adapterPosition);
+//                    appointedAdaptor.notifyItemRemoved(adapterPosition);
+                })
+                .setCancelClickListener(sweetAlertDialog -> sweetAlertDialog.dismissWithAnimation())
+                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE));
+        dialog.show();
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+//        alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
+//                alertDialogBuilder.setPositiveButton("yes",
+//                        (arg0, arg1) -> {
+//                            appointedAdaptor.removeItem(adapterPosition);
+//                            Toast.makeText(getActivity(),"You clicked yes button",Toast.LENGTH_LONG).show();
+//                        });
+//
+//        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+////                finish();
+//            }
+//        });
+//
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//        alertDialog.show();
     }
 
     private void sortByReverseDate(int position) {

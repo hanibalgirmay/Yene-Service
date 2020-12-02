@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -26,6 +28,7 @@ import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.FavoriteAdaptor;
 import com.hanibalg.yeneservice.models.LocationsModel;
 import com.hanibalg.yeneservice.models.ProviderModel;
+import com.hanibalg.yeneservice.models.Reviews;
 import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.UserModel;
 
@@ -49,6 +52,7 @@ public class BookmarkFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     RecyclerView recyclerView;
     private LinearLayout bookmarkLayout;
+    String id;
 
     public BookmarkFragment() {
         // Required empty public constructor
@@ -85,7 +89,7 @@ public class BookmarkFragment extends Fragment {
 
     private void showFav() {
         favList = new ArrayList<>();
-        UList = new ArrayList<>();
+//        UList = new ArrayList<>();
 
         firebaseFirestore.collection("Users").document(auth.getUid())
                 .collection("Favorite")
@@ -96,7 +100,8 @@ public class BookmarkFragment extends Fragment {
                     }
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         String provider = doc.getDocument().getString("documentID");
-                        getProfile(provider);
+                        String docId = doc.getDocument().getId();
+                        getProfile(provider,docId);
                     }
                 });
 //        favList.add(new ProviderModel("1",reference,t,"asdasd","dfgdfg","male",4,"42654654",reference2,"rteret","inidividaul","city","iducation",t));
@@ -110,13 +115,16 @@ public class BookmarkFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private void getProfile(String provider) {
+    private void getProfile(String provider, String docId) {
+        Log.d("Fav_user","__fragment___"+provider);
         firebaseFirestore.collection("Users").document(provider)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     UserModel userModel = documentSnapshot.toObject(UserModel.class);
-//                    String i = documentSnapshot.getId();
-                    userModel.setUserID(provider);
+                    //String ii = documentSnapshot.getId();
+                    userModel.setDocId(docId);
+                    userModel.setUserId(provider);
+                    Log.d("Fav_user","___----------___"+provider);
                     favList.add(userModel);
                     adapter.notifyDataSetChanged();
                 });

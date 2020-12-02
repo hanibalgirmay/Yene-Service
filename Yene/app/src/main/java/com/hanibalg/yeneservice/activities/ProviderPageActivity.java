@@ -130,7 +130,7 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
         }
         locationReference = FirebaseFirestore.getInstance().collection("Locations").document(providerID);
         if(u != null){
-            Log.d("providerInformationId","_"+ u.getUserID());
+            Log.d("providerInformationId","_"+ u.getUserId());
         }
         //Attach data
         ImageView imageView = findViewById(R.id.providerImg);
@@ -447,7 +447,7 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
 
             Map<String, Object> appointMap = new HashMap<>();
             appointMap.put("jobAppointedUserID", auth.getUid());
-            appointMap.put("service_provider_id", u.getUserID());
+            appointMap.put("service_provider_id", u.getUserId());
             appointMap.put("problem_description", description);
             appointMap.put("date", dateAppoint);
             appointMap.put("time", timeAppoint);
@@ -491,7 +491,7 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
         notificationMessage.put("timestamp",Timestamp.now());
 
         firebaseFirestore.collection("Users")
-                .document(u.getUserID())
+                .document(u.getUserId())
                 .collection("Notifications")
                 .add(notificationMessage)
                 .addOnCompleteListener(task -> {

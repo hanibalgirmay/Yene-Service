@@ -12,8 +12,10 @@
         app:cardElevation="5dp"
         android:elevation="5dp"
         app:cardBackgroundColor="@color/colorCard"
-        app:contentPadding="10dp"
-        app:cardCornerRadius="5dp">
+        app:contentPaddingLeft="10dp"
+        app:contentPaddingTop="10dp"
+        app:contentPaddingRight="10dp"
+        app:cardCornerRadius="0dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,10 +31,11 @@
                     android:id="@+id/not_pro"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/placeholder_profile"
                     />
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20sp"
                     android:gravity="start"
@@ -47,32 +50,29 @@
                         android:textColor="@color/colorBlack"
                         android:textSize="16dp"/>
                     <TextView
+                        android:id="@+id/not_msg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="0sp"
+                        android:paddingEnd="10sp"
+                        android:maxLines="2"
+                        android:text="@string/dummy_text_appoint"/>
+                    <TextView
                         android:id="@+id/not_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="21 min ago"
+                        android:textColor="@color/colorAccent"
                         android:textSize="12sp"/>
                 </LinearLayout>
-
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:alpha=".2"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginStart="55dp"
-                android:layout_marginEnd="55dp"
                 android:background="@color/colorBlack"/>
-            <TextView
-                android:id="@+id/not_msg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="20sp"
-                android:paddingEnd="10sp"
-                android:text="@string/dummy_text_appoint"/>
-
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
 </LinearLayout>

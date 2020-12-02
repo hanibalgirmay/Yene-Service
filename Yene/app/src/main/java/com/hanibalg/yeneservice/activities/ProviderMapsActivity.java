@@ -276,7 +276,7 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
                                     if(document.exists()){
                                         UserModel info = document.toObject(UserModel.class);
                                         String id = document.getId();
-                                        info.setUserID(id);
+                                        info.setUserId(id);
                                         Log.d("USer-info",document.getData().toString());
                                         models.add(providerModel);
                                         mUser.add(info);

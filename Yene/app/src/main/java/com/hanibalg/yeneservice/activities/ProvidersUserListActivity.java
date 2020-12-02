@@ -195,7 +195,7 @@ public class ProvidersUserListActivity extends AppCompatActivity {
                                                     if(task.isSuccessful()){
                                                         UserModel userMode = task.getResult().toObject(UserModel.class);
                                                         String id = task.getResult().getId();
-                                                        userMode.setUserID(id);
+                                                        userMode.setUserId(id);
                                                         Log.d("search-item",id);
                                                         mProvider.add(providerModel);
                                                         mUser.add(userMode);
