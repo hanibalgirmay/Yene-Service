@@ -31,9 +31,9 @@ public class SliderAdapter extends PagerAdapter {
             R.drawable.icon_three
     };
     public String[] slider_header = {
-            "EAT",
-            "DRINK",
-            "SLEEP"
+            "SERVICES",
+            "ANYWARE",
+            "TIME SAVE"
     };
 
     public String[] slider_desc = {

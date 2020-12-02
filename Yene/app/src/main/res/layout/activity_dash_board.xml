@@ -45,12 +45,26 @@
 <!--                        android:text="ajksdhkjdsh kajdkas hdk hsakdj hkajsd kj adk kas djas dhkj"-->
 <!--                        android:layout_marginStart="20dp"-->
 <!--                        />-->
+<!--                    <com.arlib.floatingsearchview.FloatingSearchView-->
+<!--                        android:id="@+id/floating_search_view"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        app:floatingSearch_searchBarMarginLeft="8dp"-->
+<!--                        app:floatingSearch_searchBarMarginTop="8dp"-->
+<!--                        app:floatingSearch_searchBarMarginRight="8dp"-->
+<!--                        app:floatingSearch_searchHint="Search..."-->
+<!--                        app:floatingSearch_suggestionsListAnimDuration="250"-->
+<!--                        app:floatingSearch_showSearchKey="false"-->
+<!--                        app:floatingSearch_leftActionMode="showHamburger"-->
+<!--                        app:floatingSearch_menu="@menu/menu"-->
+<!--                        app:floatingSearch_close_search_on_keyboard_dismiss="true"/>-->
                     <androidx.cardview.widget.CardView
                         android:id="@+id/searchLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
+                        android:visibility="visible"
                         android:layout_marginEnd="20dp"
                         app:cardElevation="17dp"
                         android:elevation="17dp"
@@ -92,18 +106,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:itemIconTint="@color/colorBlack"
+            app:layout_anchorGravity="bottom"
+            app:itemIconTint="@color/colorNav"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/menu_bottom_navigation"
             android:outlineSpotShadowColor="@color/colorAccent"
-            app:backgroundTint="@color/colorWhite"
+            app:backgroundTint="@color/colorNavBg"
             app:morphCornerRadius="128dp"
             app:itemHorizontalTranslationEnabled="true"
             app:itemRippleColor="@color/colorAccent"
-            app:itemTextColor="@color/colorBlack"
+            app:itemTextColor="@color/colorNav"
             app:morphItemRadius="63dp"
+            app:layout_insetEdge="top"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-            app:morphVerticalOffset="18dp"
+            app:morphVerticalOffset="0dp"
             style="@style/Widget.MaterialComponents.BottomNavigationView"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

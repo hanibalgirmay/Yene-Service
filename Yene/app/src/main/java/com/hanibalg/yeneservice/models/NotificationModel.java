@@ -5,24 +5,27 @@ import com.google.firebase.Timestamp;
 public class NotificationModel {
     private String DocId;
     private String from;
-    private Boolean isAccepted;
     private String notificationTitle;
-    private String notificationType;
+//    private String notificationType;
     private String notificationDescription;
+    private boolean seen;
     private Timestamp timestamp;
 
     public NotificationModel() {
 
     }
 
-    public NotificationModel(String DocId,String from,boolean isAccepted,String notificationTitle, String notificationType, String notificationDescription, Timestamp timestamp) {
+    public NotificationModel(String DocId,String from,String notificationTitle, String notificationDescription,boolean seen, Timestamp timestamp) {
         this.DocId = DocId;
         this.from = from;
-        this.isAccepted = isAccepted;
         this.notificationTitle = notificationTitle;
-        this.notificationType = notificationType;
         this.notificationDescription = notificationDescription;
+        this.seen = seen;
         this.timestamp = timestamp;
+    }
+
+    public boolean isSeen() {
+        return seen;
     }
 
     public String getDocId() {
@@ -33,20 +36,12 @@ public class NotificationModel {
         DocId = docId;
     }
 
-    public Boolean getAccepted() {
-        return isAccepted;
-    }
-
     public String getFrom() {
         return from;
     }
 
     public String getNotificationTitle() {
         return notificationTitle;
-    }
-
-    public String getNotificationType() {
-        return notificationType;
     }
 
     public String getNotificationDescription() {

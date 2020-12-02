@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
@@ -230,6 +231,10 @@ public class SearchActivity extends AppCompatActivity {
             Toast.makeText(this, "filter clicked", Toast.LENGTH_SHORT).show();
             //TODO filter horizontal
 //            horizontalScrollView.setVisibility(View.VISIBLE);
+        }
+        if(id == R.id.scan){
+            Intent ssc = new Intent(this,QRProviderCodeActivity.class);
+            startActivity(ssc);
         }
         return super.onOptionsItemSelected(item);
     }

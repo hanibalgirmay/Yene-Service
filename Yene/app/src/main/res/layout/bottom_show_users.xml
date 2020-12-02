@@ -9,6 +9,7 @@
     android:layout_marginTop="30dp"
     android:paddingBottom="30dp"
     app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/colorCard"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:behavior_hideable="true"
     app:behavior_peekHeight="20dp"
@@ -50,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:text="Full Name"
                     android:textSize="17dp"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorBlack"
                     android:layout_marginStart="10dp"/>
                 <TextView
                     android:id="@+id/provider_specialize"
@@ -58,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:text="Speciality"
                     android:layout_gravity="center"
-                    android:textColor="@color/blue"/>
+                    android:textColor="@color/colorBlack"/>
 
             </LinearLayout>
             <ImageView
@@ -78,6 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_bookmark"
+                    android:tint="@color/colorBlack"
                     android:layout_gravity="end"
                     android:contentDescription="TODO" />
             </RelativeLayout>
@@ -101,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="(100 Reviews)"
+                android:textColor="@color/colorBlack"
                 android:layout_marginStart="8dp"
                 android:layout_gravity="center"/>
         </LinearLayout>
@@ -116,12 +119,14 @@
                 android:id="@+id/msgProvider"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:tint="@color/colorBlack"
                 android:src="@drawable/ic_email_black_24dp"
                 android:background="@drawable/circle_bg"/>
             <ImageButton
                 android:id="@+id/callProvider"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:tint="@color/colorBlack"
                 android:src="@drawable/ic_local_phone_black_24dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/circle_bg"/>

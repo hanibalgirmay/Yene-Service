@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -53,6 +54,7 @@ public class ProvidersUserListActivity extends AppCompatActivity {
     private LottieAnimationView lottieAnimationView;
     private LinearLayout noServiceLayout;
     private NestedScrollView nestedScrollView;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class ProvidersUserListActivity extends AppCompatActivity {
         nestedScrollView = findViewById(R.id.mainL);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         reference = FirebaseFirestore.getInstance().collection("Users").document("asdasd a");
         reference2 = FirebaseFirestore.getInstance().collection("Locations").document("asdasd a");
         //init variable
@@ -178,26 +181,28 @@ public class ProvidersUserListActivity extends AppCompatActivity {
                             final ProviderModel providerModel = doc.getDocument().toObject(ProviderModel.class);
                                 if (providerModel.getSpeciality().contains(tit.toLowerCase())){
 //                                    Log.d("specialityList",);
-                                    lottieAnimationView.setVisibility(View.GONE);
-                                    noServiceLayout.setVisibility(View.GONE);
-                                    extendedFloatingActionButton.setVisibility(View.VISIBLE);
-                                    nestedScrollView.setVisibility(View.VISIBLE);
+                                    if(!providerModel.getUser_id().equals(auth.getUid())){
+                                        lottieAnimationView.setVisibility(View.GONE);
+                                        noServiceLayout.setVisibility(View.GONE);
+                                        extendedFloatingActionButton.setVisibility(View.VISIBLE);
+                                        nestedScrollView.setVisibility(View.VISIBLE);
 
-                                    //get user info
-                                    firebaseFirestore.collection("Users")
-                                            .document(providerModel.getUser_id())
-                                            .get()
-                                            .addOnCompleteListener(task -> {
-                                                if(task.isSuccessful()){
-                                                    UserModel userMode = task.getResult().toObject(UserModel.class);
-                                                    String id = task.getResult().getId();
-                                                    userMode.setUserID(id);
-                                                    Log.d("search-item",id);
-                                                    mProvider.add(providerModel);
-                                                    mUser.add(userMode);
-                                                    adapter.notifyDataSetChanged();
-                                                }
-                                            });
+                                        //get user info
+                                        firebaseFirestore.collection("Users")
+                                                .document(providerModel.getUser_id())
+                                                .get()
+                                                .addOnCompleteListener(task -> {
+                                                    if(task.isSuccessful()){
+                                                        UserModel userMode = task.getResult().toObject(UserModel.class);
+                                                        String id = task.getResult().getId();
+                                                        userMode.setUserId(id);
+                                                        Log.d("search-item",id);
+                                                        mProvider.add(providerModel);
+                                                        mUser.add(userMode);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                });
+                                    }
                                 }
 //                                else{
 //                                    lottieAnimationView.setVisibility(View.VISIBLE);

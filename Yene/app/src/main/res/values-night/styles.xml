@@ -6,8 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="android:actionMenuTextColor">@color/colorWhite</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/colorWhite</item>
+        <item name="popupMenuBackground">@color/colorBlack</item>
     </style>
 
     <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">

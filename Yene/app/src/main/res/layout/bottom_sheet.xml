@@ -36,6 +36,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextColor="@color/colorBlack"
+                    android:keyboardNavigationCluster="true"
+                    android:focusable="true"
+                    app:boxStrokeWidth="2dp"
+                    app:boxStrokeColor="@color/colorBlack"
+                    android:textColorHint="@color/colorBlack"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:hint="Describe Problem ">
                     <com.google.android.material.textfield.TextInputEditText
@@ -50,6 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="0dp"
+                    android:backgroundTint="@color/colorBlack"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="20dp"
                     style="@style/Widget.AppCompat.DropDownItem.Spinner"
@@ -74,6 +80,7 @@
                         android:id="@+id/tx"
                         android:textColor="@color/colorBlack"
                         android:layout_width="wrap_content"
+                        android:layout_marginStart="5dp"
                         android:layout_height="wrap_content"
                         android:text="12/2/12"/>
                 </LinearLayout>
@@ -97,6 +104,7 @@
                         android:id="@+id/txx"
                         android:textColor="@color/colorBlack"
                         android:layout_width="wrap_content"
+                        android:layout_marginStart="5dp"
                         android:layout_height="wrap_content"
                         android:text="12/2/12"/>
                 </LinearLayout>
@@ -110,16 +118,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColorLink="@color/colorBlack"
+                    android:textColor="@color/colorBlack"
+                    android:alpha=".7"
                     android:textColorHighlight="@color/colorAccent"
                     android:layout_marginTop="16dp"
-                    android:text="We'll replay as soon as possible , if the provider didn't accept on the following 2 days the request will be removed" android:textColor="#444" android:textStyle="bold"/>
+                    android:text="We'll replay as soon as possible , if the provider didn't accept on the following 2 days the request will be removed"
+                    android:textStyle="bold"/>
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/appoint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:background="@color/green"
+                    android:background="@color/blue"
                     android:shadowDy="@android:integer/config_shortAnimTime"
                     android:shadowRadius="@android:integer/config_longAnimTime"
                     android:shadowDx="@android:integer/config_shortAnimTime"

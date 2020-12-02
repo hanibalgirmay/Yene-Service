@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Yene Service</string>
+    <string name="app_name">Yene Services</string>
     <string name="next">ቀጥሎ</string>
     <string name="start">ጀምር</string>
     <string name="skip">ዝለል</string>
@@ -30,5 +30,6 @@
     <string name="forgot">Send</string>
     <string name="add">Post</string>
     <string name="GPSAlertDialogTitle">Enable Gps location</string>
+    <string name="letStart"></string>
 
 </resources>

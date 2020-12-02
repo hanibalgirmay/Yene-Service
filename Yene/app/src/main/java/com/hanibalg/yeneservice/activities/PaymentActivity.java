@@ -1,34 +1,39 @@
 package com.hanibalg.yeneservice.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.JsonIOException;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.PaymentCardAdaptor;
+import com.hanibalg.yeneservice.config.config;
 import com.hanibalg.yeneservice.models.PaymentCard;
+import com.hanibalg.yeneservice.payments.PayPalPaymentActivity;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PaymentActivity extends AppCompatActivity implements View.OnClickListener {
     private List<PaymentCard>  paymentCards;
@@ -40,6 +45,13 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton payBtn;
     private TextView textView;
     private static final String TAG = PaymentActivity.class.getSimpleName();
+
+    private static final int PAYPAL_REQUEST_CODE = 7171;
+    //using sanbox because we are on test data
+    private static PayPalConfiguration configuration =new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(config.PAYPAL_CLIENT_ID);
+    String amount = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,27 +118,74 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+
+        //start paypal service
+        Intent intent = new Intent(this,PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,configuration);
+        startService(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(this,PayPalService.class));
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                PaymentConfirmation confirmation = data.getParcelableExtra(com.paypal.android.sdk.payments.PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirmation != null) {
+                    try {
+                        String PaymentDetails = confirmation.toJSONObject().toString();
+                        startActivity(new Intent(this, PayPalPaymentActivity.class)
+                                .putExtra("PaymentDetails", PaymentDetails)
+                                .putExtra("PaymentAmount", amount));
+                    } catch (JsonIOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+            }
+        } else if (resultCode == com.paypal.android.sdk.payments.PaymentActivity.RESULT_EXTRAS_INVALID) {
+            Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
+//        if(id == R.id.pay){
+//            String acc = String.valueOf(aCode.getText());
+//            String unique = aUnicCode.getText().toString().trim();
+//            String CCE = String.valueOf(cceCode.getText());
+//            String Exp = String.valueOf(expire.getText());
+//            if(TextUtils.isEmpty(unique)){
+//                aUnicCodeLayout.setError("Error enter valid information");
+//                aUnicCodeLayout.setFocusable(true);
+//                return;
+//            }
+//            Map<String,Object> d = new HashMap<>();
+//            d.put("account number",acc);
+//            d.put("account unique code",unique);
+//            d.put("account expire date",Exp);
+//            d.put("account CCE Code",CCE);
+//            Log.d(TAG, String.valueOf(d));
+//        }
         if(id == R.id.pay){
-            String acc = String.valueOf(aCode.getText());
-            String unique = aUnicCode.getText().toString().trim();
-            String CCE = String.valueOf(cceCode.getText());
-            String Exp = String.valueOf(expire.getText());
-            if(TextUtils.isEmpty(unique)){
-                aUnicCodeLayout.setError("Error enter valid information");
-                aUnicCodeLayout.setFocusable(true);
-                return;
-            }
-            Map<String,Object> d = new HashMap<>();
-            d.put("account number",acc);
-            d.put("account unique code",unique);
-            d.put("account expire date",Exp);
-            d.put("account CCE Code",CCE);
-            Log.d(TAG, String.valueOf(d));
+            processPayPalPayment();
         }
+    }
+
+    private void processPayPalPayment() {
+        amount = aCode.getText().toString().trim();
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(amount)),"USD", "Donate for yene Service", PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(this, com.paypal.android.sdk.payments.PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,configuration);
+        intent.putExtra(com.paypal.android.sdk.payments.PaymentActivity.EXTRA_PAYMENT,payPalPayment);
+        startActivityForResult(intent,PAYPAL_REQUEST_CODE);
     }
 }

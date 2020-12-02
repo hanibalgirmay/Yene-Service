@@ -6,40 +6,55 @@ import java.io.Serializable;
 
 public class UserModel implements Serializable {
 
-    private String userID;
+    private String docId;
+    private String userId;
     private String firstName;
     private String lastName;
     private String status;
     private String email;
     private String image;
     private String phone;
-    private boolean isOnline;
-    private boolean isProvider;
+    private String city;
+    private boolean Online;
+    private boolean Provider;
     private boolean receiveNews;
-    private Timestamp timestamp;
 
     public UserModel(){}
 
-    public UserModel(String userID, String firstName, String lastName,String phone, String email, String image,
-                     boolean isOnline, boolean isProvider, boolean receiveNews) {
-        this.userID = userID;
+    public UserModel(String docId,String userId, String firstName, String lastName,String phone, String email, String image,String city,
+                     boolean Online, boolean Provider, boolean receiveNews) {
+        this.docId = docId;
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.email = email;
         this.image = image;
-        this.isOnline = isOnline;
-        this.isProvider = isProvider;
+        this.city = city;
+        this.Online = Online;
+        this.Provider = Provider;
         this.receiveNews = receiveNews;
 //        this.timestamp = timestamp;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getDocId() {
+        return docId;
     }
 
-    public void setUserID(String userId) {
-        this.userID = userID;
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -52,10 +67,6 @@ public class UserModel implements Serializable {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
     }
 
     public void setLastName(String lastName) {
@@ -79,19 +90,15 @@ public class UserModel implements Serializable {
     }
 
     public boolean getOnline() {
-        return isOnline;
+        return Online;
     }
 
     public void setOnline(boolean online) {
-        isOnline = online;
+        Online = online;
     }
 
     public boolean getProvider() {
-        return isProvider;
-    }
-
-    public void setProvider(boolean provider) {
-        isProvider = provider;
+        return Provider;
     }
 
     public boolean getReceiveNews() {

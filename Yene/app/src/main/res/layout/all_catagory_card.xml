@@ -12,8 +12,7 @@
         app:strokeWidth="2dp"
         app:cardCornerRadius="5dp"
         app:cardElevation="8dp"
-        app:rippleColor="@color/colorPrimary"
-        android:background="@color/colorCard"
+        app:cardBackgroundColor="@color/colorCard"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:id="@+id/AAA"
@@ -23,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:weightSum="2"
-            android:background="@color/colorPrimary"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="27 catagories"
                     android:layout_gravity="bottom"
+                    android:textColor="@color/colorBlack"
                     android:gravity="bottom"
                     android:textSize="15sp"
                     android:padding="20sp"/>

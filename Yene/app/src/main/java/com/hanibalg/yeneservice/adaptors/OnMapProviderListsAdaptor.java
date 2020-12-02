@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -24,14 +25,19 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.models.ProviderModel;
 import com.hanibalg.yeneservice.models.UserModel;
@@ -44,6 +50,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class OnMapProviderListsAdaptor extends RecyclerView.Adapter<OnMapProviderListsAdaptor.MyViewHolder> {
+    private static final String TAG = OnMapProviderListsAdaptor.class.getName();
     private Context mContext ;
     private List<ProviderModel> mData ;
     private List<UserModel> mUser ;
@@ -75,6 +82,25 @@ public class OnMapProviderListsAdaptor extends RecyclerView.Adapter<OnMapProvide
         holder.workingArea.setText(workingArea.get(0));
         Picasso.get().load(mUser.get(position).getImage()).placeholder(R.drawable.background).into(holder.profile);
         //button
+        holder.call.setOnClickListener(v -> {
+            String p = mUser.get(position).getPhone();
+            if(!p.isEmpty()){
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:"+p));
+                mContext.startActivity(callIntent);
+            }else {
+                Toast.makeText(mContext, "No phone number", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        holder.fav.setOnFavoriteChangeListener((buttonView, favorite) -> {
+            if(buttonView.isFavorite()){
+                Toast.makeText(mContext, "Provider is Bookmarked", Toast.LENGTH_SHORT).show();
+                addToFav(mData.get(position).getUser_id());
+            }else{
+                Toast.makeText(mContext, "failed", Toast.LENGTH_SHORT).show();
+            }
+        });
         holder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +143,47 @@ public class OnMapProviderListsAdaptor extends RecyclerView.Adapter<OnMapProvide
             }
         });
     }
+
+    private void addToFav(String userID) {
+        if(!userID.isEmpty()){
+            Map<String,Object> bData = new HashMap<>();
+            bData.put("documentID",userID);
+            bData.put("timestamp",Timestamp.now());
+            DocumentReference reference;
+            reference = FirebaseFirestore.getInstance().collection("Users").document(auth.getUid()).collection("Favorite").document();
+            firebaseFirestore.collection("Users")
+                    .document(auth.getUid())
+                    .collection("Favorite")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if(task.isComplete()){
+                            for (DocumentChange doc: task.getResult().getDocumentChanges()){
+                                String f = doc.getDocument().getId();
+                                if(f.equals(userID)){
+                                    Toast.makeText(mContext, "already bookmarked", Toast.LENGTH_SHORT).show();
+                                } else{
+                                    reference.set(bData);
+                                    Toast.makeText(mContext, "Bookmarked successfull", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }).addOnFailureListener(e -> Log.d(TAG,e.getMessage()));
+//            firebaseFirestore.collection("Users")
+//                    .document(auth.getUid())
+//                    .collection("Favorite")
+//                    .add(bData)
+//                    .addOnCompleteListener(task -> {
+//                        if(task.isSuccessful()){
+//                            Toast.makeText(mContext, "Bookmarked successfull", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }).addOnFailureListener(e -> {
+//                        Toast.makeText(mContext, "Error happeded", Toast.LENGTH_SHORT).show();
+//                        Log.d(TAG,e.getMessage());
+//                    });
+
+        }
+    }
+
     private void handleDateButton() {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.clear();
@@ -217,7 +284,8 @@ public class OnMapProviderListsAdaptor extends RecyclerView.Adapter<OnMapProvide
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
         TextView name,workingArea,totalReview;
-        ImageView profile,fav,msg,call;
+        ImageView profile,msg,call;
+        MaterialFavoriteButton fav;
         RatingBar ratingBar;
         Button btn;
 

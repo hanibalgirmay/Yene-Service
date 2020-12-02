@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -71,6 +73,7 @@ public class AppointedJobFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth auth;
     private FloatingActionButton floatingActionButton;
+    private LinearLayout noAppointmentLayout;
 
     public AppointedJobFragment() {
         // Required empty public constructor
@@ -88,6 +91,7 @@ public class AppointedJobFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        noAppointmentLayout = view.findViewById(R.id.card_not_job);
         floatingActionButton = view.findViewById(R.id.calenderId);
         floatingActionButton.setOnClickListener(v -> {
             Intent cal = new Intent(getActivity(), CalanderActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -145,16 +149,28 @@ public class AppointedJobFragment extends Fragment {
         // Source can be CACHE, SERVER, or DEFAULT.
         Source source = Source.CACHE;
         firebaseFirestore.collection("JobsRequests")
-                .whereEqualTo("isAccepted",true)
+                .whereEqualTo("accepted",true)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if(queryDocumentSnapshots.isEmpty()){
+                        noAppointmentLayout.setVisibility(View.VISIBLE);
+                        floatingActionButton.setVisibility(View.GONE);
+                    }
                     for (DocumentChange doc:queryDocumentSnapshots.getDocumentChanges()){
-                        String doc_id = doc.getDocument().getId();
-                        AppointmentJobModel appointmentJobModel = doc.getDocument().toObject(AppointmentJobModel.class);
-                        appointmentJobModel.setDocID(doc_id);
-                        if (appointmentJobModel.getJobAppointedUserID().equals(auth.getUid())){
-                            getProviderDate(appointmentJobModel);
-                            Log.d("requests",doc.getDocument().getData().toString());
+                        if(doc.getDocument().exists()){
+                            String doc_id = doc.getDocument().getId();
+                            AppointmentJobModel appointmentJobModel = doc.getDocument().toObject(AppointmentJobModel.class);
+                            appointmentJobModel.setDocID(doc_id);
+                            if (appointmentJobModel.getJobAppointedUserID().equals(auth.getUid())){
+                                noAppointmentLayout.setVisibility(View.GONE);
+                                floatingActionButton.setVisibility(View.VISIBLE);
+                                getProviderDate(appointmentJobModel);
+                                Log.d("requests",doc.getDocument().getData().toString());
+                                Log.d("requests____",appointmentJobModel.toString());
 //                            mData.add(appointmentJobModel);
+                            }
+                        }else {
+                            noAppointmentLayout.setVisibility(View.VISIBLE);
+                            floatingActionButton.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -222,23 +238,40 @@ public class AppointedJobFragment extends Fragment {
     }
 
     private void deleteJob(int adapterPosition) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
-                alertDialogBuilder.setPositiveButton("yes",
-                        (arg0, arg1) -> {
-                            appointedAdaptor.removeItem(adapterPosition);
-                            Toast.makeText(getActivity(),"You clicked yes button",Toast.LENGTH_LONG).show();
-                        });
-
-        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-//                finish();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        SweetAlertDialog dialog =  new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+        dialog.setTitleText("Are you sure?");
+        dialog.setContentText("Won't be able to recover this file!");
+        dialog.setConfirmText("Yes,delete it!");
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelClickListener(sweetAlertDialog -> sweetAlertDialog.dismissWithAnimation());
+        dialog.setConfirmClickListener(sDialog -> sDialog
+                .setTitleText("Deleted!")
+                .setContentText("Your appointemnt file has been deleted!")
+//                .setConfirmText("OK")
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    appointedAdaptor.removeItem(adapterPosition);
+//                    appointedAdaptor.notifyItemRemoved(adapterPosition);
+                })
+                .setCancelClickListener(sweetAlertDialog -> sweetAlertDialog.dismissWithAnimation())
+                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE));
+        dialog.show();
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+//        alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
+//                alertDialogBuilder.setPositiveButton("yes",
+//                        (arg0, arg1) -> {
+//                            appointedAdaptor.removeItem(adapterPosition);
+//                            Toast.makeText(getActivity(),"You clicked yes button",Toast.LENGTH_LONG).show();
+//                        });
+//
+//        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+////                finish();
+//            }
+//        });
+//
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//        alertDialog.show();
     }
 
     private void sortByReverseDate(int position) {
@@ -249,14 +282,18 @@ public class AppointedJobFragment extends Fragment {
         Collections.sort(mData,(l1,l2) ->l1.getTimestamp().compareTo(l2.getTimestamp()));
     }
 
-    private void getProviderDate(final AppointmentJobModel appointmentJobModel) {
-        firebaseFirestore.collection("Users").document(appointmentJobModel.getService_provider_id())
+    private void getProviderDate(AppointmentJobModel appointmentJobModel) {
+        Log.d("request___ID",appointmentJobModel.getService_provider_id());
+        firebaseFirestore.collection("Users")
+                .document(appointmentJobModel.getService_provider_id())
                 .get().addOnSuccessListener(documentSnapshot -> {
                     if(documentSnapshot.exists()) {
+                        noAppointmentLayout.setVisibility(View.GONE);
+                        floatingActionButton.setVisibility(View.VISIBLE);
                         UserModel userModel = documentSnapshot.toObject(UserModel.class);
                         mData.add(appointmentJobModel);
                         mUser.add(userModel);
-                        Log.d("Information-provider",documentSnapshot.getData().toString());
+                        Log.d("request",documentSnapshot.getData().toString());
                         appointedAdaptor.notifyDataSetChanged();
                     }
                 });

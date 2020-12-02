@@ -13,6 +13,8 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
+        android:elevation="0dp"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
 
@@ -79,11 +81,21 @@
                         android:layout_marginStart="20dp"
                         android:textSize="25sp"
                         android:textColor="@color/colorBlack"/>
-                    <TextView
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/workingArea"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        app:chipStrokeColor="@color/colorBlack"
+                        android:background="@color/colorAccent"
+                        android:layout_marginStart="15dp"
+                        android:text="painting"/>
+                    <TextView
+                        android:id="@+id/workingArea2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Proffession"
+                        android:visibility="gone"
                         android:textColor="@color/colorBlack"
                         android:layout_marginStart="20dp"
                         android:textSize="14sp"
@@ -136,6 +148,137 @@
                 android:textColor="@color/colorBlack"
                 android:layout_marginStart="20sp"
                 android:layout_marginEnd="20sp"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="5dp"
+                android:elevation="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/colorCard"
+                android:padding="10dp"
+                app:cardCornerRadius="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Expriance"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/pExpriance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="3 years"
+                            android:gravity="end"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Type"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/pType"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Individual"
+                            android:gravity="end"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Education Level"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/pEducation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Universty degree"
+                            android:gravity="end"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Show case"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/pShowcase"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="view"
+                            android:gravity="end"
+                            android:textColor="@color/colorAccent"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Address"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/pAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="address"
+                            android:gravity="end"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -315,6 +458,7 @@
                     <include layout="@layout/card_provider_individual"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabMode"
                 android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.hanibalg.yeneservice.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -37,9 +38,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,7 +52,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.RecentJobUserAdaptor;
 import com.hanibalg.yeneservice.adaptors.ReviewAdapter;
@@ -65,6 +72,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ProviderPageActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
 
@@ -107,20 +116,32 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
 //        String m =  intentA.getStringExtra("userID");
         UserModel u = (UserModel) intentA.getSerializableExtra("userData");
         String working = intentA.getStringExtra("providerDataSpe");
+        String aboutIntent = intentA.getStringExtra("providerDataAbout");
         providerID =  intentA.getStringExtra("providerDataInfo");
+
+        String exp =  intentA.getStringExtra("providerExpr");
+        String ty =  intentA.getStringExtra("providerType");
+        String edu =  intentA.getStringExtra("providerEducation");
+        String add =  intentA.getStringExtra("providerAddress");
+
         if(providerID != null){
             Log.d("providerInformationId","-"+ providerID);
             Log.d("providerInformationId","-"+ locationReference);
         }
         locationReference = FirebaseFirestore.getInstance().collection("Locations").document(providerID);
         if(u != null){
-            Log.d("providerInformationId","_"+ u.getUserID());
+            Log.d("providerInformationId","_"+ u.getUserId());
         }
         //Attach data
         ImageView imageView = findViewById(R.id.providerImg);
         TextView name = findViewById(R.id.providerName);
-        TextView work = findViewById(R.id.workingArea);
+        Chip work = findViewById(R.id.workingArea);
         TextView about = findViewById(R.id.about);
+        TextView expriance = findViewById(R.id.pExpriance);
+        TextView type = findViewById(R.id.pType);
+        TextView education = findViewById(R.id.pEducation);
+        TextView address = findViewById(R.id.pAddress);
+
         viewAllReview = findViewById(R.id.viewAllReview);
         viewAllReview.setOnClickListener(v -> {
             Intent re = new Intent(this,ReviewActivity.class);
@@ -183,10 +204,15 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
         String fullname = u.getFirstName()+" " +u.getLastName();
         Picasso.get().load(u.getImage()).placeholder(R.drawable.placeholder_profile).into(imageView);
         name.setText(fullname);
-        about.setText(providerID);
-//        List<String> speciality = m.getSpeciality();
-        work.setText(working);
+        about.setText(aboutIntent);
+        expriance.setText(exp);
+        type.setText(ty);
+        education.setText(edu);
+        address.setText(add);
 
+//        List<String> speciality = m.getSpeciality();
+//        working.toCharArray();
+        work.setText(working);
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
 
@@ -316,6 +342,17 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    private void providerInfo(String id){
+        firebaseFirestore.collection("Service_Providers")
+                .whereEqualTo("user_id",id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    for (DocumentChange doc:task.getResult().getDocumentChanges()){
+                        UserModel userModel2 = doc.getDocument().toObject(UserModel.class);
+                    }
+                }).addOnFailureListener(e -> Toast.makeText(ProviderPageActivity.this, "error getting user", Toast.LENGTH_SHORT).show());
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -410,12 +447,12 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
 
             Map<String, Object> appointMap = new HashMap<>();
             appointMap.put("jobAppointedUserID", auth.getUid());
-            appointMap.put("service_provider_id", u.getUserID());
+            appointMap.put("service_provider_id", u.getUserId());
             appointMap.put("problem_description", description);
             appointMap.put("date", dateAppoint);
             appointMap.put("time", timeAppoint);
             appointMap.put("timestamp", Timestamp.now());
-            appointMap.put("isAccepted", false);
+            appointMap.put("accepted", false);
             appointMap.put("priority", priority);
 
             final DocumentReference ref = firebaseFirestore.collection("JobsAppointments").document();
@@ -425,11 +462,12 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
                     if(task.isSuccessful()){
                         String myId = ref.getId();
                         Toast.makeText(ProviderPageActivity.this, "Appointment successful.", Toast.LENGTH_LONG).show();
-//                        new SweetAlertDialog(ServiceProviderProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-//                                .setTitleText("Good job!")
-//                                .setContentText("You request appointment Successfully!")
-//                                .show();
+                        new SweetAlertDialog(ProviderPageActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Good job!")
+                                .setContentText("You request appointment Successfully!")
+                                .show();
 
+                        sendNotification(u);
 //                        Intent mainIntent = new Intent(ServiceProviderProfileActivity.this, HomeActivity.class);
 //                        mainIntent.putExtra("doccumentId",myId);
 //                        startActivity(mainIntent);
@@ -443,6 +481,24 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
             });
 
         }
+    }
+
+    private void sendNotification(UserModel u) {
+        String description = "New Job request from "+u.getFirstName();
+        Map<String, Object> notificationMessage = new HashMap<>();
+        notificationMessage.put("messages",description);
+        notificationMessage.put("from", auth.getUid());
+        notificationMessage.put("timestamp",Timestamp.now());
+
+        firebaseFirestore.collection("Users")
+                .document(u.getUserId())
+                .collection("Notifications")
+                .add(notificationMessage)
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Toast.makeText(ProviderPageActivity.this, "Notification sent", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(e -> Log.d(TAG,e.getMessage()));
     }
 
 
@@ -464,37 +520,35 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
         Intent intentB = getIntent();
         UserModel uu = (UserModel) intentB.getSerializableExtra("userData");
         String id = intentB.getStringExtra("providerDataInfo");
+        Log.d("locationUser","_Id: "+providerID);
         if (id != null) {
-            try{
-                firebaseFirestore.collection("Locations")
-                        .document("oaG2kJa0S2cmQ4PMktRWYT7okQf1")
-                        .get()
-                        .addOnSuccessListener(documentSnapshot -> {
-                            if(documentSnapshot.exists()){
-                                LocationsModel locationModel = documentSnapshot.toObject(LocationsModel.class);
-//                                Log.d("locationUser", String.valueOf(locationModel.getUser()));
-//                              GeoPoint loc = documentSnapshot.getGeoPoint("location");
-                                if(locationModel != null){
-                                    double lat = locationModel.getLocation().getLatitude();
-                                    double lng = locationModel.getLocation().getLongitude();
 
-                                    final LatLng pLocation = new LatLng(lat, lng);
-                                    MarkerOptions markerOptions = new MarkerOptions();
-                                    markerOptions.position(pLocation);
-                                    markerOptions.title("test");
-                                    mMap.addMarker(markerOptions);
-                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pLocation,10));
-                                }
+            firebaseFirestore.collection("Locations")
+                    .document(providerID)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            LocationsModel locationModel = task.getResult().toObject(LocationsModel.class);
+//                          Log.d("locationUser", String.valueOf(locationModel.getUser()));
+//                            GeoPoint loc = task.getResult().getGeoPoint("location");
+                            if(locationModel != null){
+                                double lat = locationModel.getProviderLocation().getLatitude();
+                                double lng = locationModel.getProviderLocation().getLongitude();
+//                                Log.d("locationUser","_"+locationModel.getProviderLocation());
+                                Log.d("locationUser","___"+task.getResult().getData());
+                                final LatLng pLocation = new LatLng(lat, lng);
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                markerOptions.position(pLocation);
+                                markerOptions.title("my location");
+                                mMap.addMarker(markerOptions);
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pLocation,10));
+                            }
 
-                            }
-                            else{
-//                            Log.d("locationUser", "location is not found");
-                                Log.d("locationUser_", ""+documentSnapshot.getId());
-                            }
-                        }).addOnFailureListener(e -> Log.d("locationUser","_"+e));
-            }catch (Exception e){
-                Log.d("locationUser",e.getMessage());
-            }
+                        }else{
+                            Log.d("locationUser","data not complete");
+                        }
+                    }).addOnFailureListener(e -> Log.d("locationUser","_"+e));
+
 
         } else{
             Log.d("locationUser","++Id not found");

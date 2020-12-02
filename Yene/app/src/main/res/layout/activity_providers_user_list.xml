@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@color/colorPrimary"
     tools:context=".activities.ProvidersUserListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@android:color/darker_gray"
+        android:elevation="0dp"
+        app:elevation="0dp"
+        android:background="@color/colorPrimary"
         tools:ignore="MissingConstraints">
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"

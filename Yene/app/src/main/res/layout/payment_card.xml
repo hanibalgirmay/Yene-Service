@@ -6,8 +6,8 @@
     android:elevation="10dp"
     android:id="@+id/cardBg"
     android:layout_marginTop="20dp"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
     android:alpha=".6"
     app:cardCornerRadius="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -16,36 +16,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="30dp"
-            android:textSize="20sp"/>
+            android:layout_marginTop="20dp"
+            android:textSize="20sp" />
+
         <ImageView
             android:id="@+id/simImg"
             android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_marginTop="40dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
             android:background="@color/colorPrimary"
-            />
+            android:contentDescription="TODO" />
+
         <TextView
             android:id="@+id/cardNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="123 3456 544"
-            android:textSize="25sp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="5dp"
-            android:textStyle="bold"/>
+            android:text="123 3456 544"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Expire Date"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="0dp"/>
+            android:layout_marginTop="0dp"
+            android:text="Expire Date" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

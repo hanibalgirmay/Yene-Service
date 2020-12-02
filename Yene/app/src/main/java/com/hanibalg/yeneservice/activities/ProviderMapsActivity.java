@@ -12,7 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.Manifest;
+import android.animation.IntEvaluator;
+import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -30,9 +35,18 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +57,7 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,7 +81,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProviderMapsActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
+public class ProviderMapsActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMarkerClickListener {
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth auth;
@@ -80,7 +95,9 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
     private String gen;
     private LocationManager locationManager;
     GPSTracker gpsTracker;
-
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private static final int REQUEST_CODE = 101;
+    private Location currentLocation;
     /**
      * Request code for location permission request.
      *
@@ -88,11 +105,6 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
      */
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    /**
-     * Flag indicating whether a requested permission has been denied after returning in
-     * {@link #onRequestPermissionsResult(int, String[], int[])}.
-     */
-    private boolean permissionDenied = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,15 +117,15 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
         auth = FirebaseAuth.getInstance();
 //        reference = FirebaseFirestore.getInstance().collection("Locations").document();
 
-        // check if GPS enabled
-        gpsTracker = new GPSTracker(this);
-        if (!gpsTracker.getIsGPSTrackingEnabled()){
-            gpsTracker.showSettingsAlert();
-            gpsTracker.stopUsingGPS();
-        }else{
-            gpsTracker.updateGPSCoordinates();
-
-        }
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        fetchLocation();
+//        gpsTracker = new GPSTracker(this);
+//        if (!gpsTracker.getIsGPSTrackingEnabled()){
+//            gpsTracker.showSettingsAlert();
+//            gpsTracker.stopUsingGPS();
+//        }else{
+//            gpsTracker.updateGPSCoordinates();
+//        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -161,33 +173,37 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
             }
         });
         //---------------------------------------================================
-        //GPS
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-        }else{
-            showGPSDisabledAlertToUser();
-        }
+
     }
+
+    private void fetchLocation() {
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            return;
+        }
+        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(location -> {
+            if(location != null){
+                currentLocation = location;
+//                Toast.makeText(gpsTracker, ""+currentLocation.getLatitude()+""+currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void showGPSDisabledAlertToUser() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Enable GPS",
-                        new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface dialog, int id){
-                                enableMyLocation();
+                        (dialog, id) -> {
+                            enableMyLocation();
 //                                Intent callGPSSettingIntent = new Intent(
 //                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 //                                startActivity(callGPSSettingIntent);
-                            }
                         });
         alertDialogBuilder.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        dialog.cancel();
-                    }
-                });
+                (dialog, id) -> dialog.cancel());
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
@@ -202,38 +218,49 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
             }
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-//            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-//                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
         }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
-            return;
-        }
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Enable the my location layer if the permission has been granted.
-            enableMyLocation();
-        } else {
-            // Permission was denied. Display an error message
-            // Display the missing permission error dialog when the fragments resume.
-            permissionDenied = true;
-        }
+//        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+//            return;
+//        }
+//        if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
+//            // Enable the my location layer if the permission has been granted.
+//            enableMyLocation();
+//        } else {
+//            // Permission was denied. Display an error message
+//            // Display the missing permission error dialog when the fragments resume.
+//            permissionDenied = true;
+//        }
+//        switch (requestCode){
+//            case REQUEST_CODE:
+//                if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    // Enable the my location layer if the permission has been granted.
+//                    fetchLocation();
+//                }
+//                break;
+//        }
     }
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        if (permissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError();
-            permissionDenied = false;
-        }
+//        if (!gpsTracker.getIsGPSTrackingEnabled()) {
+//            // Permission was not granted, display error dialog.
+//            showMissingPermissionError();
+//            permissionDenied = false;
+//        }
     }
 
     public void getProviders(){
         firebaseFirestore.collection("Locations")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(queryDocumentSnapshots.isEmpty()){
+                        Log.d(TAG,"data not found");
+                    }
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         final LocationsModel locationModel = doc.getDocument().toObject(LocationsModel.class);
                         DocumentReference ref = locationModel.getUser();
@@ -248,6 +275,8 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
                                 userRef.get().addOnSuccessListener(document -> {
                                     if(document.exists()){
                                         UserModel info = document.toObject(UserModel.class);
+                                        String id = document.getId();
+                                        info.setUserId(id);
                                         Log.d("USer-info",document.getData().toString());
                                         models.add(providerModel);
                                         mUser.add(info);
@@ -265,20 +294,17 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
         Log.d("Provider-mmmm",userId);
         firebaseFirestore.collection("Service_Providers")
                 .whereEqualTo("userID",userId).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-                            String docID = doc.getDocument().getId();
-                            ProviderModel providerModel= doc.getDocument().toObject(ProviderModel.class);
-                            providerModel.setUser_id(docID);
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                        String docID = doc.getDocument().getId();
+                        ProviderModel providerModel= doc.getDocument().toObject(ProviderModel.class);
+                        providerModel.setUser_id(docID);
 
-                            Log.d("user-provider",providerModel.toString());
-                            models.add(providerModel);
-                            adaptor.notifyDataSetChanged();
-                        }
+                        Log.d("user-provider",providerModel.toString());
+                        models.add(providerModel);
+                        adaptor.notifyDataSetChanged();
                     }
-        });
+                });
 
     }
 
@@ -320,70 +346,73 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
         /**
          * my location coordinate
          */
-        double la = gpsTracker.getLatitude();
-        double lng = gpsTracker.getLongitude();
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(la, lng), 10));
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(this);
-            mMap.setOnMyLocationClickListener(this);
-        }
+
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(la, lng), 10));
+//            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+//                mMap.setMyLocationEnabled(true);
+//                mMap.setOnMyLocationButtonClickListener(this);
+//                mMap.setOnMyLocationClickListener(this);
+//            }
+
         //get all locations from firebase
         firebaseFirestore.collection("Locations").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         LocationsModel l = doc.getDocument().toObject(LocationsModel.class);
                         //get latitudes and longitudes
-                        final double latitude = l.getLocation().getLatitude();
-                        final double longitude = l.getLocation().getLongitude();
+                        final double latitude = l.getProviderLocation().getLatitude();
+                        final double longitude = l.getProviderLocation().getLongitude();
                         final LatLng ET = new LatLng(latitude, longitude);
-                        l.getUser().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()){
-                                    UserModel m = task.getResult().toObject(UserModel.class);
+                        l.getUser().get().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                ProviderModel m = task.getResult().toObject(ProviderModel.class);
 
-                                    // Add a marker in Sydney and move the camera
-                                    MarkerOptions markerOptions = new MarkerOptions();
-                                    assert m != null;
-                                    markerOptions.title(m.getFirstName());
-                                    markerOptions.position(ET);
-                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_icon));
-                                    markerOptions.snippet("provider is here");
-                                    mMap.addMarker(markerOptions);
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ET, 15));
-                                    // // Zoom in, animating the camera.
-                                    mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-
+                                // Add a marker in Sydney and move the camera
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                assert m != null;
+                                markerOptions.title(m.getAbout_me());
+                                markerOptions.position(ET);
+//                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.placeholder_icon));
+                                markerOptions.snippet("provider is here");
+                                mMap.addMarker(markerOptions);
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ET, 15));
+                                // // Zoom in, animating the camera.
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 //                                        mMap.setMinZoomPreference(5.13f);
 //                                        mMap.setMaxZoomPreference(30.0f);
-                                }
+                                mMap.setOnMarkerClickListener(this);
                             }
                         });
                     }
                 });
+        //current location
+        if(currentLocation != null){
+            LatLng MylatLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+            Circle circle = mMap.addCircle(new CircleOptions()
+                    .center(MylatLng)
+                    .radius(200)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE));
+            ValueAnimator valueAnimator = new ValueAnimator();
+            valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+            valueAnimator.setRepeatMode(ValueAnimator.RESTART);
+            valueAnimator.setIntValues(0, 100);
+            valueAnimator.setDuration(3000);
+            valueAnimator.setEvaluator(new IntEvaluator());
+            valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+            valueAnimator.addUpdateListener(valueAnimator1 -> {
+                float animatedFraction = valueAnimator1.getAnimatedFraction();
+                circle.setRadius(animatedFraction * 100 * 2);
+            });
+            valueAnimator.start();
+            MarkerOptions myLocation = new MarkerOptions().position(MylatLng).title("my location");
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(MylatLng));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(MylatLng,5));
+            googleMap.addMarker(myLocation);
+        }
 
         //end firebase
-        Circle circle = mMap.addCircle(new CircleOptions()
-                .center(new LatLng(la, lng))
-                .radius(200)
-                .strokeColor(Color.RED)
-                .fillColor(Color.BLUE));
-//        ValueAnimator valueAnimator = new ValueAnimator();
-//        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
-//        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
-//        valueAnimator.setIntValues(0, 100);
-//        valueAnimator.setDuration(3000);
-//        valueAnimator.setEvaluator(new IntEvaluator());
-//        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-//        valueAnimator.addUpdateListener(valueAnimator1 -> {
-//            float animatedFraction = valueAnimator1.getAnimatedFraction();
-//            circle.setRadius(animatedFraction * 100 * 2);
-//        });
-
-//        valueAnimator.start();
-
-        enableMyLocation();
+//        enableMyLocation();
     }
     /**
      * @param encodedString
@@ -440,5 +469,39 @@ public class ProviderMapsActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMyLocationClick(@NonNull Location location) {
         Toast.makeText(this, "My Current location:\n" + location, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LocationRequest.PRIORITY_HIGH_ACCURACY:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        // All required changes were successfully made
+                        Log.i(TAG, "onActivityResult: GPS Enabled by user");
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        // The user was asked to change settings, but chose not to
+                        Log.i(TAG, "onActivityResult: User rejected GPS request");
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        // Retrieve the data from the marker.
+        String clickCount =  marker.getId();
+        // Check if a click count was set, then display the click count.
+
+        Toast.makeText(this,
+                marker.getTitle() +
+                        " has been clicked " + clickCount + " times.",
+                Toast.LENGTH_SHORT).show();
+        return false;
     }
 }

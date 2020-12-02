@@ -42,6 +42,12 @@ public class ServiceListAdaptor extends RecyclerView.Adapter<ServiceListAdaptor.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        String na;
+//        if(serviceList.get(position).getName().length() > 9){
+//            holder.name.setText(serviceList.get(position).getName().substring(9));
+//        }else{
+//            
+//        }
         holder.name.setText(serviceList.get(position).getName());
 //        holder.img.setImageResource(serviceList.get(position).getImages());
         Picasso

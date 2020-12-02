@@ -5,17 +5,25 @@
         android:id="@+id/filter"
         android:icon="@drawable/ic_filter_list_black_24dp"
         android:name="Filter"
+        android:iconTint="@color/colorBlack"
         app:showAsAction="always"
         android:title="Filter">
         <menu>
             <item
                 android:id="@+id/asc"
                 android:title="Asending"
-
+                android:iconTint="@color/colorBlack"
                 />
             <item
                 android:id="@+id/desc"
+                android:iconTint="@color/colorBlack"
                 android:title="Descending"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/scan"
+        android:title="Scan"
+        android:iconTint="@color/colorBlack"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_qr_code_scanner_24"/>
 </menu>

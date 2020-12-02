@@ -1,6 +1,6 @@
 <template>
   <section>
-    <md-table v-model="reviewsData" md-card>
+    <md-table class="table" v-model="reviewsData" md-card>
       <md-table-toolbar>
         <h1 class="md-title">Users Reviews</h1>
       </md-table-toolbar>
@@ -68,6 +68,9 @@ export default {
 
 <style scoped>
 .md-content {
+  width: 100%;
+}
+.table {
   width: 100%;
 }
 </style>

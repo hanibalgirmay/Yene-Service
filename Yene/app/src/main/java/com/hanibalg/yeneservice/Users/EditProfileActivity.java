@@ -9,12 +9,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -49,6 +52,10 @@ public class EditProfileActivity extends AppCompatActivity {
             toolbar.setTitle("");
         }
         toolbar.setNavigationOnClickListener(view -> finish());
+        //init
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        reference = FirebaseFirestore.getInstance().collection("Users").document(auth.getUid());
 
         //initialize
         inputFname = findViewById(R.id.fname);
@@ -56,12 +63,15 @@ public class EditProfileActivity extends AppCompatActivity {
         inputPhone = findViewById(R.id.lname);
         Button btn = findViewById(R.id.updateBtn);
 
-        btn.setOnClickListener(v -> update());
-        //init
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        reference = FirebaseFirestore.getInstance().collection("Users").document(auth.getUid());
-        getUserInfo();
+        TextInputEditText name = findViewById(R.id.name);
+        TextInputLayout nameLayout = findViewById(R.id.nameLayout);
+        name.setText(tt);
+        nameLayout.setHint(t);
+//        name.setHint(t);
+
+        btn.setOnClickListener(v -> update(t));
+
+//        getUserInfo();
     }
 
     private void getUserInfo() {
@@ -80,17 +90,15 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void update(){
-        String fname = inputFname.getText().toString().trim();
-        String lname = inputLname.getText().toString().trim();
-        String phone = inputPhone.getText().toString().trim();
-        if(TextUtils.isEmpty(fname) || TextUtils.isEmpty(lname) || TextUtils.isEmpty(phone)){
+    private void update(String t){
+        TextInputEditText name = findViewById(R.id.name);
+        String fname = name.getText().toString().trim();
+
+        if(TextUtils.isEmpty(fname)){
             Toast.makeText(this, "Fields can not be empty", Toast.LENGTH_SHORT).show();
         }
         Map<String,Object> updateUSer = new HashMap<>();
-        updateUSer.put("firstName",fname);
-        updateUSer.put("lastName",lname);
-        updateUSer.put("phone",phone);
+        updateUSer.put(t,fname);
         reference.update(updateUSer).addOnSuccessListener(aVoid -> Toast.makeText(EditProfileActivity.this, "update successful", Toast.LENGTH_SHORT).show());
     }
 }

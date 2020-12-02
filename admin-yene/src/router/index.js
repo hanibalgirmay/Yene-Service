@@ -26,6 +26,17 @@ const routes = [
         component: () => import("../views/Provider.vue"),
       },
       {
+        path: "/service-list",
+        name: "servicesList",
+        component: () => import("../views/ServiceList.vue"),
+      },
+      {
+        path: "/service-category/:serviceName",
+        name: "serviceCatgory",
+        props: true,
+        component: () => import("../views/serviceCategory.vue"),
+      },
+      {
         path: "/provider/add",
         name: "Add Provider",
         component: () => import("../views/AddProvider.vue"),

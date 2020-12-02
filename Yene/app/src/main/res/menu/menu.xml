@@ -5,17 +5,20 @@
         android:id="@+id/notification"
         android:icon="@drawable/ic_notifications_black_24dp"
         app:showAsAction="always"
+        android:iconTint="@color/colorBlack"
         android:name="Notification"
         android:title="@string/notification" />
     <item
         android:id="@+id/msg"
         android:icon="@drawable/ic_send_black_24dp"
         app:showAsAction="always"
+        android:iconTint="@color/colorBlack"
         android:name="Message"
         android:title="@string/msg" />
     <item
         android:id="@+id/report"
         android:name="Report"
+        android:iconTint="@color/colorBlack"
         app:showAsAction="always"
         android:icon="@drawable/working_time"
         android:title="@string/report" />

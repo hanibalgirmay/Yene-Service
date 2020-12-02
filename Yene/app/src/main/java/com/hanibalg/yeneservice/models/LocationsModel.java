@@ -7,23 +7,25 @@ import com.google.firebase.firestore.GeoPoint;
 public class LocationsModel {
 
     private DocumentReference user;
-    private GeoPoint location;
+    private GeoPoint providerLocation;
     private Timestamp timestamp;
 
     public LocationsModel(){}
 
-    public LocationsModel(DocumentReference user, GeoPoint location, Timestamp timestamp) {
+    public LocationsModel(DocumentReference user, GeoPoint providerLocation, Timestamp timestamp) {
         this.user = user;
-        this.location = location;
+        this.providerLocation = providerLocation;
         this.timestamp = timestamp;
     }
 
     public DocumentReference getUser() {
         return user;
     }
-    public GeoPoint getLocation() {
-        return location;
+
+    public GeoPoint getProviderLocation() {
+        return providerLocation;
     }
+
     public Timestamp getTimestamp() {
         return timestamp;
     }
