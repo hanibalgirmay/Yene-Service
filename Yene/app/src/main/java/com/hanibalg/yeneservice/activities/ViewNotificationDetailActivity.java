@@ -5,15 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hanibalg.yeneservice.R;
+import com.hanibalg.yeneservice.adaptors.NotificationAdaptor;
+import com.hanibalg.yeneservice.models.AppointmentJobModel;
+import com.hanibalg.yeneservice.models.ProviderModel;
 import com.hanibalg.yeneservice.models.UserModel;
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +32,8 @@ public class ViewNotificationDetailActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private TextView name,msg,date,time;
     private ImageView profile;
-    private Button btnAccept,btnDecline;
+    private MaterialButton btnAccept,btnDecline;
+    private String TAG = ViewNotificationDetailActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,7 @@ public class ViewNotificationDetailActivity extends AppCompatActivity {
 
         String intent_user = getIntent().getStringExtra("userID");
         String intent_msg = getIntent().getStringExtra("dataMsg");
+        String intent_job = getIntent().getStringExtra("jobID");
         String intent_type = getIntent().getStringExtra("dataType");
         String intent_accept = getIntent().getStringExtra("dataAccepted");
 
@@ -61,8 +71,40 @@ public class ViewNotificationDetailActivity extends AppCompatActivity {
                 }
             });
         }
+//        checkJobAvailability(intent_job);
         msg.setText(intent_msg);
 //        date.setText(intent);
+        checkJobAvailability(intent_job);
+    }
+
+    private void checkJobAvailability(String jobID) {
+        try{
+            firebaseFirestore.collection("JobsRequests")
+                    .document(jobID)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if(task.isComplete()){
+                            AppointmentJobModel appointmentJobModel = task.getResult().toObject(AppointmentJobModel.class);
+                            appointmentJobModel.setDocID(task.getResult().getId());
+                            Log.d(TAG,"_**_"+task.getResult().getData());
+                            if(appointmentJobModel.JobAccepted()){
+//                                btnAccept.setEnabled(false);
+//                                btnDecline.setEnabled(false);
+                                btnAccept.setVisibility(View.GONE);
+                                btnDecline.setVisibility(View.GONE);
+                            }
+                        } else{
+                            Toast.makeText(this, "JOb not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(e -> {
+                e.printStackTrace();
+                Log.d(TAG,""+e.getMessage());
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.d(TAG,""+e.getMessage());
+        }
+
     }
 
     @Override

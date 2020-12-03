@@ -98,4 +98,5 @@
         android:layout_gravity="end|bottom"/>
 
     <include layout="@layout/rating_layout"/>
+    <include layout="@layout/bottom_sheet"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

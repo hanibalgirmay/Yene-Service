@@ -86,16 +86,16 @@ public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobV
         holder.desc.setText(mData.get(position).getProblem_description());
         holder.appointdate.setText(mData.get(position).getDate().toDate().toString());
         Picasso.get().load(mUser.get(position).getImage()).placeholder(R.drawable.background).into(holder.img);
-        //TODO here
+        //
         //================layout================
         boolean isA = mData.get(position).JobAccepted();
         if(isA){
-            holder.jobAcceptLayout.setVisibility(View.GONE);
+//            holder.jobAcceptLayout.setVisibility(View.GONE);
             holder.jobRequestLayout.setVisibility(View.VISIBLE);
         }
         if(!isA){
             holder.jobAcceptLayout.setVisibility(View.VISIBLE);
-            holder.jobRequestLayout.setVisibility(View.GONE);
+//            holder.jobRequestLayout.setVisibility(View.VISIBLE);
         }
         //======================================
 //        holder.review.setOnClickListener(new View.OnClickListener() {
@@ -116,9 +116,9 @@ public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobV
 //            String po = String.valueOf(format.getSeconds() - u.getSeconds());
 //            holder.countDay.setText(po);
 //        }
-        holder.acceptBtn.setOnClickListener(v -> reference.update("isAccepted",true).addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Job accepted", Toast.LENGTH_SHORT).show()));
+        holder.acceptBtn.setOnClickListener(v -> reference.update("accepted",true).addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Job accepted", Toast.LENGTH_SHORT).show()));
         holder.declineBtn.setOnClickListener(v ->{
-            Toast.makeText(mContext, "Decline job!!!", Toast.LENGTH_SHORT).show();
+            reference.update("accepted",false).addOnSuccessListener(aVoid -> Toast.makeText(mContext, "job Decline!", Toast.LENGTH_SHORT).show());
         });
         holder.pay.setOnClickListener(v -> {
             Intent pay = new Intent(mContext, PaymentActivity.class);

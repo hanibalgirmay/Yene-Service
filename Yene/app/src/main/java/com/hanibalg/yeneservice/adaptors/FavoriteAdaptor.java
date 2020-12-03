@@ -2,8 +2,10 @@ package com.hanibalg.yeneservice.adaptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,9 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,6 +31,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.activities.ProviderPageActivity;
+import com.hanibalg.yeneservice.activities.ReportProblemActivity;
+import com.hanibalg.yeneservice.config.BlurTransformation;
 import com.hanibalg.yeneservice.models.ProviderModel;
 import com.hanibalg.yeneservice.models.Reviews;
 import com.hanibalg.yeneservice.models.ServiceListModel;
@@ -34,7 +40,10 @@ import com.hanibalg.yeneservice.models.UserModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHolder> {
     private List<UserModel> mProvider;
@@ -60,6 +69,14 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     @Override
     public void onBindViewHolder(@NonNull FavoriteAdaptor.ViewHolder holder, int position) {
         user = mProvider.get(position);
+        Glide.with(context)
+                .load(mProvider.get(position).getImage())
+                .placeholder(R.drawable.background)
+                .centerCrop()
+                .override(300,200)
+                .transform(new BlurTransformation(context))
+                .into(holder.proBg);
+
         holder.name.setText(mProvider.get(position).getFirstName());
 //        holder.workingArea.setText(mProvider.get(position).serviceList());
         Picasso.get().load(mProvider.get(position).getImage()).into(holder.circleImageView);
@@ -76,6 +93,51 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         });
         holder.cardView.setOnClickListener(v -> {
             providerInfo(user,userId);
+        });
+        /*
+        OPTION BUTTON TO DISPLAY OPTION LIST
+         */
+        holder.optionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context, v);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    // TODO Auto-generated method stub
+                    switch (item.getItemId()) {
+                        case R.id.delete_option:
+                            Toast.makeText(context, "delete",
+                                    Toast.LENGTH_SHORT).show();
+                            removeFav(position);
+                            return true;
+                        case R.id.share_option:
+                            Toast.makeText(context, "share",
+                                    Toast.LENGTH_SHORT).show();
+                            ArrayList<String> shareMe = new ArrayList<String>();
+                            shareMe.add(mProvider.get(position).getImage());
+                            shareMe.add(mProvider.get(position).getFirstName());
+                            shareMe.add(mProvider.get(position).getEmail());
+                            shareMe.add(mProvider.get(position).getUserId());
+                            Intent sendIntent = new Intent();
+                            sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                            sendIntent.putStringArrayListExtra(Intent.EXTRA_STREAM, shareMe);
+//                            sendIntent.putExtra(Intent.EXTRA_TEXT, (Serializable) shareMe);
+                            sendIntent.setType("text/*");
+                            Intent shareIntent = Intent.createChooser(sendIntent, "Share service Provider");
+                            context.startActivity(shareIntent);
+                            return true;
+                        case R.id.report_option:
+                            Toast.makeText(context, "report",
+                                    Toast.LENGTH_SHORT).show();
+                            Intent rep = new Intent(context, ReportProblemActivity.class);
+                            rep.putExtra("userId",mProvider.get(position).getUserId());
+                            context.startActivity(rep);
+                            return true;
+                    }
+                    return false;
+                });
+                popupMenu.inflate(R.menu.card_option);
+                popupMenu.show();
+            }
         });
         /*
         Get Rating collection
@@ -170,7 +232,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private View view;
-        private ImageView circleImageView;
+        private ImageView circleImageView,proBg,optionBtn;
         private TextView name;
         private RatingBar ratingBar;
         private TextView about;
@@ -183,6 +245,8 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
             super(itemView);
             view=itemView;
             circleImageView = view.findViewById(R.id.pro);
+            proBg = view.findViewById(R.id.proBg);
+            optionBtn = view.findViewById(R.id.option);
             name = (TextView)view.findViewById(R.id.nm);
             workingArea = (TextView)view.findViewById(R.id.workingArea);
             ratingBar = view.findViewById(R.id.rating);

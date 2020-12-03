@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +75,8 @@ public class AppointedJobFragment extends Fragment {
     private FirebaseAuth auth;
     private FloatingActionButton floatingActionButton;
     private LinearLayout noAppointmentLayout;
+    CardView llBottomSheet;
+
 
     public AppointedJobFragment() {
         // Required empty public constructor
@@ -98,10 +101,13 @@ public class AppointedJobFragment extends Fragment {
             startActivity(cal);
         });
         //Bottom sheet for rating
-        bottom_sheet = view.findViewById(R.id.rating_bottom_sheet);
-        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+//        bottom_sheet = view.findViewById(R.id.rating_bottom_sheet);
+//        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
 
         Toast.makeText(getContext(), "name: "+auth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        llBottomSheet = view.findViewById(R.id.bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+        initBottomSheet();
 
         //init
         textViewRating = view.findViewById(R.id.ratingText);
@@ -197,7 +203,7 @@ public class AppointedJobFragment extends Fragment {
                         30,
                         R.drawable.ic_edit_black_24dp,
                         Color.parseColor("#FF9502"),
-                        pos -> editRequestJob()));
+                        pos -> editRequestJob(viewHolder.getAdapterPosition())));
             }
         };
 
@@ -217,24 +223,62 @@ public class AppointedJobFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void editRequestJob() {
+    private void editRequestJob(int adapterPosition) {
         Toast.makeText(getActivity(), "Edit button is clicked", Toast.LENGTH_SHORT).show();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = (getActivity()).getLayoutInflater();
-        builder.setTitle("Edit Request");
-        builder.setCancelable(false);
-        builder.setIcon(R.drawable.ic_edit_black_24dp);
-        builder.setView(inflater.inflate(R.layout.rating_layout, null))
-                // Add action buttons
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
+        initBottomSheet();
+//        CardView llBottomSheet =  getActivity().getParent().findViewById(R.id.bottom_sheet);
 
-                    }
-            });
-        builder.create();
-        builder.show();
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        // set callback for changes
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // this part hides the button immediately and waits bottom sheet
+                // to collapse to show
+                mBottomSheetBehavior.setPeekHeight(650);
+                if (BottomSheetBehavior.STATE_DRAGGING == newState) {
+//                    fab.animate().scaleX(0).scaleY(0).setDuration(300).start();
+                } else if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
+//                    fab.animate().scaleX(1).scaleY(1).setDuration(300).start();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//                fab.animate().scaleX(1 - slideOffset).scaleY(1 - slideOffset).setDuration(0).start();
+            }
+        });
+    }
+    private void initBottomSheet() {
+        // get the bottom sheet view
+        // init the bottom sheet behavior
+//        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+        // change the state of the bottom sheet
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        // set callback for changes
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // this part hides the button immediately and waits bottom sheet
+                // to collapse to show
+                if (BottomSheetBehavior.STATE_DRAGGING == newState) {
+//                    fab.animate().scaleX(0).scaleY(0).setDuration(300).start();
+                } else if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
+//                    fab.animate().scaleX(1).scaleY(1).setDuration(300).start();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//                fab.animate().scaleX(1 - slideOffset).scaleY(1 - slideOffset).setDuration(0).start();
+            }
+        });
+//        final FloatingActionButton floatingActionButton;
+//        floatingActionButton = findViewById(R.id.fab);
+//        floatingActionButton.setOnClickListener(v -> {
+//            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//            floatingActionButton.isOrWillBeHidden();
+//        });
     }
 
     private void deleteJob(int adapterPosition) {
@@ -255,23 +299,6 @@ public class AppointedJobFragment extends Fragment {
                 .setCancelClickListener(sweetAlertDialog -> sweetAlertDialog.dismissWithAnimation())
                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE));
         dialog.show();
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-//        alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
-//                alertDialogBuilder.setPositiveButton("yes",
-//                        (arg0, arg1) -> {
-//                            appointedAdaptor.removeItem(adapterPosition);
-//                            Toast.makeText(getActivity(),"You clicked yes button",Toast.LENGTH_LONG).show();
-//                        });
-//
-//        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-////                finish();
-//            }
-//        });
-//
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
     }
 
     private void sortByReverseDate(int position) {
