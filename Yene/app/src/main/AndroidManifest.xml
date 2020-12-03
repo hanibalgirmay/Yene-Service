@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -97,4 +98,105 @@
         </service>
     </application>
 
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.hanibalg.yeneservice">
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/icons_planner"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/icons_planner"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity android:name=".Users.PhoneAuthenticationActivity"></activity>
+        <activity android:name=".payments.PayPalPaymentActivity" />
+        <activity android:name=".activities.QRProviderCodeActivity" />
+        <activity android:name=".activities.AllCatagoriesActivity" />
+        <activity android:name=".Users.EditProfileActivity" />
+        <activity android:name=".activities.CalanderActivity" />
+        <activity android:name=".activities.JobAvailableOnMapActivity" />
+        <activity android:name=".activities.JobLIstActivity" />
+        <activity android:name=".Users.ForgotPasswordActivity" />
+        <activity android:name=".activities.ViewNotificationDetailActivity" />
+        <activity android:name=".activities.ReportProblemActivity" />
+        <activity android:name=".activities.NotificationActivity" />
+        <activity android:name=".activities.ListServiceActivity" />
+        <activity android:name=".Users.MyProfileActivity" />
+        <activity android:name=".activities.MessageActivity" />
+        <activity android:name=".activities.ProviderUsersJobListActivity" />
+        <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.ReviewActivity" />
+        <activity android:name=".activities.PaymentActivity" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
+        <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
+        <activity android:name="com.paypal.android.sdk.payments.PaymentMethodActivity" />
+        <activity android:name="com.paypal.android.sdk.payments.PaymentConfirmActivity" />
+        <activity
+            android:name=".activities.ProviderMapsActivity"
+            android:label="@string/title_activity_provider_maps" />
+        <activity android:name=".activities.ProvidersUserListActivity" />
+        <activity android:name=".activities.ProviderPageActivity" />
+        <activity android:name=".Users.RegisterActivity" />
+        <activity android:name=".Users.LoginActivity" /> <!-- <activity android:name=".MapGpsActivity" /> -->
+        <activity android:name=".DashBoardActivity" />
+        <activity android:name=".activities.SocialActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name=".YeneFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+>>>>>>> 93fe2da156e9e07e2e292889abfd1898279d53b3
 </manifest>

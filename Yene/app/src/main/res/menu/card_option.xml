@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -13,4 +14,21 @@
         android:id="@+id/report_option"
         android:title="report"
         />
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/delete_option"
+        android:title="delete"
+        />
+    <item
+        android:id="@+id/share_option"
+        android:title="share"
+        />
+    <item
+        android:id="@+id/report_option"
+        android:title="report"
+        />
+>>>>>>> 38ad388af22ba498a9929d1337ddd1faf64803bc
 </menu>

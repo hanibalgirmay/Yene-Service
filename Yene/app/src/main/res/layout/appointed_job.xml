@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -198,4 +199,206 @@
         </LinearLayout>
     </LinearLayout>
 
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="8dp"
+    android:elevation="5dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="10dp"
+    app:cardBackgroundColor="@color/colorCard"
+    app:strokeColor="@color/colorWhite"
+    app:strokeWidth="1dp"
+    android:layout_marginTop="20dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="5dp"
+                app:tint="@color/colorBlack"
+                android:src="@drawable/icons_new_job"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Appointed Job"
+                android:textColor="@color/colorBlack"
+                android:layout_marginStart="15dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$340"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_gravity="end"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorBlack"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/provider_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_one"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/provider_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp"
+                    android:text="Full Name"/>
+                <TextView
+                    android:id="@+id/provider_working_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="11sp"
+                    android:text="ELECTRCIAN"/>
+                <TextView
+                    android:id="@+id/appoint_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="11sp"
+                    android:text="12/24/2020"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:visibility="gone"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$340"
+                    android:textColor="@color/colorBlack"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/problem_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_text_appoint"
+            android:paddingTop="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/colorBlack"
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/accepted_layout"
+            android:visibility="gone"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:paddingTop="5dp"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/pay"
+                android:background="@drawable/bg_btn1"
+                app:cornerRadius="10dp"
+                android:textColor="@color/colorBlack"/>
+            <Button
+                android:id="@+id/btn_review"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Review"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/bg_btn1"
+                app:cornerRadius="10dp"
+                android:textColor="@color/colorBlack"/>
+<!--            <TextView-->
+<!--                android:id="@+id/count_time"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:text="delay"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textColor="@color/colorAccent"-->
+<!--                android:gravity="end|center"/>-->
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/job_request_layout"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            android:layout_gravity="end"
+            android:paddingBottom="10dp"
+            android:paddingEnd="15dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/accept"
+                android:background="@drawable/bg_btn1"
+                app:cornerRadius="10dp"
+                android:textColor="@color/colorBlack"/>
+            <Button
+                android:id="@+id/btn_decline"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Reject"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/bg_btn1"
+                app:cornerRadius="10dp"
+                android:textColor="@color/colorBlack"/>
+        </LinearLayout>
+    </LinearLayout>
+
+>>>>>>> 38ad388af22ba498a9929d1337ddd1faf64803bc
 </com.google.android.material.card.MaterialCardView>
