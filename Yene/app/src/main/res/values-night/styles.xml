@@ -10,6 +10,13 @@
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/white</item>
         <item name="actionMenuTextColor">@color/colorWhite</item>
         <item name="popupMenuBackground">@color/colorBlack</item>
+        <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
+        <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.MaterialComponents.PopupMenu.ContextMenu</item>
+        <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
+    </style>
+
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorWhite</item>
     </style>
 
     <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">

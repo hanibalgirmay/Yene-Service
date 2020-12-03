@@ -79,5 +79,7 @@ dependencies {
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
     //for phone authentication code key view
     implementation 'com.chaos.view:pinview:1.3.2'
+    //Burry for blur images
+//    implementation 'jp.wasabeef:blurry:4.0.0'
 
 }

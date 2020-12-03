@@ -8,21 +8,28 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.hanibalg.yeneservice.activities.ViewNotificationDetailActivity;
 
 public class YeneFirebaseMessagingService extends FirebaseMessagingService {
 
+    private String TAG  = YeneFirebaseMessagingService.class.getName();
+    private String device_token;
+
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
         Log.d("Tag","Token referesher: "+ s);
-
+        device_token = s;
     }
 
     // Override onMessageReceived() method to extract the

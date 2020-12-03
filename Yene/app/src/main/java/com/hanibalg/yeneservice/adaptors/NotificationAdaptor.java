@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.activities.ViewNotificationDetailActivity;
+import com.hanibalg.yeneservice.models.AppointmentJobModel;
 import com.hanibalg.yeneservice.models.NotificationModel;
 import com.hanibalg.yeneservice.models.UserModel;
 import com.squareup.picasso.Picasso;
@@ -38,6 +40,8 @@ public class NotificationAdaptor extends RecyclerView.Adapter<NotificationAdapto
     private FirebaseAuth auth;
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference reference;
+    private String TAG = NotificationAdaptor.class.getName();
+    
 
     public NotificationAdaptor(Context context,List<NotificationModel>models){
         this.context = context;
@@ -78,22 +82,19 @@ public class NotificationAdaptor extends RecyclerView.Adapter<NotificationAdapto
             Intent detail = new Intent(context, ViewNotificationDetailActivity.class);
             detail.putExtra("userID", models.get(position).getFrom().trim());
             detail.putExtra("dataMsg", models.get(position).getNotificationDescription());
+            detail.putExtra("jobID", models.get(position).getJobID());
 //            detail.putExtra("dataType", models.get(position).getNotificationType());
 //            detail.putExtra("dataSeen", models.get(position).isSeen());
             context.startActivity(detail);
         });
         String documentID = models.get(position).getDocId();
-//        holder.accept.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                updateNotification(documentID,true);
-//            }
+//        holder.accept.setOnClickListener(v -> {
+//             updateNotification(documentID,true);
+//            Toast.makeText(context, "accept clicked", Toast.LENGTH_SHORT).show();
 //        });
-//        holder.decline.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                updateNotification(documentID,false);
-//            }
+//        holder.decline.setOnClickListener(v -> {
+//           updateNotification(documentID,false);
+//            Toast.makeText(context, "decline clicked", Toast.LENGTH_SHORT).show();
 //        });
     }
 

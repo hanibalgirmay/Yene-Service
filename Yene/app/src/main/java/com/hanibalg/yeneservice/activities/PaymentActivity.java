@@ -40,10 +40,10 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private PaymentCard card;
     private PaymentCardAdaptor adaptor;
     private RecyclerView recyclerView;
-    private TextInputEditText aCode,aUnicCode,cceCode,expire;
-    private TextInputLayout aCodelayout,aUnicCodeLayout,cceCodeLayout,expireLayout;
+    private TextInputEditText aCode,aUnicCode,cceCode,expire,tip,tax;
+    private TextInputLayout aCodelayout,aUnicCodeLayout,cceCodeLayout,expireLayout,accountTipLayout,accountTaxLayout;
     private ImageButton payBtn;
-    private TextView textView;
+    private TextView textView,totalMoney;
     private static final String TAG = PaymentActivity.class.getSimpleName();
 
     private static final int PAYPAL_REQUEST_CODE = 7171;
@@ -59,6 +59,13 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_payment);
 
         //init
+        accountTipLayout = findViewById(R.id.account_tipLayout);
+        accountTaxLayout = findViewById(R.id.taxLayout);
+        tip = findViewById(R.id.account_tip);
+        tax = findViewById(R.id.account_tax);
+        totalMoney = findViewById(R.id.total_payable);
+
+        //
         aCode = findViewById(R.id.accountNumber);
         aUnicCode = findViewById(R.id.accountSecretCode);
         cceCode = findViewById(R.id.accountCCECode);

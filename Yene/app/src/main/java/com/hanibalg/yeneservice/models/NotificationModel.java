@@ -6,7 +6,7 @@ public class NotificationModel {
     private String DocId;
     private String from;
     private String notificationTitle;
-//    private String notificationType;
+    private String jobID;
     private String notificationDescription;
     private boolean seen;
     private Timestamp timestamp;
@@ -15,13 +15,18 @@ public class NotificationModel {
 
     }
 
-    public NotificationModel(String DocId,String from,String notificationTitle, String notificationDescription,boolean seen, Timestamp timestamp) {
+    public NotificationModel(String DocId,String from,String notificationTitle,String jobID ,String notificationDescription,boolean seen, Timestamp timestamp) {
         this.DocId = DocId;
         this.from = from;
         this.notificationTitle = notificationTitle;
         this.notificationDescription = notificationDescription;
         this.seen = seen;
+        this.jobID = jobID;
         this.timestamp = timestamp;
+    }
+
+    public String getJobID() {
+        return jobID;
     }
 
     public boolean isSeen() {

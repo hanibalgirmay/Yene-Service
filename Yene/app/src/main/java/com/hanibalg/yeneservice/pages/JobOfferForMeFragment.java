@@ -73,7 +73,7 @@ public class JobOfferForMeFragment extends Fragment {
 
     private void getMyJob(RecyclerView recyclerV) {
         firebaseFirestore.collection("JobsRequests")
-                .whereEqualTo("isAccepted",false)
+                .whereEqualTo("accepted",false)
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         AppointmentJobModel appointmentJobModel = doc.getDocument().toObject(AppointmentJobModel.class);
