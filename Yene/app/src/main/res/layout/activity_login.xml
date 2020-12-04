@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        app:cardBackgroundColor="@color/colorCard"
         android:layout_marginTop="50dp"
         app:strokeWidth=".1dp"
         app:cardElevation="5dp"
@@ -61,6 +62,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
+                    app:endIconCheckable="true"
+                    app:boxStrokeWidth="1dp"
+                    android:textColorHint="@color/colorBlack"
+                    app:boxStrokeColor="@color/colorBlack"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/email"
@@ -76,6 +81,10 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:endIconCheckable="true"
+                    app:boxStrokeWidth="1dp"
+                    android:textColorHint="@color/colorBlack"
+                    app:boxStrokeColor="@color/colorBlack"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -102,7 +111,7 @@
                         android:text="Forgot Password?"
                         android:textSize="12sp"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="@color/colorAccent"
                         android:background="@android:color/transparent"/>
                 </LinearLayout>
 
@@ -122,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/continue_with"
                     android:gravity="center"
+                    android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_marginTop="15dp"/>
 

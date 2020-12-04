@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:name="Pages"
-        android:title="@string/pages">
-        <menu>
+    <group android:checkableBehavior="single">
             <item
                 android:id="@+id/one"
                 android:name="Profile"
@@ -21,32 +18,33 @@
                 android:title="@string/graph"
                 android:iconTint="@color/colorBlack"
                 android:icon="@drawable/icons_circle_bubbles"/>
-        </menu>
-    </item>
-    <item android:name="Settings"
-        android:title="@string/setting">
+    </group>
+
+    <item android:title="">
         <menu>
-            <item
-                android:id="@+id/rateUs"
-                android:name="Rate Us"
-                android:iconTint="@color/colorBlack"
-                android:title="@string/rate_us"
-                android:icon="@drawable/ic_star_black_24dp"/>
-            <item
-                android:id="@+id/drawer_report"
-                android:name="Report"
-                android:title="@string/report"
-                android:iconTint="@color/colorBlack"
-                android:icon="@drawable/ic_email_black_24dp"/>
-            <item
-                android:name="Ask Question"
-                android:title="@string/question"
-                android:icon="@drawable/icons_planner"/>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/theme"
+                    android:icon="@drawable/switch_theme"
+                    android:title="Theme"/>
+                <item
+                    android:id="@+id/rateUs"
+                    android:name="Rate Us"
+                    android:iconTint="@color/colorBlack"
+                    android:title="@string/rate_us"
+                    android:icon="@drawable/ic_star_black_24dp"/>
+                <item
+                    android:id="@+id/drawer_report"
+                    android:name="Report"
+                    android:title="@string/report"
+                    android:iconTint="@color/colorBlack"
+                    android:icon="@drawable/ic_email_black_24dp"/>
+                <item
+                    android:name="Ask Question"
+                    android:title="@string/question"
+                    android:icon="@drawable/icons_planner"/>
+            </group>
         </menu>
     </item>
-    <item
-        android:name="Version(1.0)"
-        android:title="Version(1.0)"
-        app:showAsAction="always"
-        />
+
 </menu>

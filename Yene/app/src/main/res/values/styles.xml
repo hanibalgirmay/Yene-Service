@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<resources xmlns:tools="http://schemas.android.com/tools">
-=======
-<<<<<<< HEAD
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
@@ -20,6 +16,16 @@
 
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
         <item name="android:textColorSecondary">@color/colorWhite</item>
+    </style>
+    <style name="DialogStyle" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="TextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/nunito_sans_bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.Cut.han">
@@ -41,45 +47,3 @@
         <item name="android:textSize">8sp</item>
     </style>
 </resources>
-=======
-<resources>
->>>>>>> 38ad388af22ba498a9929d1337ddd1faf64803bc
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:actionMenuTextColor">@color/colorBlack</item>
-        <item name="actionMenuTextColor">@color/colorBlack</item>
-        <item name="popupMenuBackground">@color/colorWhite</item>
-        <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
-        <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.MaterialComponents.PopupMenu.ContextMenu</item>
-        <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
-    </style>
-
-    <style name="ToolbarColoredBackArrow" parent="AppTheme">
-        <item name="android:textColorSecondary">@color/colorWhite</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.Cut.han">
-        <item name="cornerSize">16dp</item>
-        <item name="cornerFamily">rounded</item>
-    </style>
-
-    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemBackground">@color/colorPrimary</item>
-        <item name="itemIconTint">@color/green</item>
-        <item name="itemTextColor">@color/colorAccent</item>
-        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigation.Overline</item>
-        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigation.Overline</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="paddingStart">32dp</item>
-        <item name="paddingEnd">32dp</item>
-    </style>
-    <style name="TextAppearance.BottomNavigation.Overline" parent="TextAppearance.MaterialComponents.Overline">
-        <item name="android:textSize">8sp</item>
-    </style>
-</resources>
->>>>>>> 93fe2da156e9e07e2e292889abfd1898279d53b3

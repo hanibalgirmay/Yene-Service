@@ -27,7 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="some txt"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorBlack"
+        android:maxLines="1"
+        android:maxLength="8"
         android:layout_marginTop="5dp"
         />
 

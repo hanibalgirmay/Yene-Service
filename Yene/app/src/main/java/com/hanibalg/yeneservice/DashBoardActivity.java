@@ -1,86 +1,60 @@
 package com.hanibalg.yeneservice;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.hanibalg.yeneservice.Users.LoginActivity;
 import com.hanibalg.yeneservice.Users.MyProfileActivity;
 import com.hanibalg.yeneservice.activities.JobLIstActivity;
 import com.hanibalg.yeneservice.activities.NotificationActivity;
-import com.hanibalg.yeneservice.activities.ProviderPageActivity;
 import com.hanibalg.yeneservice.activities.ProviderUsersJobListActivity;
-import com.hanibalg.yeneservice.activities.ProvidersUserListActivity;
 import com.hanibalg.yeneservice.activities.ReportProblemActivity;
 import com.hanibalg.yeneservice.activities.SearchActivity;
-import com.hanibalg.yeneservice.adaptors.ServiceListAdaptor;
-import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.UserModel;
 import com.hanibalg.yeneservice.pages.AddPostFragment;
 import com.hanibalg.yeneservice.pages.AppointedJobFragment;
 import com.hanibalg.yeneservice.pages.BookmarkFragment;
 import com.hanibalg.yeneservice.pages.HomeFragment;
-import com.hanibalg.yeneservice.pages.SearchFragment;
 import com.hsalf.smileyrating.SmileyRating;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.zip.Inflater;
 
 public class DashBoardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private int numVisibleChildren = 4;
@@ -102,6 +76,15 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //check theme
+        if(loadState() == true){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            setTheme(R.style.AppTheme);
+        } else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            setTheme(R.style.AppTheme);
+        }
 
         checkInternate();
         mAuth = FirebaseAuth.getInstance();
@@ -145,21 +128,30 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
             Intent l = new Intent(this,LoginActivity.class);
             startActivity(l);
         }else{
-            firebaseFirestore.collection("Users").document(mAuth.getUid()).get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    ImageView o = findViewById(R.id.profileImg);
-                    TextView nm = findViewById(R.id.pname);
-                    TextView as = findViewById(R.id.add);
-                    UserModel t = task.getResult().toObject(UserModel.class);
-                    if(t != null) {
-                        Picasso.get().load(t.getImage()).into(o);
-                        nm.setText(t.getFirstName());
-                        as.setText(t.getEmail());
+            try {
+                firebaseFirestore.collection("Users").document(mAuth.getUid()).get().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        ImageView o = findViewById(R.id.profileImg);
+                        TextView nm = findViewById(R.id.pname);
+                        TextView as = findViewById(R.id.add);
+                        UserModel t = task.getResult().toObject(UserModel.class);
+                        if(t != null) {
+                            Picasso.get().load(t.getImage()).placeholder(R.drawable.placeholder_profile).into(o);
+                            nm.setText(t.getFirstName());
+                            as.setText(t.getEmail());
+                        }
                     }
-                }
-            });
+                });
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
 
+        MaterialButton buttonLog = findViewById(R.id.btnLogout);
+        buttonLog.setOnClickListener(v -> {
+            Toast.makeText(this, "logout btn clicked", Toast.LENGTH_SHORT).show();
+        });
 
         //bottom navigation
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -307,6 +299,26 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
         if(id == R.id.rateUs){
             Toast.makeText(this, "rate clicked", Toast.LENGTH_SHORT).show();
             AppRate();
+            drawerLayout.closeDrawers();
+        }
+        if(id == R.id.theme){
+            item.setActionView(R.layout.theme_switch);
+            final Switch themeSwitch = (Switch) item.getActionView().findViewById(R.id.action_switch);
+            if(loadState() == true){
+                themeSwitch.setChecked(true);
+            }
+            themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(isChecked){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    saveState(true);
+                    recreate();
+                } else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    saveState(false);
+//                        recreate();
+                }
+            });
+
         }
 //        if (id == R.id.darkTheme){
 //            MaterialFavoriteButton floatingActionButton = findViewById(R.id.darkTheme);
@@ -324,6 +336,19 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
 //        }
 
         return false;
+    }
+
+    private boolean loadState() {
+        SharedPreferences sharedPreferences = getSharedPreferences("ABHPostive",MODE_PRIVATE);
+        boolean state = sharedPreferences.getBoolean("NightMode",false);
+
+        return state;
+    }
+    private void saveState(Boolean state){
+        SharedPreferences sharedPreferences = getSharedPreferences("ABHPostive",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("NightMode",state);
+        editor.apply();
     }
 
     private void AppRate() {

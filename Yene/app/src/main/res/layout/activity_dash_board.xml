@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     tools:context=".DashBoardActivity"
+    tools:openDrawer="start"
     android:background="@color/colorWhite"
     android:id="@+id/drawler"
     >
@@ -129,12 +130,36 @@
         android:layout_width="wrap_content"
         app:menu="@menu/drawer_menu"
         app:itemShapeInsetBottom="@dimen/default_gap"
-        android:background="@color/colorWhite"
+        android:background="#0e66b9"
         app:itemTextColor="@color/colorBlack"
         android:padding="10dp"
         app:itemIconPadding="10dp"
-        app:itemShapeAppearanceOverlay="@style/TextAppearance.AppCompat"
+        app:itemHorizontalPadding="30dp"
+        app:itemIconTint="@color/colorBlack"
+        app:itemShapeAppearanceOverlay="@style/TextViewStyle"
         app:headerLayout="@layout/drawer_header"
         android:layout_gravity="start"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log out"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:text="Version(1.0)" />
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

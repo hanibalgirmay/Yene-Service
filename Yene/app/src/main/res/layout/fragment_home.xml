@@ -51,14 +51,16 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:clickable="true"
+            app:cardMaxElevation="5dp"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="15dp"
             android:hapticFeedbackEnabled="true"
-            app:cardElevation="15dp"
+            app:cardElevation="4dp"
             android:layout_height="90dp">
 
             <LinearLayout
+                android:id="@+id/recommendedId"
                 android:layout_width="match_parent"
                 android:background="@drawable/background"
                 android:orientation="horizontal"
@@ -69,8 +71,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Quality Services Provider"
-                    android:textColor="@color/colorWhite"
+                    android:text="Recommended Provider"
+                    android:textColor="#fff"
                     android:textSize="20sp"
                     android:gravity="center"
                     android:layout_gravity="center"
@@ -87,6 +89,7 @@
                         android:src="@drawable/ic_arrow_forward_black_24dp"
                         android:background="@drawable/circle_bg"
                         android:padding="10dp"
+                        app:tint="@color/colorBlack"
                         android:layout_gravity="center"
                         android:contentDescription="TODO" />
 

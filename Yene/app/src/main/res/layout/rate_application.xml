@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="80dp"
+    android:layout_marginEnd="80dp"
     android:layout_gravity="center"
-    app:strokeWidth="2dp"
-    app:strokeColor="@color/colorPrimary"
-    android:padding="20dp"
-    android:layout_marginStart="70dp"
-    android:layout_marginEnd="70dp"
+    app:cardBackgroundColor="@color/colorCard"
     android:layout_height="wrap_content">
+
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="vertical">
-        <View
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_marginBottom="30dp"
-            android:background="@color/colorPrimary"/>
+            android:background="#52098f">
+            <!--        image here animated-->
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rate your Experiance"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/colorBlack"/>
+            android:textSize="25sp"
+            android:textColor="@color/colorBlack"
+            android:layout_marginTop="25dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tell us how was your experiance ?"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:textSize="15dp"/>
+            android:textColor="@color/colorBlack"
+            android:text="Tell us how was your expreiance"/>
         <com.hsalf.smileyrating.SmileyRating
             android:id="@+id/smile_rating"
             android:layout_marginTop="30dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:layout_width="match_parent"
@@ -48,11 +46,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Skip"
+            android:gravity="end"
+            android:textColor="@color/colorBlack"
             android:layout_gravity="end"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="15dp"
-            android:paddingBottom="20dp"/>
-    </LinearLayout>
+            android:layout_marginTop="50dp"
+            android:paddingEnd="15dp"
+            android:layout_marginBottom="15dp"/>
 
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

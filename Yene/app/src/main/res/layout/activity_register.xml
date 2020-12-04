@@ -38,6 +38,7 @@
             app:strokeWidth=".1dp"
             app:cardElevation="5dp"
             app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/colorCard"
             app:strokeColor="@color/colorAccent">
 
             <LinearLayout
@@ -64,6 +65,7 @@
                         android:layout_height="wrap_content"
                         android:text="Sign Up using "
                         android:gravity="center"
+                        android:textColor="@color/colorBlack"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"/>
                     <LinearLayout
@@ -100,6 +102,7 @@
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="18dp"
+                            android:textColorHint="@color/colorBlack"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:textSize="17sp">
                             <com.google.android.material.textfield.TextInputEditText
@@ -117,6 +120,7 @@
                             android:layout_weight="1"
                             android:hint="@string/lname"
                             android:textStyle="bold"
+                            android:textColorHint="@color/colorBlack"
                             android:layout_marginBottom="8dp"
                             android:layout_marginStart="8dp"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -137,6 +141,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
+                        android:textColorHint="@color/colorBlack"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -155,6 +160,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/phone"
+                        android:textColorHint="@color/colorBlack"
                         android:textStyle="bold"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp"
@@ -174,6 +180,7 @@
                         android:hint="@string/password"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:textStyle="bold"
+                        android:textColorHint="@color/colorBlack"
                         android:layout_marginBottom="8dp"
                         android:textSize="17sp">
                         <com.google.android.material.textfield.TextInputEditText
@@ -189,6 +196,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/confirm_password"
                         android:textStyle="bold"
+                        android:textColorHint="@color/colorBlack"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_marginBottom="8dp"
                         android:textSize="17sp">

@@ -2,9 +2,15 @@ package com.hanibalg.yeneservice.pages;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,19 +20,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.activities.AllCatagoriesActivity;
 import com.hanibalg.yeneservice.adaptors.ServiceListAdaptor;
@@ -51,6 +47,7 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     EditText inputSearch;
     NestedScrollView linearLayout;
+    LinearLayout RecommendedcardView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -70,6 +67,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //initialization
+        RecommendedcardView = view.findViewById(R.id.recommendedId);
         homeServiceList = view.findViewById(R.id.listHome);
         services = view.findViewById(R.id.serviceHor);
         linearLayout = view.findViewById(R.id.mainLayout);
@@ -87,6 +85,8 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
+
+        RecommendedcardView.setOnClickListener(v -> Toast.makeText(getActivity(), "Recommended clicked", Toast.LENGTH_SHORT).show());
 
         Services();
 

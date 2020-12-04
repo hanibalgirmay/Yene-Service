@@ -162,12 +162,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:weightSum="2"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_width="0dp"
@@ -321,7 +323,7 @@
                         android:textSize="20sp"
                         android:padding="10dp"
                         android:textStyle="bold"
-                        android:textColor="@color/colorBlack"/>
+                        android:textColor="@color/colorWhite"/>
 
                     <fragment
                         android:id="@+id/map"
