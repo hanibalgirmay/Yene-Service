@@ -109,14 +109,14 @@ public class ScanBarCodeFragment extends Fragment {
     private void showDialog(UserModel userModel) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         ViewGroup viewGroup = getActivity().findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.scanned_popup, viewGroup,false);
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.scanned_popup,null);
 
         TextView pname = dialogView.findViewById(R.id.scan_name);
         TextView pservice = dialogView.findViewById(R.id.scan_service);
         ImageView pavatar = dialogView.findViewById(R.id.scan_img);
         Picasso.get().load(userModel.getImage()).placeholder(R.drawable.placeholder_profile).into(pavatar);
         pname.setText(userModel.getFirstName());
-
+;
         builder.setView(dialogView);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

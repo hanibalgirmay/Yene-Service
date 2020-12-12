@@ -1,39 +1,25 @@
 package com.hanibalg.yeneservice.activities;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.NotificationAdaptor;
-import com.hanibalg.yeneservice.adaptors.OnMapProviderListsAdaptor;
-import com.hanibalg.yeneservice.adaptors.ViewPageAdapter;
 import com.hanibalg.yeneservice.models.NotificationModel;
-import com.hanibalg.yeneservice.pages.JobNotificationFragment;
-import com.hanibalg.yeneservice.pages.MyNotificationFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +52,7 @@ public class NotificationActivity extends AppCompatActivity {
         notificationLayer = findViewById(R.id.notification);
         lottieAnimationView = findViewById(R.id.noNotification);
         notificationLayer.setHasFixedSize(true);
-        getNofification();
+        getNotification();
         adaptor = new NotificationAdaptor(this,notificationList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         notificationLayer.setLayoutManager(mLayoutManager);
@@ -121,7 +107,7 @@ public class NotificationActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void getNofification(){
+    private void getNotification(){
         try {
             notificationList = new ArrayList<>();
             firebaseFirestore.collection("Users")

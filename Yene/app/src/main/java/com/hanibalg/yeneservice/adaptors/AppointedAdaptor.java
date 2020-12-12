@@ -1,54 +1,36 @@
 package com.hanibalg.yeneservice.adaptors;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.activities.PaymentActivity;
-import com.hanibalg.yeneservice.activities.ReviewActivity;
 import com.hanibalg.yeneservice.models.AppointmentJobModel;
 import com.hanibalg.yeneservice.models.UserModel;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobViewHolder> {
@@ -60,10 +42,11 @@ public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobV
     private FirebaseAuth auth;
     private DocumentReference reference, reviewReference;
 
-    public AppointedAdaptor(Context context, List<AppointmentJobModel> mData,List<UserModel> mUser){
+    public AppointedAdaptor(Context context, List<AppointmentJobModel> mData,List<UserModel> mUser,BottomSheetBehavior mBottomSheetBehavior){
         this.mContext = context;
         this.mData = mData;
         this.mUser = mUser;
+        this.mBottomSheetBehavior = mBottomSheetBehavior;
     }
 
     @NonNull
@@ -84,18 +67,22 @@ public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobV
         String full = mUser.get(position).getFirstName() + " " + mUser.get(position).getLastName();
         holder.name.setText(full);
         holder.desc.setText(mData.get(position).getProblem_description());
-        holder.appointdate.setText(mData.get(position).getDate().toDate().toString());
+        try{
+          holder.appointdate.setText(mData.get(position).getDate().toDate().toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Picasso.get().load(mUser.get(position).getImage()).placeholder(R.drawable.background).into(holder.img);
         //
         //================layout================
         boolean isA = mData.get(position).JobAccepted();
         if(isA){
-//            holder.jobAcceptLayout.setVisibility(View.GONE);
+            holder.jobAcceptLayout.setVisibility(View.GONE);
             holder.jobRequestLayout.setVisibility(View.VISIBLE);
         }
         if(!isA){
             holder.jobAcceptLayout.setVisibility(View.VISIBLE);
-//            holder.jobRequestLayout.setVisibility(View.VISIBLE);
+            holder.jobRequestLayout.setVisibility(View.VISIBLE);
         }
         //======================================
 //        holder.review.setOnClickListener(new View.OnClickListener() {
@@ -127,53 +114,50 @@ public class AppointedAdaptor extends RecyclerView.Adapter<AppointedAdaptor.JobV
         holder.review.setOnClickListener(v -> {
 //            Intent rev = new Intent(mContext, ReviewActivity.class);
 //            mContext.startActivity(rev);
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            // Get the layout inflater
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            builder.setTitle("Review Request");
-            builder.setCancelable(true);
-            builder.setIcon(R.drawable.ic_edit_black_24dp);
-            View dialogView= inflater.inflate(R.layout.rating_layout, null);
-            builder.setView(dialogView)
-                    // Add action buttons
-                    .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-
-            ImageView pro = dialogView.findViewById(R.id.p);
-            TextView nm = dialogView.findViewById(R.id.p_name);
-            TextView ser = dialogView.findViewById(R.id.p_service);
-            RatingBar ratingBar = dialogView.findViewById(R.id.ratingBar);
-            EditText msg = dialogView.findViewById(R.id.text_comment);
-            Button btn = dialogView.findViewById(R.id.btnReview);
-
-            String ful = mUser.get(position).getFirstName() + " " + mUser.get(position).getLastName();
-            Picasso.get().load(mUser.get(position).getImage()).placeholder(R.drawable.placeholder_profile).into(pro);
-            nm.setText(ful);
-            ser.setText(mData.get(position).getTime());
-
-            //validate
-            btn.setOnClickListener(v1 -> {
-                String inputMsg = msg.getText().toString().trim();
-                double inputrate = ratingBar.getRating();
-                if(TextUtils.isEmpty(inputMsg)){
-                    msg.setError("review required!");
-                    return;
-                }
-                String p_id = mData.get(position).getService_provider_id();
-                String d_id = mData.get(position).getDocID();
-                saveReview(p_id,d_id,inputMsg,inputrate);
-            });
-            builder.create();
-            builder.show();
+//            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            builder.setCancelable(true);
+//            builder.setIcon(R.drawable.ic_edit_black_24dp);
+//            View dialogView= inflater.inflate(R.layout.rating_layout, null);
+//            builder.setView(dialogView)
+//                    .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int id) {
+//
+//                        }
+//                    });
+//
+//            ImageView pro = dialogView.findViewById(R.id.p);
+//            TextView nm = dialogView.findViewById(R.id.p_name);
+//            TextView ser = dialogView.findViewById(R.id.p_service);
+//            RatingBar ratingBar = dialogView.findViewById(R.id.ratingBar);
+//            EditText msg = dialogView.findViewById(R.id.text_comment);
+//            Button btn = dialogView.findViewById(R.id.btnReview);
+//
+//            String ful = mUser.get(position).getFirstName() + " " + mUser.get(position).getLastName();
+//            Picasso.get().load(mUser.get(position).getImage()).placeholder(R.drawable.placeholder_profile).into(pro);
+//            nm.setText(ful);
+//            ser.setText(mData.get(position).getTime());
+//
+//            //validate
+//            btn.setOnClickListener(v1 -> {
+//                String inputMsg = msg.getText().toString().trim();
+//                double inputrate = ratingBar.getRating();
+//                if(TextUtils.isEmpty(inputMsg)){
+//                    msg.setError("review required!");
+//                    return;
+//                }
+//                String p_id = mData.get(position).getService_provider_id();
+//                String d_id = mData.get(position).getDocID();
+//                saveReview(p_id,d_id,inputMsg,inputrate);
+//            });
+//            builder.create();
+//            builder.show();
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
         });
     }
-
     private void saveReview(String p_id, String d_id, String inputMsg, double inputrate) {
         Map<String, Object> r = new HashMap<>();
         r.put("job_id",d_id);

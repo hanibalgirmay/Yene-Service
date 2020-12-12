@@ -1,22 +1,13 @@
 package com.hanibalg.yeneservice.pages;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,26 +15,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
-import com.google.firebase.firestore.auth.User;
 import com.hanibalg.yeneservice.Helper.CardSwiperHelper;
-import com.hanibalg.yeneservice.Helper.MyButtonClickListener;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.activities.CalanderActivity;
 import com.hanibalg.yeneservice.adaptors.AppointedAdaptor;
@@ -66,14 +56,14 @@ public class AppointedJobFragment extends Fragment {
     List<AppointmentJobModel> mData;
     List<UserModel> mUser;
     ImageView sortBtn;
-    private LinearLayout bottom_sheet;
+    private RelativeLayout bottom_sheet;
     private BottomSheetBehavior mBottomSheetBehavior;
     private TextView textViewRating;
     private RatingBar ratingBar;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth auth;
     private FloatingActionButton floatingActionButton;
-    private LinearLayout noAppointmentLayout;
+    private LinearLayout noAppointmentLayout,mainRecyclerLayout;
     CardView llBottomSheet;
 
 
@@ -94,19 +84,36 @@ public class AppointedJobFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         noAppointmentLayout = view.findViewById(R.id.card_not_job);
+        mainRecyclerLayout = view.findViewById(R.id.main_rv);
         floatingActionButton = view.findViewById(R.id.calenderId);
         floatingActionButton.setOnClickListener(v -> {
             Intent cal = new Intent(getActivity(), CalanderActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(cal);
         });
         //Bottom sheet for rating
-//        bottom_sheet = view.findViewById(R.id.rating_bottom_sheet);
-//        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+        bottom_sheet = view.findViewById(R.id.rating_bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
+                    floatingActionButton.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//                Log.d(TAG, "onSlide: slideOffset" + slideOffset + "");
+                floatingActionButton.setVisibility(View.VISIBLE);
+                floatingActionButton.setAlpha(slideOffset);
+            }
+        });
+
+
 
         Toast.makeText(getContext(), "name: "+auth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
-        llBottomSheet = view.findViewById(R.id.bottom_sheet);
-        mBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
-        initBottomSheet();
+//        llBottomSheet = view.findViewById(R.id.bottom_sheet);
+//        mBottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+//        initBottomSheet();
 
         //init
         textViewRating = view.findViewById(R.id.ratingText);
@@ -159,6 +166,7 @@ public class AppointedJobFragment extends Fragment {
                     if(queryDocumentSnapshots.isEmpty()){
                         noAppointmentLayout.setVisibility(View.VISIBLE);
                         floatingActionButton.setVisibility(View.GONE);
+                        mainRecyclerLayout.setVisibility(View.GONE);
                     }
                     for (DocumentChange doc:queryDocumentSnapshots.getDocumentChanges()){
                         if(doc.getDocument().exists()){
@@ -168,6 +176,7 @@ public class AppointedJobFragment extends Fragment {
                             if (appointmentJobModel.getJobAppointedUserID().equals(auth.getUid())){
                                 noAppointmentLayout.setVisibility(View.GONE);
                                 floatingActionButton.setVisibility(View.VISIBLE);
+                                mainRecyclerLayout.setVisibility(View.VISIBLE);
                                 getProviderDate(appointmentJobModel);
                                 Log.d("requests",doc.getDocument().getData().toString());
                                 Log.d("requests____",appointmentJobModel.toString());
@@ -179,18 +188,21 @@ public class AppointedJobFragment extends Fragment {
                         }
                     }
                 });
-        appointedAdaptor = new AppointedAdaptor(getContext(), mData,mUser);
+        appointedAdaptor = new AppointedAdaptor(getContext(), mData,mUser,mBottomSheetBehavior);
         rv.setAdapter(appointedAdaptor);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(mLayoutManager);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(appointedAdaptor);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            rv.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+        }
 
         //edit and delete (swipe from left)
         CardSwiperHelper cardSwiperHelper = new CardSwiperHelper(getContext(),rv,200) {
             @Override
-            public void initButton(RecyclerView.ViewHolder viewHolder, List<CardSwiperHelper.MyButton> buffer) {
+            public void initButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buffer) {
                 buffer.add(new MyButton(getActivity(),
                         "Delete",
                         30,
@@ -220,6 +232,23 @@ public class AppointedJobFragment extends Fragment {
             }
         });
         super.onViewCreated(view, savedInstanceState);
+    }
+
+//    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                Rect outRect = new Rect();
+                bottom_sheet.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    return true;
+                }
+
+            }
+        }
+        return dispatchTouchEvent(event);
+//        return super.dispatchTouchEvent(event);
     }
 
     private void editRequestJob(int adapterPosition) {

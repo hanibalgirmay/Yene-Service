@@ -1,15 +1,5 @@
 package com.hanibalg.yeneservice.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -30,6 +20,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,8 +37,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
@@ -51,12 +48,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.RecentJobUserAdaptor;
 import com.hanibalg.yeneservice.adaptors.ReviewAdapter;
@@ -68,6 +60,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +89,7 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
     private RecentJobUserAdaptor recentJobUserAdaptor;
     private List<UserModel>recentUsers;
     private String TAG = ProviderPageActivity.class.getName();
+    private Date datetest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -401,7 +395,8 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
             calendar1.set(Calendar.MONTH, month);
             calendar1.set(Calendar.DATE, date);
             String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
-
+            java.util.Date utilDate = calendar1.getTime();
+            datetest = utilDate;
             da.setText(dateText);
         }, YEAR, MONTH, DATE);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -449,7 +444,7 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
             appointMap.put("jobAppointedUserID", auth.getUid());
             appointMap.put("service_provider_id", u.getUserId());
             appointMap.put("problem_description", description);
-            appointMap.put("date", dateAppoint);
+            appointMap.put("date", datetest);
             appointMap.put("time", timeAppoint);
             appointMap.put("timestamp", Timestamp.now());
             appointMap.put("accepted", false);
@@ -522,7 +517,6 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
         String id = intentB.getStringExtra("providerDataInfo");
         Log.d("locationUser","_Id: "+providerID);
         if (id != null) {
-
             firebaseFirestore.collection("Locations")
                     .document(providerID)
                     .get()
@@ -566,7 +560,7 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         AppointmentJobModel appointmentJobModel = doc.getDocument().toObject(AppointmentJobModel.class);
                         Log.d("Recentjob",""+appointmentJobModel.getJobAppointedUserID());
-                        recentUsers(appointmentJobModel);
+//                        recentUsers(appointmentJobModel);
 
                     }
                 }).addOnFailureListener(e -> Log.d(TAG,"error"+e));
@@ -584,11 +578,15 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
                     .get()
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-                            UserModel t = task.getResult().toObject(UserModel.class);
-                            assert t != null;
-                            Log.d(TAG,"recentJob_"+t.getFirstName());
-                            recentUsers.add(t);
-                            recentJobUserAdaptor.notifyDataSetChanged();
+                            try {
+                                UserModel t = task.getResult().toObject(UserModel.class);
+//                                assert t != null;
+                                Log.d(TAG,"recentJob_"+t.getFirstName());
+                                recentUsers.add(t);
+                                recentJobUserAdaptor.notifyDataSetChanged();
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }).addOnFailureListener(e -> Log.d(TAG,"error"+e));
         }
@@ -626,5 +624,26 @@ public class ProviderPageActivity extends AppCompatActivity implements View.OnCl
                         Toast.makeText(ProviderPageActivity.this, "provider saved", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void loadFav(String id){
+        DocumentReference refFav = FirebaseFirestore.getInstance().collection("Users")
+                .document(auth.getUid()).collection("Favorite").document();
+
+        try {
+            firebaseFirestore.collection("Users")
+                    .document(auth.getUid()).collection("Favorite")
+                    .get().addOnCompleteListener(task -> {
+                        for(DocumentChange file: task.getResult().getDocumentChanges()){
+                            String p = file.getDocument().getString("documentID");
+                            if(p.equals(id)){
+                                Toast.makeText(ProviderPageActivity.this, "alrady fav", Toast.LENGTH_SHORT).show();
+                            }
+                            return;
+                        }
+                    });
+        } catch (Exception w){
+            w.printStackTrace();
+        }
     }
 }

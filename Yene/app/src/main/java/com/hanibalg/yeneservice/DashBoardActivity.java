@@ -31,13 +31,17 @@ import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.hanibalg.yeneservice.Users.InfoUserActivity;
 import com.hanibalg.yeneservice.Users.LoginActivity;
 import com.hanibalg.yeneservice.Users.MyProfileActivity;
 import com.hanibalg.yeneservice.activities.JobLIstActivity;
@@ -45,6 +49,8 @@ import com.hanibalg.yeneservice.activities.NotificationActivity;
 import com.hanibalg.yeneservice.activities.ProviderUsersJobListActivity;
 import com.hanibalg.yeneservice.activities.ReportProblemActivity;
 import com.hanibalg.yeneservice.activities.SearchActivity;
+import com.hanibalg.yeneservice.activities.SettingsActivity;
+import com.hanibalg.yeneservice.models.IDIdentification;
 import com.hanibalg.yeneservice.models.UserModel;
 import com.hanibalg.yeneservice.pages.AddPostFragment;
 import com.hanibalg.yeneservice.pages.AppointedJobFragment;
@@ -136,9 +142,16 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
                         TextView as = findViewById(R.id.add);
                         UserModel t = task.getResult().toObject(UserModel.class);
                         if(t != null) {
-                            Picasso.get().load(t.getImage()).placeholder(R.drawable.placeholder_profile).into(o);
-                            nm.setText(t.getFirstName());
-                            as.setText(t.getEmail());
+                            try {
+                                if (t.getImage().equals("default")){
+                                    Picasso.get().load("https://pickaface.net/gallery/avatar/unr_sample_161118_2054_ynlrg.png").placeholder(R.drawable.placeholder_profile).into(o);
+                                }
+                                Picasso.get().load(t.getImage()).placeholder(R.drawable.placeholder_profile).into(o);
+                                nm.setText(t.getFirstName());
+                                as.setText(t.getEmail());
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
@@ -151,6 +164,7 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
         MaterialButton buttonLog = findViewById(R.id.btnLogout);
         buttonLog.setOnClickListener(v -> {
             Toast.makeText(this, "logout btn clicked", Toast.LENGTH_SHORT).show();
+            signOut();
         });
 
         //bottom navigation
@@ -200,6 +214,10 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
                     appBarLayout.getLayoutParams().height = AppBarLayout.LayoutParams.WRAP_CONTENT;
                     loadFragment(fragment);
                     return true;
+                case R.id.setting:
+                    Intent setting = new Intent(DashBoardActivity.this, SettingsActivity.class);
+                    startActivity(setting);
+                    break;
             }
 
             return false;
@@ -366,18 +384,6 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
             int rating = type.getRating();
             saveRate(rating);
         });
-                // Add action busmile_ratingttons
-//                .setPositiveButton("Skip", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // sign in the user ...
-//                    }
-//                })
-//                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-////                            LoginDialogFragment.this.getDialog().cancel();
-//                    }
-//                });
         builder.create();
         builder.show();
     }
@@ -399,11 +405,58 @@ public class DashBoardActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onStart() {
         super.onStart();
-        if(checkInternate()){
+        DocumentReference user = FirebaseFirestore.getInstance().collection("Users").document(mAuth.getUid());
+        DocumentReference r = FirebaseFirestore.getInstance().collection("ID_Info").document(mAuth.getUid());
+        user.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    UserModel userModel = documentSnapshot.toObject(UserModel.class);
+                    if (userModel.getProvider()){
+                        r.get().addOnSuccessListener(documentSnapshot2 -> {
+                            if (documentSnapshot2.exists()){
+                                //data exist
+                                IDIdentification idIdentification = documentSnapshot2.toObject(IDIdentification.class);
+                                if (idIdentification.getIDScannedImage() == null || idIdentification.getIDCardNumber().isEmpty()){
+                                    launchInfo();
+                                    return;
+                                }
+                            }else{
+                                //data do not exists
+                                launchInfo();
+                                return;
+                            }
+                        }).addOnFailureListener(e -> Log.d(TAG,"Failed"+e));
+                    }
+                }
+            }
+        });
+
+//        if(checkInternate()){
 //            toolbar.setTitle("connected");
-        }else{
-            toolbar.setTitle("connecting...");
-        }
+//        }else{
+//            toolbar.setTitle("connecting...");
+//        }
+    }
+
+    private void checkData(){
+        DocumentReference r = FirebaseFirestore.getInstance().collection("ID_Info").document(mAuth.getUid());
+        r.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    //data exist
+                }else{
+                    //data do not exists
+                    launchInfo();
+                    return;
+                }
+            }
+        }).addOnFailureListener(e -> Log.d(TAG,"Failed"+e));
+    }
+    private void launchInfo() {
+        Intent home = new Intent(this, InfoUserActivity.class);
+        startActivity(home);
     }
 
     @Override

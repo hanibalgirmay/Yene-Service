@@ -1,37 +1,26 @@
 package com.hanibalg.yeneservice.activities;
 
-import androidx.annotation.Nullable;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
-import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
-import com.hanibalg.yeneservice.adaptors.PublicJobListAdaptor;
 import com.hanibalg.yeneservice.adaptors.ViewPageAdapter;
-import com.hanibalg.yeneservice.models.JobListPublic;
+import com.hanibalg.yeneservice.models.UserModel;
 import com.hanibalg.yeneservice.pages.AvailableJobsFragment;
 import com.hanibalg.yeneservice.pages.JobOfferForMeFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class JobLIstActivity extends AppCompatActivity {
     private FloatingActionButton mapFabButton;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +29,10 @@ public class JobLIstActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Available Jobs");
+        auth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 //        mapFabButton = findViewById(R.id.float_map);
-
         //init variable
         ViewPager viewPager = findViewById(R.id.job_viewPage);
         TabLayout tabLayout = findViewById(R.id.job_tab);
@@ -52,9 +42,30 @@ public class JobLIstActivity extends AppCompatActivity {
         final AvailableJobsFragment availableJobsFragment = new AvailableJobsFragment();
         final ViewPageAdapter myadapter = new ViewPageAdapter(getSupportFragmentManager());
 
-        // setup adapter
-        myadapter.addFragment(jobOfferForMeFragment,"Job For Me");
-        myadapter.addFragment(availableJobsFragment,"Available Jobs");
+        try {
+            firebaseFirestore.collection("Users")
+                    .document(auth.getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if(task.isComplete()){
+                            UserModel userModel = task.getResult().toObject(UserModel.class);
+                            if (userModel.getProvider()){
+                                // setup adapter
+                                myadapter.addFragment(jobOfferForMeFragment,"Job For Me");
+                                myadapter.addFragment(availableJobsFragment,"Available Jobs");
+                            } else{
+                                // setup adapter
+//                                myadapter.addFragment(jobOfferForMeFragment,"Job For Me");
+                                myadapter.addFragment(availableJobsFragment,"Available Jobs");
+                            }
+                            myadapter.notifyDataSetChanged();
+                        }
+                    }).addOnFailureListener(e -> Toast.makeText(JobLIstActivity.this, "error", Toast.LENGTH_SHORT).show());
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         viewPager.setAdapter(myadapter);
         tabLayout.setupWithViewPager(viewPager);
 //        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

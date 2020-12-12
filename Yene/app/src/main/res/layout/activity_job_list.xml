@@ -12,6 +12,7 @@
         style="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:title="Available Jobs"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"/>
     </com.google.android.material.appbar.AppBarLayout>
@@ -32,14 +33,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                app:tabIndicator="@color/colorBlack"
+                app:tabIndicator="@color/splashActive"
                 app:tabIndicatorColor="@color/colorAccent"
-                app:tabRippleColor="@color/colorPrimary"
+                app:tabRippleColor="@color/colorAccent"
                 app:tabTextColor="@color/colorBlack"
                 app:tabGravity="center"
                 app:tabIndicatorGravity="center"
                 app:tabMode="auto"
-                app:tabSelectedTextColor="@color/colorPrimary"/>
+                app:tabSelectedTextColor="@color/blue"/>
         </androidx.viewpager.widget.ViewPager>
 
     </LinearLayout>

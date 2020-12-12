@@ -1,26 +1,21 @@
 package com.hanibalg.yeneservice.activities;
 
-import androidx.annotation.Nullable;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.ProviderAppointmentUserAdapter;
 import com.hanibalg.yeneservice.models.ProviderModel;
@@ -28,7 +23,6 @@ import com.hanibalg.yeneservice.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ProviderUsersJobListActivity extends AppCompatActivity {
 
@@ -73,35 +67,33 @@ public class ProviderUsersJobListActivity extends AppCompatActivity {
         recyclerView.setAdapter(appointmentUserAdapter);
 
         firebaseFirestore.collection("JobsRequests")
-                .whereEqualTo("isAccepted",true)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if(queryDocumentSnapshots.isEmpty()){
-                            lottieAnimationView.setVisibility(View.VISIBLE);
-                        }
-                        for(final DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
-                            final String id = doc.getDocument().getString("jobAppointedUserID");
-                            final String serviceProviderId = doc.getDocument().getString("service_provider_id");
+                .whereEqualTo("accepted",true)
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if(queryDocumentSnapshots.isEmpty()){
+                        lottieAnimationView.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                    }
+                    for(final DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()){
+                        final String id = doc.getDocument().getString("jobAppointedUserID");
+                        final String serviceProviderId = doc.getDocument().getString("service_provider_id");
 
-                            assert id != null;
-                            if(Objects.equals(auth.getUid(), id)){
-                                assert serviceProviderId != null;
-                                firebaseFirestore.collection("Users")
-                                        .document(serviceProviderId)
-                                        .get()
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                String id = documentSnapshot.getId();
-                                                UserModel u = documentSnapshot.toObject(UserModel.class);
-                                                u.setUserId(id);
+                        assert id != null;
+                        if(id.equals(auth.getUid()) || serviceProviderId.equals(auth.getUid())){
+                            assert serviceProviderId != null;
+                            firebaseFirestore.collection("Users")
+                                    .document(serviceProviderId)
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            String id = documentSnapshot.getId();
+                                            UserModel u = documentSnapshot.toObject(UserModel.class);
+                                            u.setUserId(id);
 //                                                Log.d("Request-user",documentSnapshot.getData().toString());
-                                                getProviderInfo(u,id);
-                                            }
-                                        });
+                                            getProviderInfo(u,id);
+                                        }
+                                    });
                             }
-                        }
                     }
                 });
     }

@@ -2,27 +2,23 @@ package com.hanibalg.yeneservice.pages;
 
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.AppointedAdaptor;
 import com.hanibalg.yeneservice.models.AppointmentJobModel;
@@ -43,6 +39,7 @@ public class JobOfferForMeFragment extends Fragment {
     private FirebaseAuth auth;
     private LottieAnimationView lottieAnimationView;
     private LinearLayout cardView;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     public JobOfferForMeFragment() {
         // Required empty public constructor
@@ -91,7 +88,7 @@ public class JobOfferForMeFragment extends Fragment {
                         }
                     }
                 });
-        adaptor = new AppointedAdaptor(getActivity(),model,mUser);
+        adaptor = new AppointedAdaptor(getActivity(),model,mUser,mBottomSheetBehavior);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerV.setLayoutManager(mLayoutManager);
         recyclerV.setAdapter(adaptor);

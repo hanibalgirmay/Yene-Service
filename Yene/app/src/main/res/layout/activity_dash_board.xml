@@ -130,7 +130,7 @@
         android:layout_width="wrap_content"
         app:menu="@menu/drawer_menu"
         app:itemShapeInsetBottom="@dimen/default_gap"
-        android:background="#0e66b9"
+        android:background="@color/colorCard"
         app:itemTextColor="@color/colorBlack"
         android:padding="10dp"
         app:itemIconPadding="10dp"

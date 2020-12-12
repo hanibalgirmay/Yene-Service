@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,8 @@ import com.hanibalg.yeneservice.adaptors.ServiceListAdaptor;
 import com.hanibalg.yeneservice.adaptors.ServicesAdaptors;
 import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.servicesModel;
+import com.hanibalg.yeneservice.patterns.interfaces.OnDataAdded;
+import com.hanibalg.yeneservice.patterns.viewModels.ServiceListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnDataAdded {
     private RecyclerView homeServiceList;
     private RecyclerView services;
     private List<ServiceListModel> slist;
@@ -45,6 +49,7 @@ public class HomeFragment extends Fragment {
     private ServiceListAdaptor myAdaptor;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
+    private ServiceListViewModel serviceListViewModel;
     EditText inputSearch;
     NestedScrollView linearLayout;
     LinearLayout RecommendedcardView;
@@ -66,6 +71,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        serviceListViewModel = ViewModelProviders.of(requireActivity()).get(ServiceListViewModel.class);
+        serviceListViewModel.init(getActivity());
+
         //initialization
         RecommendedcardView = view.findViewById(R.id.recommendedId);
         homeServiceList = view.findViewById(R.id.listHome);
@@ -86,14 +94,22 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        RecommendedcardView.setOnClickListener(v -> Toast.makeText(getActivity(), "Recommended clicked", Toast.LENGTH_SHORT).show());
+        RecommendedcardView.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "Recommended clicked", Toast.LENGTH_SHORT).show();
+            FrameLayout frameLayout = getActivity().findViewById(R.id.cont);
+            frameLayout.setVisibility(View.VISIBLE);
+            TopProvidersFragment topProvidersFragment = new TopProvidersFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.cont,topProvidersFragment,"test fragment")
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         Services();
 
         //adaptor bind
         homeServiceList.setHasFixedSize(true);
         slist = new ArrayList<>();
-
         firebaseFirestore.collection("Services_List")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -105,7 +121,7 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
-        myAdaptor = new ServiceListAdaptor(getContext(),slist);
+        myAdaptor = new ServiceListAdaptor(getActivity(),slist);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         homeServiceList.setLayoutManager(mLayoutManager);
         homeServiceList.setLayoutManager(new GridLayoutManager(getActivity(),3));
@@ -135,6 +151,11 @@ public class HomeFragment extends Fragment {
         services.setLayoutManager(mLayoutManager);
 //        services.setLayoutManager(new LinearLayoutManager.HORIZONTAL,(getActivity(),3));
         services.setAdapter(servicesAdaptors);
+    }
+
+    @Override
+    public void added() {
+        myAdaptor.notifyDataSetChanged();
     }
 
 //    @Override

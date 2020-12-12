@@ -2,6 +2,11 @@ package com.hanibalg.yeneservice.pages;
 
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,25 +15,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.adaptors.FavoriteAdaptor;
 import com.hanibalg.yeneservice.models.LocationsModel;
-import com.hanibalg.yeneservice.models.ProviderModel;
-import com.hanibalg.yeneservice.models.Reviews;
 import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.UserModel;
 
@@ -71,8 +64,8 @@ public class BookmarkFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //Get Firebase auth instance
-        reference = FirebaseFirestore.getInstance().collection("Users").document("asdasd a");
-        reference2 = FirebaseFirestore.getInstance().collection("Locations").document("asdasd a");
+        reference = FirebaseFirestore.getInstance().collection("Users").document(auth.getUid());
+//        reference2 = FirebaseFirestore.getInstance().collection("Locations").document("asdasd a");
         /*
         Lotti animation to be addded
          */
@@ -97,6 +90,7 @@ public class BookmarkFragment extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if(queryDocumentSnapshots.isEmpty()){
                         bookmarkLayout.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                     }
                     for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
                         String provider = doc.getDocument().getString("documentID");

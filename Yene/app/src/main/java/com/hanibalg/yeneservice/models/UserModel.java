@@ -1,7 +1,5 @@
 package com.hanibalg.yeneservice.models;
 
-import com.google.firebase.Timestamp;
-
 import java.io.Serializable;
 
 public class UserModel implements Serializable {

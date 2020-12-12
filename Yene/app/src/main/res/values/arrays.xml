@@ -10,6 +10,16 @@
         <item>reply_all</item>
     </string-array>
 
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>Amharic</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>english</item>
+        <item>amharic</item>
+    </string-array>
+
     <string-array name="Sort">
         <item>Sort By</item>
         <item>Ascending</item>

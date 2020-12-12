@@ -1,6 +1,7 @@
 package com.hanibalg.yeneservice.adaptors;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.Timestamp;
 import com.hanibalg.yeneservice.R;
 import com.hanibalg.yeneservice.models.AppointmentJobModel;
 
@@ -48,15 +48,19 @@ public class EventAdaptor extends RecyclerView.Adapter<EventAdaptor.myEvent> {
         SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-DD", Locale.getDefault());
         String formattedDate = df.format(c);
         String formt = df.format(y);
-        if(formattedDate.compareTo(formt)>0){
+        if(formattedDate.compareTo(formt)<0){
+            holder.todo.setText("Upcoming Jobs");
             holder.materialCardView.setClickable(true);
             holder.materialCardView.setStrokeWidth(3);
             holder.materialCardView.setCardElevation(5);
         }else{
+            holder.todo.setText("Job exprired!");
+            holder.todo.setTextColor(Color.RED);
             holder.materialCardView.setStrokeWidth(0);
             holder.materialCardView.setCardElevation(0);
             holder.materialCardView.setClickable(false);
         }
+        
     }
 
     @Override

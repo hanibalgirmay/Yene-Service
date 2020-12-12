@@ -1,5 +1,9 @@
 *.iml
 .gradle
+.idea
+settings.
+app/build
+app/src/main/java/com/hanibalg/yeneservice/patterns/
 /local.properties
 /.idea/caches
 /.idea/libraries

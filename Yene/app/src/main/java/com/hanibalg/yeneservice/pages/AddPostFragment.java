@@ -3,22 +3,11 @@ package com.hanibalg.yeneservice.pages;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-import android.os.CountDownTimer;
-import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +17,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,20 +34,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.hanibalg.yeneservice.GPSTracker;
 import com.hanibalg.yeneservice.PermissionUtils;
 import com.hanibalg.yeneservice.R;
@@ -62,14 +48,10 @@ import com.hanibalg.yeneservice.models.ServiceListModel;
 import com.hanibalg.yeneservice.models.servicesModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -140,7 +122,7 @@ public class AddPostFragment extends Fragment implements View.OnClickListener, O
         getSpinnerValue();
 //        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),
 //                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(requireActivity(),
                 android.R.layout.simple_dropdown_item_1line, PROVIDER_TYPE);
 //        serviceType.setAdapter(adapter2);
 
@@ -181,7 +163,7 @@ public class AddPostFragment extends Fragment implements View.OnClickListener, O
                         if(task.isComplete()) {
                             Toast.makeText(getContext(), "Job Posted", Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(getContext(), "Error occur, Try again", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Error occur, Try again", Toast.LENGTH_SHORT).show();
                     });
         }
 
@@ -248,7 +230,7 @@ public class AddPostFragment extends Fragment implements View.OnClickListener, O
                     Set<String> vb = new HashSet<>(ww);
                     ww.clear();
                     ww.addAll(vb);
-                    ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),
+                    ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(requireActivity(),
                             android.R.layout.simple_dropdown_item_1line, ww);
                     serviceType.setAdapter(adapter2);
                     serviceTypeText = serviceType.getEditableText().toString();

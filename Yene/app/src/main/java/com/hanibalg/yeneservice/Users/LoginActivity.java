@@ -1,11 +1,7 @@
 package com.hanibalg.yeneservice.Users;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,12 +11,15 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,8 +32,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hanibalg.yeneservice.DashBoardActivity;
 import com.hanibalg.yeneservice.R;
+import com.hanibalg.yeneservice.config.CustomSweetAlert;
 
-import java.util.Map;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient googleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "Login-Activity";
+    private CustomSweetAlert progressAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,11 @@ public class LoginActivity extends AppCompatActivity {
                 inputPassword.setError("Enter password!");
                 return;
             }
-            progressBar.setVisibility(View.VISIBLE);
+            SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Authenticating...");
+            pDialog.setCancelable(false);
+            pDialog.show();
             //authenticate user
             auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -143,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 //                                        }
 //                                    });
-
+                            pDialog.dismiss();
                             }
                         }
                     });
@@ -180,6 +185,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private void firebaseAuthWithGoogle(String idToken) {
+        SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading...");
+        pDialog.setCancelable(false);
+        pDialog.show();
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
@@ -194,7 +204,10 @@ public class LoginActivity extends AppCompatActivity {
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                         Object mBinding;
                     }
+
                 });
+        pDialog.dismiss();
     }
+
 
 }

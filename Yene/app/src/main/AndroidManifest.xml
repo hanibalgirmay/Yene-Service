@@ -7,7 +7,6 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,12 +15,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- <uses-permission android:name="android.permission.CAMERA" /> -->
     <uses-permission android:name="android.hardware.camera" />
     <uses-permission android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
+
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <application
         android:allowBackup="true"
@@ -31,8 +30,13 @@
         android:roundIcon="@drawable/icons_planner"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:icon">
-        <activity android:name=".Users.PhoneAuthenticationActivity"></activity>
+        <activity android:name=".Users.InfoUserActivity"></activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".Users.PhoneAuthenticationActivity" />
         <activity android:name=".payments.PayPalPaymentActivity" />
         <activity android:name=".activities.QRProviderCodeActivity" />
         <activity android:name=".activities.AllCatagoriesActivity" />
@@ -74,7 +78,9 @@
         <activity android:name=".activities.ProviderPageActivity" />
         <activity android:name=".Users.RegisterActivity" />
         <activity android:name=".Users.LoginActivity" /> <!-- <activity android:name=".MapGpsActivity" /> -->
-        <activity android:name=".DashBoardActivity" />
+        <activity
+            android:name=".DashBoardActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".activities.SocialActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

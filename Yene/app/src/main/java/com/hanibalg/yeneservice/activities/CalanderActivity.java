@@ -63,7 +63,7 @@ public class CalanderActivity extends AppCompatActivity {
                                 Date ty = new Date(appointmentJobModel.getDate().getSeconds()*1000);
                                 ca.setTime(ty);
                                 Log.d("requestsDate","_"+r);
-                                events.add(new MyEventDay(ca, R.drawable.working_time, "I am Event",Color.CYAN));
+                                events.add(new MyEventDay(ca, R.drawable.icons_new_job, "I am Event",Color.RED));
                                 calendarView.setEvents(events);
 //                            events.add(new EventDay(calendar, R.drawable.icons_planner, Color.parseColor("#228B22")));
 //                            String ew = String.valueOf(appointmentJobModel.getDate().toDate());

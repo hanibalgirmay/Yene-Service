@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone"
-        app:lottie_rawRes="@raw/bookmark_animation"/>
+        app:lottie_rawRes="@raw/notification" />
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:visibility="visible"

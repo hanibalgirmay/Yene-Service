@@ -1,17 +1,15 @@
 package com.hanibalg.yeneservice.Users;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,23 +17,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hanibalg.yeneservice.DashBoardActivity;
 import com.hanibalg.yeneservice.R;
+import com.hanibalg.yeneservice.config.CustomSweetAlert;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -47,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
+    private CustomSweetAlert myAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +72,9 @@ public class RegisterActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        google.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
+        google.setOnClickListener(v -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
         });
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -130,6 +124,12 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
             else {
+//                myAlert.alertLoading("loading....");
+                SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("Loading...");
+                pDialog.setCancelable(false);
+                pDialog.show();
                 auth.createUserWithEmailAndPassword(email,pass)
                         .addOnCompleteListener(RegisterActivity.this, task -> {
                             if (!task.isSuccessful()) {
@@ -143,24 +143,23 @@ public class RegisterActivity extends AppCompatActivity {
                                 usr.put("email",email);
                                 usr.put("phone",phone);
                                 usr.put("receiveNews",true);
-                                usr.put("isProvider",false);
+                                usr.put("Provider",false);
                                 usr.put("image","default");
-
-                                firebaseFirestore.collection("Users").document(auth.getCurrentUser().getUid())
+//                                myAlert.alertLoading("registering...");
+                                String id = task.getResult().getUser().getUid();
+                                firebaseFirestore.collection("Users").document(id)
                                         .set(usr).addOnCompleteListener(task1 -> {
                                             if(task1.isSuccessful()){
+//                                                myAlert.stopAlert();
+                                                pDialog.dismiss();
                                                 Toast.makeText(RegisterActivity.this, "data saved successfully", Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(RegisterActivity.this, DashBoardActivity.class));
                                                 finish();
                                             }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(RegisterActivity.this, "Error saving users....", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                        }).addOnFailureListener(e -> Toast.makeText(RegisterActivity.this, "Error saving users....", Toast.LENGTH_SHORT).show());
                             }
                         });
+                pDialog.dismiss();
             }
         });
     }
@@ -184,6 +183,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
     private void firebaseAuthWithGoogle(String idToken) {
+        SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading...");
+        pDialog.setCancelable(false);
+        pDialog.show();
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
@@ -199,6 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
                         
                     }
                 });
+        pDialog.dismiss();
     }
 
     private void registerUser(FirebaseUser user) {
@@ -208,18 +213,25 @@ public class RegisterActivity extends AppCompatActivity {
         register.put("phone",user.getPhoneNumber());
         register.put("email",user.getEmail());
         register.put("image",user.getPhotoUrl());
-        register.put("isProvider",false);
-        
-        firebaseFirestore.collection("Users").document(user.getUid())
-                .set(register).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(RegisterActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegisterActivity.this,DashBoardActivity.class));
-                        finish();
-                    } else{
-                        Toast.makeText(this, "error,Something happen!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        register.put("receiveNews",true);
+        register.put("Provider",false);
+        try {
+            myAlert.alertLoading("saving...");
+            firebaseFirestore.collection("Users").document(user.getUid())
+                    .set(register).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Toast.makeText(RegisterActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(RegisterActivity.this,DashBoardActivity.class));
+                    finish();
+                } else{
+                    Toast.makeText(this, "error,Something happen!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.d(TAG,"error saving user to firebase"+e.getMessage());
+        }
+
     }
 
 }
