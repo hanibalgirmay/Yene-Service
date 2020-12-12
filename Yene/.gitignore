@@ -3,7 +3,11 @@
 .idea
 settings.
 app/build
-app/src/main/java/com/hanibalg/yeneservice/patterns/
+app/src/main/java/com/hanibalg/yeneservice/patterns/interface/OnDataAdded.java
+app/src/main/java/com/hanibalg/yeneservice/patterns/viewModels/IDDataViewModel.java
+app/src/main/java/com/hanibalg/yeneservice/patterns/viewModels/ServiceListViewModel.java
+app/src/main/java/com/hanibalg/yeneservice/patterns/IDRepository.java
+app/src/main/java/com/hanibalg/yeneservice/patterns/ServiceListRepoitory.java
 /local.properties
 /.idea/caches
 /.idea/libraries
